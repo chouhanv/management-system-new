@@ -2,7 +2,7 @@
                 <ul class="breadcrumb">
                     <li><a href="#">Home</a></li>
                     <li><a href="#">Contact</a></li>
-                    <li><a href="#">{{categorie}}</a></li>
+                    <li><a href="#">{{categorie.categorie}}</a></li>
                     <li class="active">Create</li>
                 </ul>
                 <!-- END BREADCRUMB -->
@@ -16,7 +16,7 @@
                             <form class="form-horizontal" ng-submit="saveContact(contact_form)" name="contact_form" novalidate>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title"><strong>Create</strong> {{categorie}}</h3>
+                                    <h3 class="panel-title"><strong>Create</strong> {{categorie.categorie}}</h3>
                                     <ul class="panel-controls">
                                         <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
                                     </ul>
@@ -277,7 +277,7 @@
 										                        </div>
 										                        <br>
 										                        
-										                        
+										           
 										                        <div class="row">
 										                        	<div class="col-sm-4">
 										                        		<label></label>
