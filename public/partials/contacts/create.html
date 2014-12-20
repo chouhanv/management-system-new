@@ -648,7 +648,7 @@
 	                                	<div class="form-group">
 			                                <label class="col-md-3 control-label">Reffered By:</label>
 			                                <div class="col-md-9">
-			                                    <select class="form-control selct-refer" name="refferedby" data-ng-model="refferedbys[$index]" required>
+			                                    <select class="form-control selct-refer" name="refferedby" data-ng-model="refferedbys[$index]">
 					                                <option value="">--Select--</option>
 					                                <option ng-repeat="client in allContactes" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
 					                             </select>  
