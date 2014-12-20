@@ -14,7 +14,8 @@ dataController.createContact = function(req,res) {
  var th = this;
  Contacts.create(th.req.body.contactdata, function(err, data){
  	if(err) {
- 		th.res.json({message : "Try Again "});
+ 		console.log(err);
+ 		th.res.json({message : err});
  	}
  	else {
       th.res.json({contact : data,message : "Save Contact successfully "});
