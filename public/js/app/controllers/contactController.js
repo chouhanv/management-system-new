@@ -3,12 +3,12 @@
 /* Controllers */
 
 angular.module('myApp.contactController', [])
-.controller('contactController', function( $rootScope, $scope, $window, $location,$http) {
+.controller('contactController', function( $rootScope, $scope, $window, $location,$http, fileReader) {
 
-	$scope.isEditForm = false;
+	$rootScope.isEditForm = false;
 		$rootScope.tabs = [];
 		$rootScope.tabContent = [];
-		$scope.openedTabs = [];
+		$rootScope.openedTabs = [];
 		$scope.editFormIndex = "";
 
 		$rootScope.addreses = [{
@@ -112,7 +112,7 @@ angular.module('myApp.contactController', [])
         )},
 		$scope.saveContact = function(form) {
 			$scope.contact_form_submited = true;
-
+			console.log(form);
 		   	if(form.$valid){
 		   		console.log($rootScope.category_id);
 		   		$scope.contactdata = {
@@ -147,9 +147,9 @@ angular.module('myApp.contactController', [])
 
 		   	if(form.$valid){
 		   		var contact_id;
-		   		for(var x=0; x<$scope.openedTabs.length; x++){
+		   		for(var x=0; x<$rootScope.openedTabs.length; x++){
 					if(x == index){
-						contact_id = $scope.openedTabs[x];
+						contact_id = $rootScope.openedTabs[x];
 					}
 				}
 
@@ -171,6 +171,7 @@ angular.module('myApp.contactController', [])
 			   		if (data){
 		   				$rootScope.message = data.message;
 		   				$scope.getContact();
+		   				$scope.showList();
 	   				}
 		   			else {
 		   				$rootScope.message = "Try Again";
@@ -180,6 +181,8 @@ angular.module('myApp.contactController', [])
 			   		console.log(error)
 			   	});
 			}
+			
+			
 		}
 
 		$scope.expandPhone = function() {
@@ -220,15 +223,14 @@ angular.module('myApp.contactController', [])
 	   }
 
 		$scope.showtab = function(index){
-				
+			
 			$(".active").removeClass("active");
 			setTimeout(function(){
 				$("#tab"+index).addClass('active');
 			},  100);
 
-			$scope.isEditForm = true;
+			$rootScope.isEditForm = true;
 			$scope.editFormIndex = index;
-
 			$rootScope.category_id = $rootScope.tabs[index].contact.category_id
 	   		$rootScope.addreses = $rootScope.tabs[index].contact.addreses
 	   		$rootScope.company = $rootScope.tabs[index].contact.company
@@ -245,8 +247,8 @@ angular.module('myApp.contactController', [])
 		$scope.createNewTab = function(contact){
 			var isOpened = false;
 			var index = 0;
-			for(var x=0; x<$scope.openedTabs.length; x++){
-				if($scope.openedTabs[x] == contact._id){
+			for(var x=0; x<$rootScope.openedTabs.length; x++){
+				if($rootScope.openedTabs[x] == contact._id){
 					isOpened = true;
 					index = x;
 				}
@@ -259,26 +261,89 @@ angular.module('myApp.contactController', [])
 				}
 				$rootScope.tabs.push(tab);
 				$rootScope.tabContent.push(contact);
-				$scope.openedTabs.push(contact._id);
-				index = $scope.openedTabs.length-1;
+				$rootScope.openedTabs.push(contact._id);
+				index = $rootScope.openedTabs.length-1;
 			}
 			$scope.showtab(index);
 		}
 
 		$scope.showList = function(){
-			$scope.isEditForm = false;
+			$rootScope.isEditForm = false;
 			$(".active").removeClass("active");
 
 			setTimeout(function(){
 				$("#home").addClass('active');
 			},  100);
+
+
+			$rootScope.addreses = [{
+		      addressline1 : "",
+		      addressline2 : "",
+		      city         : "",
+		      state        : "",
+		      zip          : "",
+		      addresstype  : "",
+		      mailing      : false,
+		      billing      : false,
+		      poboxno      : false,
+		      streetnumber : "",
+		      streetname   : "",
+		      streetsuffix : "",
+		      unitnumber   : "",
+		      unitdesignator : "",
+		      buildingnumber  : "",
+		      buildingdoorcode : "",
+		      buildingdoorbell : "",
+		      pobox            : "",
+		      streetnameaka    : "",
+		      Intersectingstreet1 : "",
+		      Intersectingstreet2 : "",
+		      neighborhood        : ""
+		    }];
+		    $rootScope.name = {
+		      prefix:"",
+		      firstname:"",
+		      lastName:"",
+		      middlename:"",
+		      suffix:"",
+		      initial:"",
+		      sortname:"",
+		      additinalname:"",
+		      lettersalutation:""
+
+		    };
+		    $rootScope.phones = [{
+		               phonetype : "",
+		               sms : false,
+		               mms : false,
+		               smartphone : false,
+		               country : "",
+		               area    : "",
+		               Number  : "",
+		               ext      : "",
+		               homephone : "",
+		               cellphone : ""
+		    }];
+		    $rootScope.company = {
+		      companyname:"",
+		      dbaname:"",
+		      namephonetic:"",
+		      taxid:""
+		    };
+		    $rootScope.emails = [""];
+		    $rootScope.refferedbys = [""];
+		    $rootScope.notes = [""];
+
+		    $rootScope.additionalfields = [];
+		    $rootScope.isAdditionalFields = false;
+
 		}
 
 		$scope.discardContact = function(index){
 
 			$rootScope.tabs.splice(index, 1);
 			$rootScope.tabContent.splice(index, 1);
-			$scope.openedTabs.splice(index, 1);
+			$rootScope.openedTabs.splice(index, 1);
 
 			$rootScope.addreses = [];
 	   		$rootScope.phones = [];
@@ -289,7 +354,7 @@ angular.module('myApp.contactController', [])
 	   		$rootScope.company = [];
 	   		$rootScope.additionalfields = [];
 	   		$rootScope.imageSrc="";
-	   		$scope.isEditForm = false;
+	   		$rootScope.isEditForm = false;
 	   		$(".active").removeClass("active");
 
 			setTimeout(function(){
@@ -349,27 +414,50 @@ angular.module('myApp.contactController', [])
 		    });
 		}
 
-		$rootScope.setContactCategory = function(data,id){
-	 	    $rootScope.categorie = data;
-	 	    $rootScope.category_id = id;
-	 	    $rootScope.addreses = [];
-	   		$rootScope.phones = [];
-	   		$rootScope.name = [];
-	   		$rootScope.emails = [];
-	   		$rootScope.refferedbys = [];
-	   		$rootScope.notes = [];
-	   		$rootScope.company = [];
-	   		$rootScope.additionalfields = [];
-	   		$rootScope.imageSrc="";
 
-	   		$scope.isEditForm = false;
-			$rootScope.tabs = [];
-			$rootScope.tabContent = [];
-			$scope.openedTabs = [];
-			$scope.editFormIndex = "";
-
-	 	    $scope.getContact();
-	    }
-	
+		$scope.formValidater = function(){
+			var jvalidate = $("#jvalidate").validate({
+                ignore: [],
+                rules: {                                            
+                    login: {
+                            required: true,
+                            minlength: 2,
+                            maxlength: 8
+                    },
+                    password: {
+                            required: true,
+                            minlength: 5,
+                            maxlength: 10
+                    },
+                    're-password': {
+                            required: true,
+                            minlength: 5,
+                            maxlength: 10,
+                            equalTo: "#password2"
+                    },
+                    age: {
+                            required: true,
+                            min: 18,
+                            max: 100
+                    },
+                    email: {
+                            required: true,
+                            email: true
+                    },
+                    date: {
+                            required: true,
+                            date: true
+                    },
+                    credit: {
+                            required: true,
+                            creditcard: true
+                    },
+                    site: {
+                            required: true,
+                            url: true
+                    }
+                }                                        
+            });  
+		}
 });
 

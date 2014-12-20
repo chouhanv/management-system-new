@@ -28,6 +28,18 @@ angular.module('myApp.directives', [])
       }
     };
   })
+  .directive("ngFileSelect",function(){
+    return {
+      link: function($scope,el){
+        el.bind("change", function(e){
+          $scope.file = (e.srcElement || e.target).files[0];
+          console.log($scope.file);
+          $scope.getFile($scope.file);
+        });
+      }
+
+    }
+  })
 
   // .directive('clicable', ['$location', function(location){
   //   return {

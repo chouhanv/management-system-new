@@ -19,23 +19,92 @@ angular.module('myApp.sidebarController', [])
 	});
 
 	$rootScope.setContactCategory = function(categorie){
- 	    $rootScope.categorie = categorie.categorie;
+ 	    $rootScope.categorie = categorie;
  	    $rootScope.category_id = categorie._id;
- 	    $rootScope.addreses = [];
-   		$rootScope.phones = [];
-   		$rootScope.name = [];
-   		$rootScope.emails = [];
-   		$rootScope.refferedbys = [];
-   		$rootScope.notes = [];
-   		$rootScope.company = [];
-   		$rootScope.additionalfields = [];
-   		$rootScope.imageSrc="";
 
-   		$scope.isEditForm = false;
-		  $rootScope.tabs = [];
-		  $rootScope.tabContent = [];
-		  $scope.openedTabs = [];
-		  $scope.editFormIndex = "";
+
+    $rootScope.isEditForm = false;
+    $rootScope.tabs = [];
+    $rootScope.tabContent = [];
+    $rootScope.openedTabs = [];
+    $scope.editFormIndex = "";
+
+    $rootScope.addreses = [{
+      addressline1 : "",
+      addressline2 : "",
+      city         : "",
+      state        : "",
+      zip          : "",
+      addresstype  : "",
+      mailing      : false,
+      billing      : false,
+      poboxno      : false,
+      streetnumber : "",
+      streetname   : "",
+      streetsuffix : "",
+      unitnumber   : "",
+      unitdesignator : "",
+      buildingnumber  : "",
+      buildingdoorcode : "",
+      buildingdoorbell : "",
+      pobox            : "",
+      streetnameaka    : "",
+      Intersectingstreet1 : "",
+      Intersectingstreet2 : "",
+      neighborhood        : ""
+    }];
+    $rootScope.name = {
+      prefix:"",
+      firstname:"",
+      lastName:"",
+      middlename:"",
+      suffix:"",
+      initial:"",
+      sortname:"",
+      additinalname:"",
+      lettersalutation:""
+
+    };
+    $rootScope.phones = [{
+               phonetype : "",
+               sms : false,
+               mms : false,
+               smartphone : false,
+               country : "",
+               area    : "",
+               Number  : "",
+               ext      : "",
+               homephone : "",
+               cellphone : ""
+    }];
+    $rootScope.company = {
+      companyname:"",
+      dbaname:"",
+      namephonetic:"",
+      taxid:""
+    };
+    $rootScope.emails = [""];
+    $rootScope.refferedbys = [""];
+    $rootScope.notes = [""];
+
+    $rootScope.additionalfields = [];
+    $rootScope.isAdditionalFields = false;
+
+ 	  //   $rootScope.addreses = [];
+   	// 	$rootScope.phones = [];
+   	// 	$rootScope.name = [];
+   	// 	$rootScope.emails = [];
+   	// 	$rootScope.refferedbys = [];
+   	// 	$rootScope.notes = [];
+   	// 	$rootScope.company = [];
+   	// 	$rootScope.additionalfields = [];
+   	// 	$rootScope.imageSrc="";
+
+   	// 	$rootScope.isEditForm = false;
+		  // $rootScope.tabs = [];
+		  // $rootScope.tabContent = [];
+		  // $scope.openedTabs = [];
+		  // $scope.editFormIndex = "";
 
  	    $scope.getContact();
     }

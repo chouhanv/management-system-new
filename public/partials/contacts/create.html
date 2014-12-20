@@ -2,794 +2,731 @@
                 <ul class="breadcrumb">
                     <li><a href="#">Home</a></li>
                     <li><a href="#">Contact</a></li>
+                    <li class="active">New</li>
                     <li><a href="#">{{categorie.categorie}}</a></li>
-                    <li class="active">Create</li>
                 </ul>
                 <!-- END BREADCRUMB -->
                 
+                <div class="page-title">                    
+                    <h2></span> New {{categorie.categorie}}</h2>
+                </div>
                 <!-- PAGE CONTENT WRAPPER -->
-                <div class="page-content-wrap">
+                <form id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="saveContact(contact_form);" novalidate>   
+                <div class="page-content-wrap">                
                 
                     <div class="row">
-                        <div class="col-md-12">
-                            
-                            <form class="form-horizontal" ng-submit="saveContact(contact_form)" name="contact_form" novalidate>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"><strong>Create</strong> {{categorie.categorie}}</h3>
-                                    <ul class="panel-controls">
-                                        <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
-                                    </ul>
+                    	<div class="col-sm-2">
+                    		<div class="col-md-9">
+		                        <div class="panel-body">
+		                        	<div class="profile-image">
+		                                <img class="prfl-pic" style="max-width:100px; max-height:100px; border-radius:50%" src="{{imageSrc?imageSrc:'/assets/images/users/User_Avatar_Gray.png'}}" onclick="$('#selectImage').click();" alt="">
+	                            		<input type="file" ng-show="false" ng-file-select id="selectImage">
+		                            </div>
+		                        </div>
+                            </div>
+                    	</div>
+                        <div class="col-md-5">
+
+                            <!-- START VALIDATIONENGINE PLUGIN -->
+                            <div class="block">
+                            	
+                                <a href="javascript:;" data-toggle="modal" data-target="#modal_basic"><h4>Name</h4></a>
+                            	<div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+						            <div class="modal-dialog">
+						                <div class="modal-content">
+						                    <div class="modal-header">
+						                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						                        <h4 class="modal-title" id="defModalHead">Name</h4>
+						                    </div>
+						                    <div class="modal-body">
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Prefix</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" ng-model="name.prefix"  placeholder="Name Prefix">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>First Name</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" ng-model="name.firstname"  placeholder="First Name">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Middle</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" ng-model="name.middlename"placeholder="Middle Name">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Last</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" placeholder="Last Name " data-ng-model="name.lastname">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Suffix</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control"  ng-model="name.suffix"  placeholder="Name Suffix ">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Initials</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control"  ng-model="name.initial"  placeholder="Name Initials ">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Short Name</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control"  ng-model="name.sortname" placeholder="Short Name">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Additinal Name</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" ng-model="name.additinalname"  placeholder="Additinal Name  ">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Letter Salutation</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control"  ng-model="name.lettersalutation" placeholder="Letter Salutation ">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                    </div>
+						                    <div class="modal-footer">
+						                    	<button type="button" class="btn btn-default" ng-click="saveNameForm()" data-dismiss="modal">Save</button>
+						                        <button type="button" class="btn btn-default" ng-click="cancelNameForm()" data-dismiss="modal">Close</button>
+						                    </div>
+						                </div>
+						            </div>
+						        </div>    
+                            	<div class="form-group">
+                                    <label class="col-md-3 control-label">First Name:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" ng-model="name.firstname" name="firstname" placeholder="First Name">
+                                        <span class="help-block">Required</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Last Name:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="lastname"   placeholder="Last*" data-ng-trim='false'data-ng-model="name.lastname" required>
+                                        <span class="help-block">Required</span>
+                                    </div>
+                                </div>
+
+                                <a href="javascript:;" data-toggle="modal" data-target="#modal_company"><h4>Company</h4></a>
+                                 <div class="modal" id="modal_company" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+						            <div class="modal-dialog">
+						                <div class="modal-content">
+						                    <div class="modal-header">
+						                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						                        <h4 class="modal-title" id="defModalHead">Company</h4>
+						                    </div>
+						                    <div class="modal-body">
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Name</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" ng-model="company.companyname"  placeholder="Company Name">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>DBA</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+						                        			<input type="text" class="form-control" ng-model="company.dbaname"  placeholder="DBA Name">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Company Name Phonetic</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" ng-model="company.namephonetic"  placeholder="Company NamePhonetic">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Tax Id</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" placeholder="Tax Id " ng-model="company.taxid">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        
+						                    </div>
+						                    <div class="modal-footer">
+						                    	<button type="button" class="btn btn-default" ng-click="saveCompanyForm()" data-dismiss="modal">Save</button>
+						                        <button type="button" class="btn btn-default" ng-click="cancleCompanyForm()" data-dismiss="modal">Close</button>
+						                    </div>
+						                </div>
+						            </div>
+						        </div> 
+
+						        <div class="form-group">
+                                    <label class="col-md-3 control-label">Company name:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="companyname" ng-model="company.companyname" placeholder="Company*" required>
+                                        <span class="help-block">Required</span>
+                                    </div>
+                                </div>
+
+                                <div ng-repeat = "address in addreses track by $index">
+                                	<a href="javascript:;" data-toggle="modal" data-target="#modal_address{{$index}}"><h4>Address</h4></a>
+
+                                	<div class="modal" id="modal_address{{$index}}" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+						            	<div class="modal-dialog">
+						                <div class="modal-content">
+						                    <div class="modal-header">
+						                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						                        <h4 class="modal-title" id="defModalHead">Addresses</h4>
+						                    </div>
+						                    <div class="modal-body">
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Type</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<select class="form-control" data-ng-model="address.addresstype">
+							                                  <option value="business">Business/Home</option>
+							                                  <option value="2">2</option>
+							                                </select>
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        
+						           
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label></label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<label class="ui-checkbox">
+					                                      <input name="checkbox1" type="checkbox" data-ng-model="address.mailing" value="Mailing">
+					                                      <span>Mailing</span></label>
+					                                    <label class="ui-checkbox">
+					                                      <input name="checkbox1" type="checkbox" data-ng-model="address.billing" value="billing" checked>
+					                                      <span>Billing</span></label>
+					                                    <label class="ui-checkbox">
+					                                      <input name="checkbox1" type="checkbox" data-ng-model="address.poboxno" value="pobox">
+					                                      <span>P.O.Box</span></label>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Street Number</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input  type="text" class="form-control" placeholder="Number" data-ng-model="address.streetnumber">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Street Name</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input  type="text" class="form-control" placeholder="Name" data-ng-model="address.streetname">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Street Suffix</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<select class="form-control" data-ng-model="address.streetsuffix">
+						                                      <option value="suffix">Suffix</option>
+						                                      <option value="2">2</option>
+						                                    </select>   
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Unit Number</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input  type="text" class="form-control" placeholder="Number" data-ng-model="address.unitnumber"> 
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Unit Designator</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<select class="form-control" data-ng-model="address.unitdesignator">
+						                                      <option value="Designator">Designator</option>
+						                                      <option value="2" >2</option>
+						                                    </select>
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Building</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input  type="text" class="form-control" placeholder="Name or Number" data-ng-model="address.buildingnumber">   
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Door Code</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input  type="text" class="form-control" placeholder="Door Code" data-ng-model="address.buildingdoorcode">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Door Bell</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input  type="text" class="form-control" placeholder="Door Bell" data-ng-model="address.buildingdoorbell" >
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>P.O.Box</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" data-ng-model="address.pobox"  placeholder="P.O. Box">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Street Name AKA</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" data-ng-model="address.streetnameaka"  placeholder="Street Name also knows as">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Intersecting Street1</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" data-ng-model="address.Intersectingstreet1"  placeholder="Intersecting Street1">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Intersecting Street2</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" data-ng-model="address.Intersectingstreet2"  placeholder="Intersecting Street2">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Neighborhood</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" data-ng-model="address.neighborhood"  placeholder="Neighborhood">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        
+						                    </div>
+						                    <div class="modal-footer">
+						                    	<button type="button" class="btn btn-default" ng-click="saveCompanyForm()" data-dismiss="modal">Save</button>
+						                        <button type="button" class="btn btn-default" ng-click="cancleCompanyForm()" data-dismiss="modal">Close</button>
+						                    </div>
+						                </div>
+						            	</div>
+                                	</div>
+                                	<div class="form-group">
+		                                <label class="col-md-3 control-label">Address Line 1:</label>
+		                                <div class="col-md-9">
+		                                    <input type="text" class="form-control" name="addressline1"  placeholder="Address Line1*"data-ng-model="address.addressline1" required>
+		                                    <span class="help-block">Required</span>
+		                                </div>
+		                            </div>
+		                            
+		                            <div class="form-group">
+		                                <label class="col-md-3 control-label">Address Line 2:</label>
+		                                <div class="col-md-9">
+		                                    <input type="text" class="form-control" name="addressline2" placeholder="Address Line2" data-ng-model="address.addressline2" required>
+		                                    <span class="help-block">Required</span>
+		                                </div>
+		                            </div>
+
+		                            <div class="form-group">
+		                                <label class="col-md-3 control-label">City:</label>
+		                                <div class="col-md-9">
+		                                    <input  type="text" class="form-control" name="city" placeholder="City*" data-ng-trim='false'data-ng-model="address.city" required>
+		                                    <span class="help-block">Required</span>
+		                                </div>
+		                            </div>
+
+		                            <div class="form-group">
+		                                <label class="col-md-3 control-label">State:</label>
+		                                <div class="col-md-9">
+		                                    <input  type="text" class="form-control" name="state" placeholder="State*" data-ng-trim='false' data-ng-model="address.state" required>
+		                                    <span class="help-block">Required</span>
+		                                </div>
+		                            </div>
+
+		                            <div class="form-group">
+		                                <label class="col-md-3 control-label">Zip:</label>
+		                                <div class="col-md-9">
+		                                    <input  type="text" class="form-control" name="zip" placeholder="Zip*" data-ng-model="address.zip" required>
+		                                    <span class="help-block">Required</span>
+		                                </div>
+		                            </div>
+		                  
+						        </div>
+						        <div class="form-group">                                      
+                                    <label class="col-md-3"></label>
+                                    <label class="col-md-9">
+                                    <button class="btn btn-condensed" ng-click="expandAddress()"><i class="fa fa-plus"></i></button></label>
+                                </div>
+
+                            </div>                                               
+                            <!-- END VALIDATIONENGINE PLUGIN -->
+
+                        </div>
+                        <div class="col-md-5">                        
+
+                            <!-- START JQUERY VALIDATION PLUGIN -->
+                            <div class="block">
+                                
+                               <!--  <form id="jvalidate" role="form" class="form-horizontal" action="javascript:alert('Form #validate2 submited');"> -->
+                                <div ng-repeat= "phone in phones track by $index">                    			<a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}"><h4>Phone</h4></a>                
+                                    <div class="modal" id="modal_phone{{$index}}" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+						            	<div class="modal-dialog">
+						                <div class="modal-content">
+						                    <div class="modal-header">
+						                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						                        <h4 class="modal-title" id="defModalHead">Phone</h4>
+						                    </div>
+						                    <div class="modal-body">
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Type</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<select class="form-control" data-ng-model="phonepop.phonetype">
+								                              <option value="Cell">Cell</option>
+								                              <option value="business">Business</option>
+								                              <option value="home">Home</option>
+								                              <option value="fax">Fax</option>
+								                            </select>
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label></label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<label class="ui-checkbox">
+							                                <input name="checkbox1" type="checkbox" data-ng-model="phonepop.sms" value="sms"><span>SMS</span>
+							                            </label>
+							                            <label class="ui-checkbox">
+							                                <input name="checkbox1" type="checkbox" data-ng-model="phonepop.mms" value="mms" checked><span>MMS</span>
+							                            </label>
+							                            <label class="ui-checkbox">
+							                                <input name="checkbox1" type="checkbox" data-ng-model="phonepop.smartphone" value="smartphone"><span>Smart Phone</span>
+							                            </label>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Country Name</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<select class="form-control selct-refer" data-ng-model="phonepop.country">
+							                                  <option>State</option>
+							                                  <option value="India">India</option>
+							                                  <option value="USA">USA</option>
+							                                </select>
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Country Code</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" placeholder="Tax Id " ng-model="phonepop.area">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Number</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" data-ng-model="phonepop.number"  placeholder="Number">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        <div class="row">
+						                        	<div class="col-sm-4">
+						                        		<label>Ext</label>
+						                        	</div>
+						                        	<div class="col-sm-8">
+						                        		<div class="form-group">
+							                        		<input type="text" class="form-control" data-ng-model="phonepop.ext"  placeholder="Ext">
+							                        	</div>
+						                        	</div>
+						                        </div>
+						                        <br>
+						                        
+						                    </div>
+						                    <div class="modal-footer">
+						                    	<button type="button" class="btn btn-default" ng-click="savePhoneForm()" data-dismiss="modal">Save</button>
+						                        <button type="button" class="btn btn-default" ng-click="canclePhoneForm()" data-dismiss="modal">Close</button>
+						                    </div>
+						                </div>
+						            	</div>
+						        	</div>   
+						        	<div class="form-group">
+		                                <label class="col-md-3 control-label">Cellphone:</label>
+		                                <div class="col-md-9">
+		                                    <input type="text" class="form-control" name="cellphone" placeholder="Cell Phone*" data-ng-model="phone.cellphone" required>
+		                                    <span class="help-block">Required</span>
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-md-3 control-label">Home Phone:</label>
+		                                <div class="col-md-9">
+		                                    <input type="text" class="form-control" name="homephone" placeholder="Home Phone*" data-ng-model="phone.homephone" required>
+		                                    <span class="help-block">Required</span>
+		                                </div>
+		                            </div>                                                                 
+                                                                                                                                                          
+                                </div>
+                                <div class="form-group">                                      
+                                    <label class="col-md-3"></label>
+                                	<label class="col-md-9">
+                                    <button class="btn btn-condensed" ng-click="expandPhone()"><i class="fa fa-plus"></i></button></label>
+                                </div> 
+                                <div>
+                                	<h4>Emails</h4>
+	                                <div ng-repeat= "email in emails track by $index">
+	                                	<div class="form-group">
+			                                <label class="col-md-3 control-label">Email:</label>
+			                                <div class="col-md-9">
+			                                    <input type="email" class="form-control" name="email"  placeholder="Email*" data-ng-model="emails[$index]" required>
+			                                    <span class="help-block">Required</span>
+			                                </div>
+			                            </div>
+	                                </div>
+	                                <div class="form-group">                                      
+	                                    <label class="col-md-3"></label>
+	                                    <label class="col-md-9">
+	                                    <button class="btn btn-condensed" ng-click="expandEmail()"><i class="fa fa-plus"></i></button></label>
+	                                </div>
                                 </div>
                                 
-                                <div class="panel-body">                                                                        
-                                    
-                                    <div class="row">
-                                        
-                                        <div class="col-md-6">
-                                            
+                                <div>
+                                	<h4>Reffered By</h4>
+	                                <div ng-repeat="refer in refferedbys track by $index">
+	                                	<div class="form-group">
+			                                <label class="col-md-3 control-label">Reffered By:</label>
+			                                <div class="col-md-9">
+			                                    <select class="form-control selct-refer" name="refferedby" data-ng-model="refferedbys[$index]" required>
+					                                <option value="">--Select--</option>
+					                                <option ng-repeat="client in allContactes" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
+					                             </select>  
+			                                    <span class="help-block">Required</span>
+			                                </div>
+			                            </div>
+	                                </div>
+                                    <div class="form-group">                                      
+	                                    <label class="col-md-3"></label>
+	                                    <label class="col-md-9">
+	                                    <button class="btn btn-condensed" ng-click="expandrefferedby()"><i class="fa fa-plus"></i></button></label>
+	                                </div>
+                                </div>
+                                
+                     
+                                <div>
+                                	<h4>Notes</h4>
+	                                <div ng-repeat="note in notes track by $index">
+	                                	<div class="form-group">
+			                                <label class="col-md-3 control-label">Notes:</label>
+			                                <div class="col-md-9">
+			                                    <textarea class="form-control" data-ng-model="notes[$index]" placeholder="Note" rows="5"></textarea> 
+			                                    <span class="help-block">Required</span>
+			                                </div>
+			                            </div>
+	                                </div>
+                                </div>
 
-                                        	<div class="form-group">
-                                                <h3><label>Name</label> <a href="javascript:;" data-toggle="modal" data-target="#modal_basic">....</a></h3>
-                                            </div>
-                                            <div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
-									            <div class="modal-dialog">
-									                <div class="modal-content">
-									                    <div class="modal-header">
-									                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-									                        <h4 class="modal-title" id="defModalHead">Name</h4>
-									                    </div>
-									                    <div class="modal-body">
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Prefix</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control" ng-model="name.prefix"  placeholder="Name Prefix">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>First Name</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control" ng-model="name.firstname"  placeholder="First Name">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Middle</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control" ng-model="name.middlename"placeholder="Middle Name">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Last</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control" placeholder="Last Name " data-ng-model="name.lastname">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Suffix</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control"  ng-model="name.suffix"  placeholder="Name Suffix ">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Initials</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control"  ng-model="name.initial"  placeholder="Name Initials ">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Short Name</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control"  ng-model="name.sortname" placeholder="Short Name">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Additinal Name</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control" ng-model="name.additinalname"  placeholder="Additinal Name  ">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Letter Salutation</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control"  ng-model="name.lettersalutation" placeholder="Letter Salutation ">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                    </div>
-									                    <div class="modal-footer">
-									                    	<button type="button" class="btn btn-default" ng-click="saveNameForm()" data-dismiss="modal">Save</button>
-									                        <button type="button" class="btn btn-default" ng-click="cancelNameForm()" data-dismiss="modal">Close</button>
-									                    </div>
-									                </div>
-									            </div>
-									        </div>
-                                            <div class="form-group">
-                                                <label class="col-md-3 control-label">First Name</label>
-                                                <div class="col-md-9">                                            
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-                                                        <input type="text" class="form-control"/>
-                                                    </div>                                            
-                                                    <span class="help-block">This is sample of text field</span>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="form-group">                                        
-                                                <label class="col-md-3 control-label">Last Name</label>
-                                                <div class="col-md-9 col-xs-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                        <span class="fa fa-pencil"></span></span>
-                                                        <input type="text" class="form-control" name="lastname"   placeholder="Last*" data-ng-trim='false'data-ng-model="name.lastname" required>
-                                                    </div>            
-                                                    <span class="help-block">Enter last name</span>
-                                                </div>
-                                            </div>
+                                <div>
+                                	<div ng-repeat="additionalfield in additionalfields track by $index" class="form-group">
+	                                	<div class="form-group">
+			                                <label class="col-md-3 control-label">{{additionalfield.key}}:</label>
+			                                <div class="col-md-9">
+			                                    <input type="text" class="form-control" placeholder="{{additionalfield.key}}*" name="aditional_value" data-ng-model="additionalfield.value" required /><i class="fa  fa-close" ng-click="removeAdditionalField($index)"></i>    
+			                                    <span class="help-block">Required</span>
+			                                </div>
+			                            </div>
+	            									
+	            					</div>
+                                </div>
 
-                                            <div class="form-group">
-                                                <h3><label>Company</label> <a href="javascript:;" data-toggle="modal" data-target="#modal_company">....</a></h3>
-                                            </div>
-                                            
-                                            <div class="modal" id="modal_company" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
-									            <div class="modal-dialog">
-									                <div class="modal-content">
-									                    <div class="modal-header">
-									                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-									                        <h4 class="modal-title" id="defModalHead">Company</h4>
-									                    </div>
-									                    <div class="modal-body">
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Name</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control" ng-model="company.companyname"  placeholder="Company Name">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>DBA</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-									                        			<input type="text" class="form-control" ng-model="company.dbaname"  placeholder="DBA Name">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Company Name Phonetic</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control" ng-model="company.namephonetic"  placeholder="Company NamePhonetic">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        <div class="row">
-									                        	<div class="col-sm-4">
-									                        		<label>Tax Id</label>
-									                        	</div>
-									                        	<div class="col-sm-8">
-									                        		<div class="form-group">
-										                        		<input type="text" class="form-control" placeholder="Tax Id " ng-model="company.taxid">
-										                        	</div>
-									                        	</div>
-									                        </div>
-									                        <br>
-									                        
-									                    </div>
-									                    <div class="modal-footer">
-									                    	<button type="button" class="btn btn-default" ng-click="saveCompanyForm()" data-dismiss="modal">Save</button>
-									                        <button type="button" class="btn btn-default" ng-click="cancleCompanyForm()" data-dismiss="modal">Close</button>
-									                    </div>
-									                </div>
-									            </div>
-									        </div>
-                                            
-                                            <div class="form-group">                                        
-                                                <label class="col-md-3 control-label">Company name</label>
-                                                <div class="col-md-9 col-xs-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                        <span class="fa fa-pencil"></span></span>
-                                                        <input type="text" class="form-control" name="companyname" ng-model="company.companyname" placeholder="Company*" required>
-                                                    </div>            
-                                                    <span class="help-block">Company name</span>
-                                                </div>
-                                            </div>
-                                            
-
-                                            <div ng-repeat = "address in addreses track by $index">
-                                            	
-                                            	<div class="form-group">
-	                                                <h3><label>Addresses</label> <a href="javascript:;" data-toggle="modal" data-target="#modal_address{{$index}}">....</a></h3>
-	                                            </div>
-	                                            
-	                                            <div class="modal" id="modal_address{{$index}}" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
-										            <div class="modal-dialog">
-										                <div class="modal-content">
-										                    <div class="modal-header">
-										                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-										                        <h4 class="modal-title" id="defModalHead">Addresses</h4>
-										                    </div>
-										                    <div class="modal-body">
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Type</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<select class="form-control" data-ng-model="addresspop.addresstype">
-											                                  <option value="business">Business/Home</option>
-											                                  <option value="2">2</option>
-											                                </select>
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-										                        
-										           
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label></label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<label class="ui-checkbox">
-									                                      <input name="checkbox1" type="checkbox" data-ng-model="addresspop.mailing" value="Mailing">
-									                                      <span>Mailing</span></label>
-									                                    <label class="ui-checkbox">
-									                                      <input name="checkbox1" type="checkbox" data-ng-model="addresspop.billing" value="billing" checked>
-									                                      <span>Billing</span></label>
-									                                    <label class="ui-checkbox">
-									                                      <input name="checkbox1" type="checkbox" data-ng-model="addresspop.poboxno" value="pobox">
-									                                      <span>P.O.Box</span></label>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Street Number</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input  type="text" class="form-control" placeholder="Number" data-ng-model="addresspop.streetnumber">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Street Name</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input  type="text" class="form-control" placeholder="Name" data-ng-model="addresspop.streetname">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Street Suffix</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<select class="form-control" data-ng-model="addresspop.streetsuffix">
-										                                      <option value="suffix">Suffix</option>
-										                                      <option value="2">2</option>
-										                                    </select>   
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Unit Number</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input  type="text" class="form-control" placeholder="Number" data-ng-model="addresspop.unitnumber"> 
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Unit Designator</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<select class="form-control" data-ng-model="addresspop.unitdesignator">
-										                                      <option value="Designator">Designator</option>
-										                                      <option value="2" >2</option>
-										                                    </select>
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Building</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input  type="text" class="form-control" placeholder="Name or Number" data-ng-model="addresspop.buildingnumber">   
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Door Code</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input  type="text" class="form-control" placeholder="Door Code" data-ng-model="addresspop.buildingdoorcode">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Door Bell</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input  type="text" class="form-control" placeholder="Door Bell" data-ng-model="addresspop.buildingdoorbell" >
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>P.O.Box</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input type="text" class="form-control" data-ng-model="addresspop.pobox"  placeholder="P.O. Box">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Street Name AKA</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input type="text" class="form-control" data-ng-model="addresspop.streetnameaka"  placeholder="Street Name also knows as">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Intersecting Street1</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input type="text" class="form-control" data-ng-model="addresspop.Intersectingstreet1"  placeholder="Intersecting Street1">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Intersecting Street2</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input type="text" class="form-control" data-ng-model="addresspop.Intersectingstreet2"  placeholder="Intersecting Street2">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Neighborhood</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input type="text" class="form-control" data-ng-model="addresspop.neighborhood"  placeholder="Neighborhood">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-										                        
-										                    </div>
-										                    <div class="modal-footer">
-										                    	<button type="button" class="btn btn-default" ng-click="saveCompanyForm()" data-dismiss="modal">Save</button>
-										                        <button type="button" class="btn btn-default" ng-click="cancleCompanyForm()" data-dismiss="modal">Close</button>
-										                    </div>
-										                </div>
-										            </div>
-										        </div>
-	                                            
-	                                            <div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">Address Line 1</label>
-	                                                <div class="col-md-9 col-xs-12">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon">
-	                                                        <span class="fa fa-pencil"></span></span>
-	                                                        <input type="text" class="form-control" name="addressline1"  placeholder="Address Line1*"data-ng-model="address.addressline1" required>
-	                                                    </div>            
-	                                                    <span class="help-block">Address Line 1</span>
-	                                                </div>
-	                                            </div>
-
-	                                            <div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">Address Line 2</label>
-	                                                <div class="col-md-9 col-xs-12">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon">
-	                                                        <span class="fa fa-pencil"></span></span>
-	                                                        <input type="text" class="form-control" name="addressline2" placeholder="Address Line2" data-ng-model="address.addressline2" required>
-	                                                    </div>            
-	                                                    <span class="help-block">Address Line 2</span>
-	                                                </div>
-	                                            </div>
-
-	                                            <div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">City</label>
-	                                                <div class="col-md-9 col-xs-12">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon">
-	                                                        <span class="fa fa-pencil"></span></span>
-	                                                        <input  type="text" class="form-control" name="city" placeholder="City*" data-ng-trim='false'data-ng-model="address.city" required>
-	                                                    </div>            
-	                                                    <span class="help-block">City name</span>
-	                                                </div>
-	                                            </div>
-	                                            
-	                                            <div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">State</label>
-	                                                <div class="col-md-9 col-xs-12">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon">
-	                                                        <span class="fa fa-pencil"></span></span>
-	                                                        <input  type="text" class="form-control" name="state" placeholder="State*" data-ng-trim='false' data-ng-model="address.state" required>
-	                                                    </div>            
-	                                                    <span class="help-block">State name</span>
-	                                                </div>
-	                                            </div>
-
-	                                            <div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">Zip</label>
-	                                                <div class="col-md-9 col-xs-12">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon">
-	                                                        <span class="fa fa-pencil"></span></span>
-	                                                        <input  type="text" class="form-control" name="zip" ng-pattern="/^\d{5}(?:[-\s]\d{4})?$/" placeholder="Zip*" data-ng-model="address.zip" required>
-	                                                    </div>            
-	                                                    <span class="help-block">Enter zip code. </span>
-	                                                </div>
-	                                            </div>
-                                            </div>
-                                            <div class="form-group">                                      
-                                                <label class="col-md-3 control-label">
-                                                <button class="btn btn-success btn-condensed" ng-click="expandAddress()"><i class="fa fa-plus"></i></button></label>
-                                            </div>
-                                          
-                                        </div>
-                                        <div class="col-md-6">
-                                            
-                                        	<div ng-repeat= "phone in phones track by $index">
-                                        		
-                                        		<div class="form-group">
-	                                                <h3><label>Phone</label> <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}">....</a></h3>
-	                                            </div>
-	                                            <div class="modal" id="modal_phone{{$index}}" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
-										            <div class="modal-dialog">
-										                <div class="modal-content">
-										                    <div class="modal-header">
-										                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-										                        <h4 class="modal-title" id="defModalHead">Phone</h4>
-										                    </div>
-										                    <div class="modal-body">
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Type</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<select class="form-control" data-ng-model="phonepop.phonetype">
-												                              <option value="Cell">Cell</option>
-												                              <option value="business">Business</option>
-												                              <option value="home">Home</option>
-												                              <option value="fax">Fax</option>
-												                            </select>
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label></label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<label class="ui-checkbox">
-											                                <input name="checkbox1" type="checkbox" data-ng-model="phonepop.sms" value="sms"><span>SMS</span>
-											                            </label>
-											                            <label class="ui-checkbox">
-											                                <input name="checkbox1" type="checkbox" data-ng-model="phonepop.mms" value="mms" checked><span>MMS</span>
-											                            </label>
-											                            <label class="ui-checkbox">
-											                                <input name="checkbox1" type="checkbox" data-ng-model="phonepop.smartphone" value="smartphone"><span>Smart Phone</span>
-											                            </label>
-										                        	</div>
-										                        </div>
-										                        <br>
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Country Name</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<select class="form-control selct-refer" data-ng-model="phonepop.country">
-											                                  <option>State</option>
-											                                  <option value="India">India</option>
-											                                  <option value="USA">USA</option>
-											                                </select>
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Country Code</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input type="text" class="form-control" placeholder="Tax Id " ng-model="phonepop.area">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Number</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input type="text" class="form-control" data-ng-model="phonepop.number"  placeholder="Number">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-										                        <div class="row">
-										                        	<div class="col-sm-4">
-										                        		<label>Ext</label>
-										                        	</div>
-										                        	<div class="col-sm-8">
-										                        		<div class="form-group">
-											                        		<input type="text" class="form-control" data-ng-model="phonepop.ext"  placeholder="Ext">
-											                        	</div>
-										                        	</div>
-										                        </div>
-										                        <br>
-										                        
-										                    </div>
-										                    <div class="modal-footer">
-										                    	<button type="button" class="btn btn-default" ng-click="savePhoneForm()" data-dismiss="modal">Save</button>
-										                        <button type="button" class="btn btn-default" ng-click="canclePhoneForm()" data-dismiss="modal">Close</button>
-										                    </div>
-										                </div>
-										            </div>
-										        </div>
-
-										        <div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">Cellphone</label>
-	                                                <div class="col-md-9 col-xs-12">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon">
-	                                                        <span class="fa fa-pencil"></span></span>
-	                                                        <input type="text" class="form-control" name="cellphone" placeholder="Cell Phone*" data-ng-model="phone.cellphone" ng-pattern="/\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})/" required>
-	                                                    </div>            
-	                                                    <span class="help-block">Enter cellphone. </span>
-	                                                </div>
-	                                            </div>
-	                                            
-	                                            <div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">Home Phone</label>
-	                                                <div class="col-md-9 col-xs-12">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon">
-	                                                        <span class="fa fa-pencil"></span></span>
-	                                                        <input type="text" class="form-control" name="homephone" placeholder="Home Phone*" data-ng-model="phone.homephone" ng-pattern="/\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})/" required>
-	                                                    </div>            
-	                                                    <span class="help-block">Enter home phone</span>
-	                                                </div>
-	                                            </div>
-	                                            <div class="form-group">                                      
-	                                                <label class="col-md-3 control-label">
-	                                                <button class="btn btn-success btn-condensed" ng-click="expandPhone()"><i class="fa fa-plus"></i></button></label>
-	                                            </div>
-
-                                        	</div>
-
-                                        	<div ng-repeat="email in emails track by $index">
-                                        		<div class="form-group">
-	                                                <h3><label>Email</label></h3>
-	                                            </div>
-										        
-	                                            
-	                                            <div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">Email</label>
-	                                                <div class="col-md-9 col-xs-12">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon">
-	                                                        <span class="fa fa-pencil"></span></span>
-	                                                        <input type="email" class="form-control" name="email"  placeholder="Email*" data-ng-model="emails[$index]" required>
-	                                                    </div>            
-	                                                    <span class="help-block">Enter email.</span>
-	                                                </div>
-	                                            </div>
-                                        	</div>
-							                
-							                <div class="form-group">                                      
-                                                <label class="col-md-3 control-label">
-                                                <button class="btn btn-success btn-condensed" ng-click="expandEmail()"><i class="fa fa-plus"></i></button></label>
-                                            </div>
-
-                                            <div ng-repeat="refer in refferedbys track by $index">
-                                            	<div class="form-group">
-	                                                <h3><label>Reffered By</label></h3>
-	                                            </div>
-                                            	<div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">Reffered By</label>
-	                                                <div class="col-md-9">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-	                                                        <select class="form-control selct-refer" name="refferedby" data-ng-model="refferedbys[$index]" required>
-								                                <option value="">--Select--</option>
-								                                <option ng-repeat="client in allContactes" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
-								                             </select>                                      
-	                                                    </div>
-	                                                    <span class="help-block">Choose refered by.</span>
-	                                                </div>
-	                                            </div>
-                                            </div>
-                                            
-                                            <div class="form-group">                                      
-                                                <label class="col-md-3 control-label">
-                                                <button class="btn btn-success btn-condensed" ng-click="expandrefferedby()"><i class="fa fa-plus"></i></button></label>
-                                            </div>
-
-                                            <div class="form-group">
-                                            	<h3><label>Notes</label></h3>
-                                            </div>
-            								<div ng-repeat="note in notes track by $index">
-            									<div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">Notes</label>
-	                                                <div class="col-md-9">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-	                                                        <textarea class="form-control" data-ng-model="notes[$index]" placeholder="Note" rows="5">
-			                     							</textarea>                               
-	                                                    </div>
-	                                                    <span class="help-block">Please enter notes.</span>
-	                                                </div>
-	                                            </div>
-            								</div>
-
-            								<div ng-repeat="additionalfield in additionalfields track by $index" class="form-group">
-            									<div class="form-group">                                        
-	                                                <label class="col-md-3 control-label">{{additionalfield.key}} <i class="fa  fa-close" ng-click="removeAdditionalField($index)"></i></label>
-	                                                <div class="col-md-9">
-	                                                    <div class="input-group">
-	                                                        <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-	                                                        <input type="text" class="form-control" placeholder="{{additionalfield.key}}*" name="aditional_value" data-ng-model="additionalfield.value" required />                              
-	                                                    </div>
-	                                                    <span class="help-block">Please enter notes.</span>
-	                                                </div>
-	                                            </div>
-            								</div>
-            								<!-- <div class="form-group">                                      
-                                                <label class="col-md-3 control-label">
+                                <div>
+                                	
+    								<div class="form-group">
+    									<label class="col-md-3 control-label">{{additionalfield.key}} <i class="fa  fa-close" ng-click="removeAdditionalField($index)"></i>
+    									</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                
                                                 <button class="btn btn-success btn-condensed" ng-click="isAdditionalFields=true"><i class="fa fa-plus"></i></button>
-                                                </label>
-                                            </div> -->
-            								<div class="form-group">
-            									<label class="col-md-3 control-label">{{additionalfield.key}} <i class="fa  fa-close" ng-click="removeAdditionalField($index)"></i>
-            									</label>
-                                                <div class="col-md-9">
-                                                    <div class="input-group">
-                                                        
-                                                        <button class="btn btn-success btn-condensed" ng-click="isAdditionalFields=true"><i class="fa fa-plus"></i></button>
-										                  <div ng-show="isAdditionalFields">
-										                    <ul>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Keywords/Tags');">Keywords/Tags</label></li>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('FedEx Account Number');">FedEx Account Number</label></li>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Assistant Name');">Assistant Name</label></li>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Assistant Phone');">Assistant's Phone</label></li>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Assistant Email');">Assistant s Email</label></li>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Tax ID');">Tax ID</label></li>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Web Login Enabled');">Web Login Enabled</label></li>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Manager Name');">Manager Name</label></li>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Manager Phone');">Manager Phone</label></li>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Manager Email');">Manager Email</label></li>
-										                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Website');">Website</label></li>
-										                    </ul>
-										                </div>                           
-                                                    </div>
-                                                </div>
-            								</div>
+								                  <div ng-show="isAdditionalFields">
+								                    <ul>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Keywords/Tags');">Keywords/Tags</label></li>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('FedEx Account Number');">FedEx Account Number</label></li>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Assistant Name');">Assistant Name</label></li>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Assistant Phone');">Assistant's Phone</label></li>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Assistant Email');">Assistant s Email</label></li>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Tax ID');">Tax ID</label></li>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Web Login Enabled');">Web Login Enabled</label></li>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Manager Name');">Manager Name</label></li>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Manager Phone');">Manager Phone</label></li>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Manager Email');">Manager Email</label></li>
+								                      <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Website');">Website</label></li>
+								                    </ul>
+								                </div>                           
+                                            </div>
                                         </div>
-                                        
-                                    </div>
+                                	</div>
 
-                                </div>
-                                <div class="panel-footer">
-                                    <button class="btn btn-default">Clear Form</button>                                    
-                                    <button class="btn btn-primary pull-right">Submit</button>
-                                </div>
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                </div>                                                
+                                
+                            <!-- END JQUERY VALIDATION PLUGIN -->
                             </div>
-                            </form>
-                            
                         </div>
-                    </div>                    
-                    
+                    </div>
+                        
                 </div>
-                <!-- END PAGE CONTENT WRAPPER --> 
+                <!-- END PAGE CONTENT WRAPPER -->
+                </form>
