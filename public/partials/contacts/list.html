@@ -1,28 +1,31 @@
-                <ul class="breadcrumb">
+                <ul class="breadcrumb" data-ng-init="getContactes();getContactCategories();">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li class="active">{{categorie.categorie}}</li>
+                    <li><a href="#">Contacts</a></li>
+                    <li ng-if="filterBy" class="active">{{filterBy}}</li>
                 </ul>
-                <!-- END BREADCRUMB -->                                                
+                <!-- END BREADCRUMB -->   
+                <!-- START PAGE TITLE -->  
+                <div class="page-title">                    
+                    <h2><span class="fa fa-users"></span> Contacts <!-- <small>{{categoryWiseContact.length}} contacts</small> --></h2>
+                </div>
+                <!-- END PAGE TITLE -->   
+
                 <div class="panel panel-default tabs">
                     
-
                     <ul class="nav nav-tabs nav-justified">
-                        <li ng-class="{'active': !isEditForm}" ng-click="showList();"><a href="#home" data-toggle="tab">Home</a></li>
-                        <li ng-repeat="tab in tabs track by $index" id="tab{{$index}}">
-                            <a ng-click="showtab($index)" href="#form-edit" data-toggle="tab">{{tab.title}}</a>
-                            <i class="fa fa-close" style="cursor:pointer" ng-click="discardContact($index)"></i>
+                        <li style="width:100px;" ng-class="{'active': !isEditForm}" ng-click="showList();"><a style="width:100px;" href="#home" data-toggle="tab" class="fa fa-list fa-2x"></a></li>
+                        <li style="width:150px;" ng-repeat="tab in tabs track by $index" id="tab{{$index}}">
+                            
+                            <a style="width:auto;" style="text-align:center;" ng-click="showtab($index)" href="#form-edit" data-toggle="tab">
+                            <i class="fa fa-user" style="float:left;"></i>
+                            {{tab.title}}
+                            <i class="fa fa-times" style="cursor:pointer;float:right;" ng-click="discardContact($index)"></i>
+                            </a>
                         </li>
                     </ul>
-
-
                     <div class="panel-body tab-content">
                         <div class="tab-pane" ng-class="{'active': !isEditForm}" id="home">
-                            
-                            <div class="page-title">                    
-                                <h2><span class="fa fa-users"></span> Contact Book <small>{{categoryWiseContact.length}} contacts</small></h2>
-                            </div>
-                            <!-- END PAGE TITLE -->                
+                                         
                             
                             <!-- PAGE CONTENT WRAPPER -->
                             <div class="page-content-wrap">
@@ -32,7 +35,6 @@
                                         
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <p>Use search to find contacts. You can search by: name, address, phone.</p>
                                                 <form class="form-horizontal">
                                                     <div class="form-group">
                                                         <div class="col-md-3">
@@ -40,25 +42,40 @@
                                                                 <div class="input-group-addon">
                                                                     <span class="fa fa-search"></span>
                                                                 </div>
-                                                                <input type="text" class="form-control" ng-model="contactSearch" placeholder="Who are you looking for?"/>  
+                                                                <input type="text" class="form-control" ng-model="contactSearch" placeholder="Search..."/>  
                                                             </div>
                                                         </div>
                                                         
-                                                        <div class="col-md-2" style="float:right">
-                                                            <button class="btn btn-success btn-block" ng-click="changePath('/contacts/create')"><span class="fa fa-plus"></span> Add new contact</button>
+                                                        <div class="col-md-2">
+                                                            <!-- <button class="btn btn-primary btn-block" ng-click="changePath('/contacts/create')"><span class="fa fa-plus"></span> Add Contact</button> -->
+                                                            <div class="btn-group">
+                                                                <a href="javascript:;" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="fa fa-plus"></span>Add Contact <span class="caret"></span></a>
+                                                                <ul class="dropdown-menu" role="menu">
+                                                                    <li role="presentation" class="dropdown-header">Select New Contact Type</li>
+                                                                    <li ng-repeat="category in categories" ng-click="initContactContactCategory(category);newContact();"><a href="javascript:;">{{category.categorie}}</a></li>             
+                                                                </ul>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </form>                                    
-                                            </div>
-                                        </div>
-                                        
+                                                    <div class="form-group">
+                                                        <div class="btn-group">
+                                                            <button class="btn btn-default" ng-click="setFilterBy('')">
+                                                                All
+                                                            </button>
+                                                            <button class="btn btn-default" ng-repeat="category in categories" ng-click="setFilterBy(category.categorie)">
+                                                                {{category.categorie}}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                                                    
+                                            </div>                                            
+                                        </div> 
                                     </div>
                                 </div>
                                 
                                 <div class="row">
-
-
-                                <div class="col-md-3" style="min-height:350px;" ng-click="createNewTab(contact)" ng-repeat="contact in categoryWiseContact | filter:contactSearch">
+                                <div class="col-md-3" style="min-height:350px;" ng-click="createNewTab(contact)" ng-repeat="contact in allContactes | filter:contactSearch | filterByCategory:filterBy">
                                         <!-- CONTACT ITEM -->
                                         <div class="panel panel-default">
                                             <div class="panel-body profile">
@@ -81,33 +98,43 @@
                                         <!-- END CONTACT ITEM -->
                                     </div>                 
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <ul class="pagination pagination-sm pull-right push-down-10 push-up-10">
-                                            <li class="disabled"><a href="#">«</a></li>
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">4</a></li>                                    
-                                            <li><a href="#">»</a></li>
-                                        </ul>                            
-                                    </div>
-                                </div>
 
                             </div>
                             <!-- END PAGE CONTENT WRAPPER -->  
                         </div>
-
                         <div ng-show="isEditForm" class="{{isEditForm?'active':''}}" class="tab-pane" id="form-edit">
-                            <form id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="updateContact(contact_form, editFormIndex)" novalidate>   
+                            <form id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContact(contact_form, editFormIndex)" novalidate>   
                                 <div class="page-content-wrap">                
                                 
                                     <div class="row">
-                                        <div class="col-md-6">
+
+                                    <div class="col-sm-2">
+                                        <div class="col-md-12">
+                                            <div class="panel-body">
+                                                <div class="profile-image">
+                                                    <img class="prfl-pic" style="width:80px; height:80px; border-radius:50%" src="{{imageSrc?imageSrc:'/img/Avatar.jpg'}}" onclick="$('#selectImage').click();" alt="">
+                                                    <input type="file" ng-show="false" ng-file-select id="selectImage">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="switch">
+                                                <input type="checkbox" checked ng-model="prospective_client"/>
+                                                <span></span>
+                                            </label>
+                                            <label>Prospective CLient</label>
+                                        </div>
+                                    </div>
+
+                                        <div class="col-md-4">
 
                                             <!-- START VALIDATIONENGINE PLUGIN -->
                                             <div class="block">
-                                                <a href="javascript:;" data-toggle="modal" data-target="#modal_basic"><h4>Name</h4></a>
+                                                <div style="padding-left:10px">
+                                                    <a href="javascript:;" data-toggle="modal" data-target="#modal_basic">
+                                                        <label style="color:#434a54">Name</label>
+                                                    </a>
+                                                </div>
                                                 <div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -223,22 +250,20 @@
                                                     </div>
                                                 </div>    
                                                 <div class="form-group">
-                                                    <label class="col-md-3 control-label">First Name:</label>
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-6">
                                                         <input type="text" class="form-control" ng-model="name.firstname" name="firstname" placeholder="First Name">
-                                                        <span class="help-block">Required</span>
                                                     </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="col-md-3 control-label">Last Name:</label>
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-6">
                                                         <input type="text" class="form-control" name="lastname"   placeholder="Last*" data-ng-trim='false'data-ng-model="name.lastname" required>
-                                                        <span class="help-block">Required</span>
                                                     </div>
                                                 </div>
 
-                                                <a href="javascript:;" data-toggle="modal" data-target="#modal_company"><h4>Company</h4></a>
+                                                <div style="padding-left:10px">
+                                                    <a href="javascript:;" data-toggle="modal" data-target="#modal_company">
+                                                        <label style="color:#434a54">Company</label>
+                                                    </a>
+                                                </div>
+
                                                  <div class="modal" id="modal_company" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -302,16 +327,18 @@
                                                 </div> 
 
                                                 <div class="form-group">
-                                                    <label class="col-md-3 control-label">Company name:</label>
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-12">
                                                         <input type="text" class="form-control" name="companyname" ng-model="company.companyname" placeholder="Company*" required>
-                                                        <span class="help-block">Required</span>
                                                     </div>
                                                 </div>
 
                                                 <div ng-repeat = "address in addreses track by $index">
-                                                    <a href="javascript:;" data-toggle="modal" data-target="#modal_address{{$index}}"><h4>Address</h4></a>
-
+                                                    
+                                                    <div style="padding-left:10px">
+                                                        <a href="javascript:;" data-toggle="modal" data-target="#modal_address{{$index}}">
+                                                            <label style="color:#434a54">Address</label>
+                                                        </a>
+                                                    </div>
                                                     <div class="modal" id="modal_address{{$index}}" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -525,242 +552,144 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="col-md-3 control-label">Address Line 1:</label>
-                                                        <div class="col-md-9">
+                                                        <div class="col-md-12">
                                                             <input type="text" class="form-control" name="addressline1"  placeholder="Address Line1*"data-ng-model="address.addressline1" required>
-                                                            <span class="help-block">Required</span>
                                                         </div>
                                                     </div>
                                                     
                                                     <div class="form-group">
-                                                        <label class="col-md-3 control-label">Address Line 2:</label>
-                                                        <div class="col-md-9">
+                                                        <div class="col-md-12">
                                                             <input type="text" class="form-control" name="addressline2" placeholder="Address Line2" data-ng-model="address.addressline2" required>
-                                                            <span class="help-block">Required</span>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="col-md-3 control-label">City:</label>
-                                                        <div class="col-md-9">
+                                                        <div class="col-md-6">
                                                             <input  type="text" class="form-control" name="city" placeholder="City*" data-ng-trim='false'data-ng-model="address.city" required>
-                                                            <span class="help-block">Required</span>
                                                         </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">State:</label>
-                                                        <div class="col-md-9">
+                                                        <div class="col-md-3">
                                                             <input  type="text" class="form-control" name="state" placeholder="State*" data-ng-trim='false' data-ng-model="address.state" required>
-                                                            <span class="help-block">Required</span>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <input  type="text" class="form-control" name="zip" placeholder="Zip*" data-ng-model="address.zip" required>
                                                         </div>
                                                     </div>
 
+                                                </div>
+                                                <div class="form-group" style="padding-left:10px;padding-top:5px;">                              
+                                                    <button class="btn btn-condensed" ng-click="expandAddress()">
+                                                    <i class="fa fa-plus"></i></button>
+                                                </div>
+
+
+                                                <div ng-repeat= "phone in phones track by $index">
+                                                    
                                                     <div class="form-group">
-                                                        <label class="col-md-3 control-label">Zip:</label>
-                                                        <div class="col-md-9">
-                                                            <input  type="text" class="form-control" name="zip" placeholder="Zip*" data-ng-model="address.zip" required>
-                                                            <span class="help-block">Required</span>
+                                                        <div class="col-sm-6">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Business Phone</label>
+                                                                </a>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="business_phone" placeholder="Cell Phone*" data-ng-model="phone.business_phone" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Home Phone</label>
+                                                                </a>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="homephone" placeholder="Home Phone*" data-ng-model="phone.homephone" required>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                          
+                                                    <div class="form-group">
+                                                        <div class="col-sm-6">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Cell Phone</label>
+                                                                </a>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="cellphone" placeholder="Cell Phone*" data-ng-model="phone.cellphone" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                                                                                                                                          
                                                 </div>
-                                                <div class="form-group">                                      
-                                                    <label class="col-md-3"></label>
-                                                    <label class="col-md-9">
-                                                    <button class="btn btn-condensed" ng-click="expandAddress()"><i class="fa fa-plus"></i></button></label>
+                                                <div class="form-group" style="padding-left:10px;padding-top:5px;">                                      
+                                                    <button class="btn btn-condensed" ng-click="expandPhone()"><i class="fa fa-plus"></i></button>
+                                                </div>
+
+
+                                                <div style="padding-left:10px">  
+                                                    <label style="color:#434a54">Emails</label>
+                                                </div>
+                                                <div ng-repeat= "email in emails track by $index">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-6" style="padding-top:5px;">
+                                                            <input type="email" class="form-control" name="email"  placeholder="Email*" data-ng-model="emails[$index]" required>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style="padding-left:10px;padding-top:5px;">
+                                                    <button class="btn btn-condensed" ng-click="expandEmail()"><i class="fa fa-plus"></i></button>
                                                 </div>
 
                                             </div>                                               
                                             <!-- END VALIDATIONENGINE PLUGIN -->
 
                                         </div>
-                                        <div class="col-md-6">                        
+                                        <div class="col-md-4">                        
 
                                             <!-- START JQUERY VALIDATION PLUGIN -->
                                             <div class="block">
-                                                
-                                               <!--  <form id="jvalidate" role="form" class="form-horizontal" action="javascript:alert('Form #validate2 submited');"> -->
-                                                <div ng-repeat= "phone in phones track by $index">                              <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}"><h4>Phone</h4></a>                
-                                                    <div class="modal" id="modal_phone{{$index}}" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                                <h4 class="modal-title" id="defModalHead">Phone</h4>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                        <label>Type</label>
-                                                                    </div>
-                                                                    <div class="col-sm-8">
-                                                                        <div class="form-group">
-                                                                            <select class="form-control" data-ng-model="phonepop.phonetype">
-                                                                              <option value="Cell">Cell</option>
-                                                                              <option value="business">Business</option>
-                                                                              <option value="home">Home</option>
-                                                                              <option value="fax">Fax</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                        <label></label>
-                                                                    </div>
-                                                                    <div class="col-sm-8">
-                                                                        <label class="ui-checkbox">
-                                                                            <input name="checkbox1" type="checkbox" data-ng-model="phonepop.sms" value="sms"><span>SMS</span>
-                                                                        </label>
-                                                                        <label class="ui-checkbox">
-                                                                            <input name="checkbox1" type="checkbox" data-ng-model="phonepop.mms" value="mms" checked><span>MMS</span>
-                                                                        </label>
-                                                                        <label class="ui-checkbox">
-                                                                            <input name="checkbox1" type="checkbox" data-ng-model="phonepop.smartphone" value="smartphone"><span>Smart Phone</span>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                        <label>Country Name</label>
-                                                                    </div>
-                                                                    <div class="col-sm-8">
-                                                                        <div class="form-group">
-                                                                            <select class="form-control selct-refer" data-ng-model="phonepop.country">
-                                                                              <option>State</option>
-                                                                              <option value="India">India</option>
-                                                                              <option value="USA">USA</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                        <label>Country Code</label>
-                                                                    </div>
-                                                                    <div class="col-sm-8">
-                                                                        <div class="form-group">
-                                                                            <input type="text" class="form-control" placeholder="Tax Id " ng-model="phonepop.area">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                        <label>Number</label>
-                                                                    </div>
-                                                                    <div class="col-sm-8">
-                                                                        <div class="form-group">
-                                                                            <input type="text" class="form-control" data-ng-model="phonepop.number"  placeholder="Number">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                        <label>Ext</label>
-                                                                    </div>
-                                                                    <div class="col-sm-8">
-                                                                        <div class="form-group">
-                                                                            <input type="text" class="form-control" data-ng-model="phonepop.ext"  placeholder="Ext">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" ng-click="savePhoneForm()" data-dismiss="modal">Save</button>
-                                                                <button type="button" class="btn btn-default" ng-click="canclePhoneForm()" data-dismiss="modal">Close</button>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-                                                    </div>   
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">Cellphone:</label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" name="cellphone" placeholder="Cell Phone*" data-ng-model="phone.cellphone" required>
-                                                            <span class="help-block">Required</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">Home Phone:</label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" name="homephone" placeholder="Home Phone*" data-ng-model="phone.homephone" required>
-                                                            <span class="help-block">Required</span>
-                                                        </div>
-                                                    </div>                                                                 
-                                                                                                                                                                          
-                                                </div>
-                                                <div class="form-group">                                      
-                                                    <label class="col-md-3"></label>
-                                                    <label class="col-md-9">
-                                                    <button class="btn btn-condensed" ng-click="expandPhone()"><i class="fa fa-plus"></i></button></label>
-                                                </div> 
+
                                                 <div>
-                                                    <h4>Emails</h4>
-                                                    <div ng-repeat= "email in emails track by $index">
+                                                    <div style="padding-left:10px">  
+                                                        <label style="color:#434a54">Notes</label>
+                                                    </div>
+                                                    <div ng-repeat="note in notes track by $index">
                                                         <div class="form-group">
-                                                            <label class="col-md-3 control-label">Email:</label>
-                                                            <div class="col-md-9">
-                                                                <input type="email" class="form-control" name="email"  placeholder="Email*" data-ng-model="emails[$index]" required>
-                                                                <span class="help-block">Required</span>
+                                                            <div class="col-md-12">
+                                                                <textarea class="form-control" data-ng-model="notes[$index]" placeholder="Note" rows="5"></textarea> 
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">                                      
-                                                        <label class="col-md-3"></label>
-                                                        <label class="col-md-9">
-                                                        <button class="btn btn-condensed" ng-click="expandEmail()"><i class="fa fa-plus"></i></button></label>
-                                                    </div>
                                                 </div>
-                                                
+
+
                                                 <div>
-                                                    <h4>Reffered By</h4>
+                                                    <div style="padding-left:10px">  
+                                                        <label style="color:#434a54">Reffered By</label>
+                                                    </div>
                                                     <div ng-repeat="refer in refferedbys track by $index">
                                                         <div class="form-group">
-                                                            <label class="col-md-3 control-label">Reffered By:</label>
-                                                            <div class="col-md-9">
-                                                                <select class="form-control selct-refer" name="refferedby" data-ng-model="refferedbys[$index]" required>
+                                                            <div class="col-md-12">
+                                                                <select class="form-control selct-refer" name="refferedby" data-ng-model="refferedbys[$index]">
                                                                     <option value="">--Select--</option>
                                                                     <option ng-repeat="client in allContactes" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
                                                                  </select>  
-                                                                <span class="help-block">Required</span>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">                                      
-                                                        <label class="col-md-3"></label>
-                                                        <label class="col-md-9">
-                                                        <button class="btn btn-condensed" ng-click="expandrefferedby()"><i class="fa fa-plus"></i></button></label>
-                                                    </div>
-                                                </div>
-                                                
-                                     
-                                                <div>
-                                                    <h4>Notes</h4>
-                                                    <div ng-repeat="note in notes track by $index">
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label">Notes:</label>
-                                                            <div class="col-md-9">
-                                                                <textarea class="form-control" data-ng-model="notes[$index]" placeholder="Note" rows="5"></textarea> 
-                                                                <span class="help-block">Required</span>
-                                                            </div>
-                                                        </div>
+                                                    <div class="form-group" style="padding-left:10px;padding-top:5px;">
+                                                        <button class="btn btn-condensed" ng-click="expandrefferedby()"><i class="fa fa-plus"></i></button>
                                                     </div>
                                                 </div>
 
                                                 <div>
                                                     <div ng-repeat="additionalfield in additionalfields track by $index" class="form-group">
+                                                        <div style="padding-left:10px">  
+                                                            <label style="color:#434a54">{{additionalfield.key}}</label>
+                                                        </div>
                                                         <div class="form-group">
-                                                            <label class="col-md-3 control-label">{{additionalfield.key}}:</label>
-                                                            <div class="col-md-9">
-                                                                <input type="text" class="form-control" placeholder="{{additionalfield.key}}*" name="aditional_value" data-ng-model="additionalfield.value" required /><i class="fa  fa-close" ng-click="removeAdditionalField($index)"></i>    
-                                                                <span class="help-block">Required</span>
+                                                            <div class="col-md-12">
+                                                                <input type="text" class="form-control" placeholder="{{additionalfield.key}}*" name="aditional_value" data-ng-model="additionalfield.value" required /><i class="fa fa-times" ng-click="removeAdditionalField($index)"></i>    
                                                             </div>
                                                         </div>
                                                                     
@@ -769,13 +698,28 @@
 
                                                 <div>
                                                     
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">{{additionalfield.key}} <i class="fa  fa-close" ng-click="removeAdditionalField($index)"></i>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <div class="input-group">
+                                                    <div class="form-group" style="padding-left:10px;padding-top:5px;">
+                                                    
+                                                        <div class="btn-group">
+                                                            <a href="javascript:;" data-toggle="dropdown" class="btn dropdown-toggle" ng-click="isAdditionalFields=true"><span class="fa fa-plus"></span>Add Fields <span class="caret"></span></a>
+                                                           
+                                                            <ul class="dropdown-menu" role="menu">  
+                                                                <li role="presentation" class="dropdown-header">Select New Field Type</li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('Keywords/Tags');">Keywords/Tags</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('FedEx Account Number');">FedEx Account Number</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('Assistant Name');">Assistant Name</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('Assistant Phone');">Assistant's Phone</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('Assistant Email');">Assistant s Email</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('Tax ID');">Tax ID</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('Web Login Enabled');">Web Login Enabled</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('Manager Name');">Manager Name</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('Manager Phone');">Manager Phone</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('Manager Email');">Manager Email</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addAitionalFiel('Website');">Website</a></li>
+                                                                </ul>
+                                                            </div>
                                                                 
-                                                                <button class="btn btn-success btn-condensed" ng-click="isAdditionalFields=true"><i class="fa fa-plus"></i></button>
+                                                               <!--  <button class="btn-condensed btn" ng-click="isAdditionalFields=true"><i class="fa fa-plus"></i></button>
                                                                   <div ng-show="isAdditionalFields">
                                                                     <ul>
                                                                       <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Keywords/Tags');">Keywords/Tags</label></li>
@@ -790,17 +734,13 @@
                                                                       <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Manager Email');">Manager Email</label></li>
                                                                       <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Website');">Website</label></li>
                                                                     </ul>
-                                                                </div>                           
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                <div class="btn-group pull-right">
-                                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                                </div>                                                
-                                                
-                                            <!-- END JQUERY VALIDATION PLUGIN -->
+                                                                </div>   -->                         
+                                                            
+                                                </div>
                                             </div>
+                                            <div class="btn-group pull-right">
+                                                <button class="btn btn-primary" type="submit">Submit</button>
+                                            </div> 
                                         </div>
                                     </div>
                                         
@@ -812,4 +752,6 @@
 
                 </div>
                 <!-- PAGE TITLE -->
+
+                
                 

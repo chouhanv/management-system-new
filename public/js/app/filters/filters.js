@@ -16,6 +16,21 @@ angular.module('myApp.filters', [])
     return input;
   };
 })
+.filter('filterByCategory',function(){
+    return function(contacts,category){
+      if(category){
+        var con = new Array();
+        angular.forEach(contacts, function(val , i){
+          console.log(val);
+          if(val.category_id.categorie == category)
+            con.push(val);
+        });
+        return con;
+    } else {
+      return contacts;
+    } 
+    }
+  })
 .filter('highlight', function () {
   return function (text, search, caseSensitive) {
     if ((search || angular.isNumber(search)) && text != null) {
