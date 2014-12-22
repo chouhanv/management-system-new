@@ -9,31 +9,28 @@
                     <h2><span class="fa fa-users"></span> Contacts <!-- <small>{{categoryWiseContact.length}} contacts</small> --></h2>
                 </div>
                 <!-- END PAGE TITLE -->   
-
-                <div class="panel panel-default tabs">
+                
+                <div class="panel panel-default tabs usr-contacts">
                     
-                    <ul class="nav nav-tabs nav-justified">
-                        <li style="width:100px;" ng-class="{'active': !isEditForm}" ng-click="showList();"><a style="width:100px;" href="#home" data-toggle="tab" class="fa fa-list fa-2x"></a></li>
-                        <li style="width:150px;" ng-repeat="tab in tabs track by $index" id="tab{{$index}}">
-                            
-                            <a style="width:auto;" style="text-align:center;" ng-click="showtab($index)" href="#form-edit" data-toggle="tab">
-                            <i class="fa fa-user" style="float:left;"></i>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li style="width:100px;" ng-class="{'active': !isEditForm}" ng-click="showList();"><a style="width:100px;" href="#home" data-toggle="tab" role="tab" class="fa fa-list fa-2x"></a></li>
+                        <li style="width:150px; padding-left:5px;" ng-repeat="tab in tabs track by $index" id="tab{{$index}}">
+                            <a hovereffect style="width:auto;" role="tab" style="text-align:center;" ng-click="showtab($index)" href="#form-edit" data-toggle="tab">
                             {{tab.title}}
-                            <i class="fa fa-times" style="cursor:pointer;float:right;" ng-click="discardContact($index)"></i>
+                            <i class="fa fa-times" style="cursor:pointer;float:right; display:none" ng-click="discardContact($index)"></i>
                             </a>
                         </li>
                     </ul>
                     <div class="panel-body tab-content">
                         <div class="tab-pane" ng-class="{'active': !isEditForm}" id="home">
                                          
-                            
                             <!-- PAGE CONTENT WRAPPER -->
                             <div class="page-content-wrap">
                                 
                                 <div class="row">
                                     <div class="col-md-12">
                                         
-                                        <div class="panel panel-default">
+                                        <div class="panel panel-default bgrnd">
                                             <div class="panel-body">
                                                 <form class="form-horizontal">
                                                     <div class="form-group">
@@ -73,11 +70,26 @@
                                         </div> 
                                     </div>
                                 </div>
-                                
                                 <div class="row">
-                                <div class="col-md-3" style="min-height:350px;" ng-click="createNewTab(contact)" ng-repeat="contact in allContactes | filter:contactSearch | filterByCategory:filterBy">
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <select ng-select class="form-control select" ng-model="sortBy" data-style="btn btn-default">
+                                                <option value="">Sort by</option>
+                                                <option value="name.firstname">First Name</option>
+                                                <option value="name.lastname">Last Name</option>
+                                                <option value="date">Newest</option>
+                                                <option value="-date">Oldest</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2" ng-if="filterBy=='Clients'">
+                                        <label class="check"><input type="checkbox" ng-model="isShowProspectiveClient.status" class="icheckbox"/> Prospective Client</label>
+                                    </div>
+                                </div>
+                                <div class="row detl-lst">
+                                <div class="col-md-3" style="min-height:350px;" ng-click="createNewTab(contact)" ng-repeat="contact in allContactes | filter:contactSearch | filterByCategory:filterBy | filterProspectiveClient:isShowProspectiveClient.status:filterBy | orderBy:sortBy:reverse">
                                         <!-- CONTACT ITEM -->
-                                        <div class="panel panel-default">
+                                        <div class="panel panel-default contct-detl">
                                             <div class="panel-body profile">
                                                 <div class="profile-image">
                                                     <img src="{{contact.imageSrc?contact.imageSrc:'/assets/images/users/User_Avatar_Gray.png'}}" alt="{{contact.name.firstname}} {{contact.name.lastname}}"/>
@@ -98,7 +110,6 @@
                                         <!-- END CONTACT ITEM -->
                                     </div>                 
                                 </div>
-
                             </div>
                             <!-- END PAGE CONTENT WRAPPER -->  
                         </div>
@@ -117,12 +128,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-12" ng-show="category.categorie == 'Clients'">
                                             <label class="switch">
-                                                <input type="checkbox" checked ng-model="prospective_client"/>
+                                                <input type="checkbox" ng-model="prospective_client.status"/>
                                                 <span></span>
                                             </label>
-                                            <label>Prospective CLient</label>
+                                            <label>Prospective Client</label>
                                         </div>
                                     </div>
 
@@ -144,7 +155,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Prefix</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -155,7 +166,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>First Name</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -166,7 +177,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Middle</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -177,7 +188,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Last</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -188,7 +199,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Suffix</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -199,7 +210,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Initials</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -210,7 +221,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Short Name</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -221,7 +232,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Additinal Name</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -232,7 +243,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Letter Salutation</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -273,7 +284,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Name</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -284,7 +295,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>DBA</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -295,7 +306,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Company Name Phonetic</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -306,7 +317,7 @@
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Tax Id</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -348,14 +359,15 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Type</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
                                                                         <div class="form-group">
-                                                                            <select class="form-control" data-ng-model="address.addresstype">
-                                                                              <option value="business">Business/Home</option>
-                                                                              <option value="2">2</option>
+                                                                            <select ng-select class="form-control select" data-ng-model="address.addresstype">
+                                                                              <option value="Business">Business</option>
+                                                                              <option value="Home">Home</option>
+                                                                              <option value="Other">Other</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -364,7 +376,7 @@
                                                                 
                                                    
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label></label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -382,46 +394,47 @@
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Street Number</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
                                                                         <div class="form-group">
-                                                                            <input  type="text" class="form-control" placeholder="Number" data-ng-model="address.streetnumber">
+                                                                            <input  type="text" class="form-control" placeholder="Street Number" data-ng-model="address.streetnumber">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Street Name</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
                                                                         <div class="form-group">
-                                                                            <input  type="text" class="form-control" placeholder="Name" data-ng-model="address.streetname">
+                                                                            <input  type="text" class="form-control" placeholder="Street Name" data-ng-model="address.streetname">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Street Suffix</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
                                                                         <div class="form-group">
-                                                                            <select class="form-control" data-ng-model="address.streetsuffix">
+                                                                            <input  type="text" class="form-control" placeholder="Street Suffix" dmodel="address.streetsuffix">
+                                                                            <!-- <select ng-select class="form-control select" data-ng-model="address.streetsuffix">
                                                                               <option value="suffix">Suffix</option>
                                                                               <option value="2">2</option>
-                                                                            </select>   
+                                                                            </select>    -->
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Unit Number</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -433,12 +446,12 @@
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Unit Designator</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
                                                                         <div class="form-group">
-                                                                            <select class="form-control" data-ng-model="address.unitdesignator">
+                                                                            <select ng-select class="form-control select" data-ng-model="address.unitdesignator">
                                                                               <option value="Designator">Designator</option>
                                                                               <option value="2" >2</option>
                                                                             </select>
@@ -448,7 +461,7 @@
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Building</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -460,7 +473,7 @@
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Door Code</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -472,7 +485,7 @@
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Door Bell</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -484,7 +497,7 @@
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>P.O.Box</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -496,7 +509,7 @@
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Street Name AKA</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -508,7 +521,7 @@
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Intersecting Street1</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -520,7 +533,7 @@
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Intersecting Street2</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -532,7 +545,7 @@
                                                                 <br>
 
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-3">
                                                                         <label>Neighborhood</label>
                                                                     </div>
                                                                     <div class="col-sm-8">
@@ -577,8 +590,8 @@
 
                                                 </div>
                                                 <div class="form-group" style="padding-left:10px;padding-top:5px;">                              
-                                                    <button class="btn btn-condensed" ng-click="expandAddress()">
-                                                    <i class="fa fa-plus"></i></button>
+                                                    <a href="javascript:;" class="btn btn-condensed" ng-click="expandAddress()">
+                                                    <i class="fa fa-plus" style="color:#434a54"></i></a>
                                                 </div>
 
 
@@ -621,9 +634,8 @@
                                                                                                                                                                           
                                                 </div>
                                                 <div class="form-group" style="padding-left:10px;padding-top:5px;">                                      
-                                                    <button class="btn btn-condensed" ng-click="expandPhone()"><i class="fa fa-plus"></i></button>
+                                                    <a href="javascript:;" class="btn btn-condensed" ng-click="expandPhone()"><i class="fa fa-plus" style="color:#434a54"></i></a>
                                                 </div>
-
 
                                                 <div style="padding-left:10px">  
                                                     <label style="color:#434a54">Emails</label>
@@ -637,7 +649,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group" style="padding-left:10px;padding-top:5px;">
-                                                    <button class="btn btn-condensed" ng-click="expandEmail()"><i class="fa fa-plus"></i></button>
+                                                    <a href="javascript:;" class="btn btn-condensed" ng-click="expandEmail()"><i class="fa fa-plus" style="color:#434a54"></i></a>
                                                 </div>
 
                                             </div>                                               
@@ -664,32 +676,38 @@
 
 
                                                 <div>
-                                                    <div style="padding-left:10px">  
+                                                    <div style="padding-left:10px ; padding-top:10px;">  
                                                         <label style="color:#434a54">Reffered By</label>
                                                     </div>
-                                                    <div ng-repeat="refer in refferedbys track by $index">
+                                                    <div ng-repeat="refer in refferedbys track by $index" style="padding-bottom:5px;">
                                                         <div class="form-group">
                                                             <div class="col-md-12">
-                                                                <select class="form-control selct-refer" name="refferedby" data-ng-model="refferedbys[$index]">
+                                                                <select class="form-control select" ng-model="refferedbys[$index]" name="refferedby" ng-select data-live-search="true">
+                                                                    <option ng-repeat="client in allContactes" value="{{client._id}}" ng-if="client.category_id.categorie=='Referrers'">{{client.name.firstname + " " + client.name.lastname}}</option>
+                                                                </select>
+                                                                <!-- <select class="form-control selct-refer" data-ng-model="refferedbys[$index]" name="refferedby">
                                                                     <option value="">--Select--</option>
                                                                     <option ng-repeat="client in allContactes" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
-                                                                 </select>  
+                                                                 </select>  --> 
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group" style="padding-left:10px;padding-top:5px;">
-                                                        <button class="btn btn-condensed" ng-click="expandrefferedby()"><i class="fa fa-plus"></i></button>
+                                                    <div class="form-group" style="padding-left:10px;">
+                                                        <a href="javascript:;" class="btn btn-condensed" ng-click="expandrefferedby()"><i class="fa fa-plus" style="color:#434a54"></i></a>
                                                     </div>
                                                 </div>
 
                                                 <div>
                                                     <div ng-repeat="additionalfield in additionalfields track by $index" class="form-group">
-                                                        <div style="padding-left:10px">  
+                                                        <div style="padding-left:11px">  
                                                             <label style="color:#434a54">{{additionalfield.key}}</label>
                                                         </div>
                                                         <div class="form-group">
-                                                            <div class="col-md-12">
-                                                                <input type="text" class="form-control" placeholder="{{additionalfield.key}}*" name="aditional_value" data-ng-model="additionalfield.value" required /><i class="fa fa-times" ng-click="removeAdditionalField($index)"></i>    
+                                                            <div class="col-md-10">
+                                                                <input type="text" class="form-control" placeholder="{{additionalfield.key}}*" name="aditional_value" data-ng-model="additionalfield.value" required />   
+                                                            </div>
+                                                            <div class="col-sm-1">
+                                                                <i class="fa fa-times" ng-click="removeAdditionalField($index)"></i> 
                                                             </div>
                                                         </div>
                                                                     
@@ -698,10 +716,10 @@
 
                                                 <div>
                                                     
-                                                    <div class="form-group" style="padding-left:10px;padding-top:5px;">
+                                                    <div class="form-group" style="padding-top:5px;">
                                                     
                                                         <div class="btn-group">
-                                                            <a href="javascript:;" data-toggle="dropdown" class="btn dropdown-toggle" ng-click="isAdditionalFields=true"><span class="fa fa-plus"></span>Add Fields <span class="caret"></span></a>
+                                                            <a href="javascript:;" data-toggle="dropdown" class="btn dropdown-toggle" ng-click="isAdditionalFields=true" style="color:#434a54"><span class="fa fa-plus" style="color:#434a54"></span>Add Fields <span class="caret"></span></a>
                                                            
                                                             <ul class="dropdown-menu" role="menu">  
                                                                 <li role="presentation" class="dropdown-header">Select New Field Type</li>

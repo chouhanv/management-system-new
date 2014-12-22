@@ -15,6 +15,15 @@
 @import "introjs/introjs.min.css";
 @import "animate/animate.min.css";
 
+.usr-contacts { background-color: transparent; border-top-color: transparent !important; }
+.usr-contacts .nav-tabs { margin-left: 15px; border-bottom: 1px solid #e4e4e4; padding-left: 0; }
+.usr-contacts .nav-tabs > li.active { border: 1px solid #e4e4e4; border-bottom-color: transparent; }
+.usr-contacts .nav-tabs > li.active > a, .usr-contacts .nav-tabs > li.active > a:hover, .usr-contacts .nav-tabs > li.active > a:focus, .usr-contacts .nav-tabs > .dropdown.active.open > a:hover { background-color: transparent; }
+.bgrnd { background: #fcfcfc; }
+.usr-contacts .tab-content { margin: -3px 15px 0; border: 1px solid #e4e4e4; border-top-color: transparent; }
+.contct-detl { transition: all 400ms ease; }
+.contct-detl:hover { box-shadow: 0 0 8px rgba(0, 0, 0, 0.5); }
+.detl-lst { margin-top: 15px; }
 
 /* PREDEFINED CLASSES */
 .clearfix {
@@ -3046,7 +3055,7 @@ blockquote.pull-right {
   -moz-border-radius: 30px;
   -webkit-border-radius: 30px;
   border-radius: 30px;
-  background-color: #b64645;
+  background-color: #CCCCCC;
   border: 1px solid #E5E5E5;
   display: inline-block;
   -webkit-transition: all 200ms ease;

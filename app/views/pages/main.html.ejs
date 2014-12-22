@@ -25,19 +25,19 @@
                     <form name="login_form" class="form-horizontal" ng-submit="login(login_form)">
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input type="text" ng-model="login_data.username" class="form-control" placeholder="E-mail" required/>
+                            <input type="text" ng-click="login_error=''" ng-model="login_data.username" class="form-control" placeholder="E-mail" required/>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input type="password" ng-model="login_data.password" class="form-control" placeholder="Password" required/>
+                            <input type="password" ng-click="login_error=''" ng-model="login_data.password" class="form-control" placeholder="Password" required/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-6">
-                            <a href="#" class="btn btn-link btn-block"></a>
+                        <div class="col-md-8">
+                            <a href="javascript:;" style="text-decoration:none; color:red" class="btn btn-link btn-block">{{login_error}}</a>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <button type="submit" class="btn btn-info btn-block">Log In</button>
                         </div>
                     </div>

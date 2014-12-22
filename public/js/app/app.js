@@ -35,6 +35,14 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
       url: "/dashboard",
       templateUrl: "/partials/dashboard.html"
     })
+    .state("/schedule", {
+      url: "/schedule",
+      templateUrl: "/partials/schedule/calendar.html"
+    })
+    .state("/tagsks", {
+      url: "/tasks",
+      templateUrl: "/partials/tasks/task.html"
+    })
 })
 .run(function($rootScope, $location, $http, $window){
     // $http.get('/isLoginedIn')

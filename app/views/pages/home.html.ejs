@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
-        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
         <!-- END META SECTION -->
         
         <!-- CSS INCLUDE -->        
@@ -23,7 +23,7 @@
                 <!-- START X-NAVIGATION -->
                 <ul class="x-navigation">
                     <li class="xn-logo">
-                        <a href="index.html">REAMM</a>
+                        <a href="/#/dashboard">REAMM</a>
                         <a href="#" class="x-navigation-control"></a>
                     </li>
                     <li class="xn-profile">
@@ -53,10 +53,10 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#"><span class="fa fa-calendar"></span> <span class="xn-text">Schedule</span></a>
+                        <a ng-click="changePath('/schedule');" href="javascript:;"><span class="fa fa-calendar"></span> <span class="xn-text">Schedule</span></a>
                     </li>
                     <li>
-                        <a href="#"><span class="fa fa-edit"></span> <span class="xn-text">Tasks</span></a>
+                        <a ng-click="changePath('/tasks');" href="javascript:;"><span class="fa fa-edit"></span> <span class="xn-text">Tasks</span></a>
                     </li>
                     <li>
                         <a href="javascript:;" ng-click="changePath('/contacts/list');"><span class="fa fa-users"></span> <span class="xn-text">Contacts</span></a>                
@@ -174,15 +174,11 @@
         <script type="text/javascript" src="js/plugins/rickshaw/d3.v3.js"></script>
         <script type="text/javascript" src="js/plugins/rickshaw/rickshaw.min.js"></script>     
         <script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'></script>
-        <script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'></script>                
-        <script type='text/javascript' src='js/plugins/bootstrap/bootstrap-datepicker.js'></script>                
+        <script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'></script>                       
         <script type="text/javascript" src="js/plugins/owl/owl.carousel.min.js"></script>                 
         
         <script type="text/javascript" src="js/plugins/moment.min.js"></script>
         <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
-        
-        <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
-        <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
         
         <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-datepicker.js"></script>                
         <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-file-input.js"></script>
@@ -190,11 +186,13 @@
         <script type="text/javascript" src="js/plugins/tagsinput/jquery.tagsinput.min.js"></script>
         <script type='text/javascript' src='js/plugins/bootstrap/bootstrap-select.js'></script>
         <script type='text/javascript' src='js/plugins/validationengine/languages/jquery.validationEngine-en.js'></script>
-        <script type='text/javascript' src='js/plugins/validationengine/jquery.validationEngine.js'></script>        
+        <script type='text/javascript' src='js/plugins/validationengine/jquery.validationEngine.js'></script>      
 
         <script type='text/javascript' src='js/plugins/jquery-validation/jquery.validate.js'></script>                
 
         <script type='text/javascript' src='js/plugins/maskedinput/jquery.maskedinput.min.js'></script>
+
+        <script type="text/javascript" src="js/plugins/fullcalendar/fullcalendar.min.js"></script>
 
         <!-- END THIS PAGE PLUGINS-->        
 
@@ -203,6 +201,7 @@
         <script type="text/javascript" src="js/settings.js"></script>
         <script type="text/javascript" src="js/plugins.js"></script>        
         <script type="text/javascript" src="js/actions.js"></script>
+        <script type="text/javascript" src="js/demo_tasks.js"></script>
         
         <!-- END TEMPLATE -->
 
@@ -210,10 +209,6 @@
 
     <script type="text/javascript">
         setTimeout(function(){$('.page-content').css('height','auto')}, 1000);
-    </script>
-    <script type="text/javascript">
-                                              
-
     </script>
     <style type="text/css">
     .theme-settings{
@@ -224,6 +219,7 @@
         .input-heading:{
             color: #434a54;
         }
+
     </style>
     </body>
 </html>

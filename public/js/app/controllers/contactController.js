@@ -12,13 +12,14 @@ angular.module('myApp.contactController', [])
 
 	$scope.formEditMode = false;
 	$scope.createMode = false;
-
+	$scope.isShowProspectiveClient = {status:false};
+	$scope.sortBy = "";
 	$rootScope.isEditForm = false;
 		$rootScope.tabs = [];
 		$rootScope.tabContent = [];
 		$rootScope.openedTabs = [];
 		$scope.editFormIndex = "";
-		$rootScope.prospective_client = false;
+		$rootScope.prospective_client = {status:false};
 		$rootScope.imageSrc = "";
 		$rootScope.addreses = [{
 			addressline1 : "",
@@ -121,7 +122,6 @@ angular.module('myApp.contactController', [])
         )},
 		$scope.saveContact = function(form) {
 			$scope.contact_form_submited = true;
-			console.log(form);
 		   	if(form.$valid){
 		   		console.log($rootScope.category_id);
 		   		$scope.contactdata = {
@@ -135,7 +135,7 @@ angular.module('myApp.contactController', [])
 			   		notes:$rootScope.notes,
 			   		additionalfields:$rootScope.additionalfields,
 			   		imageSrc : $rootScope.imageSrc,
-			   		prospective_client : $rootScope.prospective_client
+			   		prospective_client : $rootScope.prospective_client.status
 			   	};
 			   	$http.post('/createContact',{contactdata : $scope.contactdata})
 			   	.success(function(data){
@@ -155,11 +155,11 @@ angular.module('myApp.contactController', [])
 		$scope.initContactContactCategory = function(category){
 			$rootScope.category_id = category._id;
 			$rootScope.category = category;
+			console.log(category);
 		}
 
 		$scope.submitContact = function(form, index){
 			$scope.contact_form_submited = true;
-			console.log($rootScope.category_id);
 		   	if(form.$valid){
 		   		var contact_id;
 		   		for(var x=0; x<$rootScope.openedTabs.length; x++){
@@ -167,7 +167,6 @@ angular.module('myApp.contactController', [])
 						contact_id = $rootScope.openedTabs[x];
 					}
 				}
-
 		   		$scope.contactdata = {
 		   			contact_id:contact_id,
 		   			category_id : $rootScope.category_id,
@@ -180,7 +179,7 @@ angular.module('myApp.contactController', [])
 			   		notes:$rootScope.notes,
 			   		additionalfields:$rootScope.additionalfields,
 			   		imageSrc : $rootScope.imageSrc,
-			   		prospective_client:$rootScope.prospective_client
+			   		prospective_client:$rootScope.prospective_client.status
 			   	};
 			   	if(contact_id == 'new'){
 			   		$http.post('/createContact',{contactdata : $scope.contactdata})
@@ -263,7 +262,6 @@ angular.module('myApp.contactController', [])
 			setTimeout(function(){
 				$("#tab"+index).addClass('active');
 			},  100);
-
 			$rootScope.isEditForm = true;
 			$scope.editFormIndex = index;
 			$rootScope.category_id = $rootScope.tabs[index].contact.category_id._id;
@@ -276,7 +274,7 @@ angular.module('myApp.contactController', [])
 	   		$rootScope.notes = $rootScope.tabs[index].contact.notes;
 	   		$rootScope.additionalfields = $rootScope.tabs[index].contact.additionalfields;
 	   		$rootScope.imageSrc = $rootScope.tabs[index].contact.imageSrc;
-	   		$rootScope.prospective_client = $rootScope.tabs[index].contact.prospective_client;
+	   		$rootScope.prospective_client.status = $rootScope.tabs[index].contact.prospective_client;
 		}
 
 		$scope.newContact = function(){
@@ -292,80 +290,85 @@ angular.module('myApp.contactController', [])
 				}
 			}
 
-			if(!isOpened){
-				var tab = {
-					title : "New Contact",
-					contact : {
-						category_id:$rootScope.category,
-						addreses : [{
-						      addressline1 : "",
-						      addressline2 : "",
-						      city         : "",
-						      state        : "",
-						      zip          : "",
-						      addresstype  : "",
-						      mailing      : false,
-						      billing      : false,
-						      poboxno      : false,
-						      streetnumber : "",
-						      streetname   : "",
-						      streetsuffix : "",
-						      unitnumber   : "",
-						      unitdesignator : "",
-						      buildingnumber  : "",
-						      buildingdoorcode : "",
-						      buildingdoorbell : "",
-						      pobox            : "",
-						      streetnameaka    : "",
-						      Intersectingstreet1 : "",
-						      Intersectingstreet2 : "",
-						      neighborhood        : ""
-						    }],
-					    name : {
-					      prefix:"",
-					      firstname:"",
-					      lastName:"",
-					      middlename:"",
-					      suffix:"",
-					      initial:"",
-					      sortname:"",
-					      additinalname:"",
-					      lettersalutation:""
-
-					    },
-					    phones : [{
-			               phonetype : "",
-			               sms : false,
-			               mms : false,
-			               smartphone : false,
-			               country : "",
-			               area    : "",
-			               Number  : "",
-			               ext      : "",
-			               homephone : "",
-			               cellphone : ""
-					    }],
-					    company : {
-					      companyname:"",
-					      dbaname:"",
-					      namephonetic:"",
-					      taxid:""
-					    },
-					    emails : [""],
-					    refferedbys : [""],
-					    notes : [""],
-
-					    additionalfields : [],
-					    isAdditionalFields : false,
-					    prospective_client:false,
-					    imageSrc:""
-					}
-				}
-				$rootScope.tabs.push(tab);
-				$rootScope.tabContent.push({});
-				$rootScope.openedTabs.push('new');
-				index = $rootScope.openedTabs.length - 1;
+			if(isOpened){
+				$rootScope.tabs.splice(index, 1);
+				$rootScope.tabContent.splice(index, 1);
+				$rootScope.openedTabs.splice(index, 1);
 			}
+
+			var tab = {
+				title : "New Contact",
+				contact : {
+					category_id:$rootScope.category,
+					addreses : [{
+					      addressline1 : "",
+					      addressline2 : "",
+					      city         : "",
+					      state        : "",
+					      zip          : "",
+					      addresstype  : "",
+					      mailing      : false,
+					      billing      : false,
+					      poboxno      : false,
+					      streetnumber : "",
+					      streetname   : "",
+					      streetsuffix : "",
+					      unitnumber   : "",
+					      unitdesignator : "",
+					      buildingnumber  : "",
+					      buildingdoorcode : "",
+					      buildingdoorbell : "",
+					      pobox            : "",
+					      streetnameaka    : "",
+					      Intersectingstreet1 : "",
+					      Intersectingstreet2 : "",
+					      neighborhood        : ""
+					    }],
+				    name : {
+				      prefix:"",
+				      firstname:"",
+				      lastName:"",
+				      middlename:"",
+				      suffix:"",
+				      initial:"",
+				      sortname:"",
+				      additinalname:"",
+				      lettersalutation:""
+
+				    },
+				    phones : [{
+		               phonetype : "",
+		               sms : false,
+		               mms : false,
+		               smartphone : false,
+		               country : "",
+		               area    : "",
+		               Number  : "",
+		               ext      : "",
+		               homephone : "",
+		               cellphone : ""
+				    }],
+				    company : {
+				      companyname:"",
+				      dbaname:"",
+				      namephonetic:"",
+				      taxid:""
+				    },
+				    emails : [""],
+				    refferedbys : [""],
+				    notes : [""],
+
+				    additionalfields : [],
+				    isAdditionalFields : false,
+				    prospective_client:false,
+				    imageSrc:""
+				}
+			}
+			$rootScope.tabs.push(tab);
+			$rootScope.tabContent.push({});
+			$rootScope.openedTabs.push('new');
+			index = $rootScope.openedTabs.length - 1;
+			
 			$scope.showtab(index);
 		}
 		
@@ -397,12 +400,12 @@ angular.module('myApp.contactController', [])
 			$scope.createMode = false;
 			$rootScope.isEditForm = false;
 			$(".active").removeClass("active");
-
+			console.log("dadasda");
 			setTimeout(function(){
 				$("#home").addClass('active');
 			},  100);
 
-			$rootScope.prospective_client = false;
+			$rootScope.prospective_client = {status:false};
 			$rootScope.imageSrc = "";
 			$rootScope.addreses = [{
 		      addressline1 : "",
@@ -468,29 +471,11 @@ angular.module('myApp.contactController', [])
 		}
 
 		$scope.discardContact = function(index){
-
+			
 			$rootScope.tabs.splice(index, 1);
 			$rootScope.tabContent.splice(index, 1);
 			$rootScope.openedTabs.splice(index, 1);
-
-			$rootScope.addreses = [];
-	   		$rootScope.phones = [];
-	   		$rootScope.name = [];
-	   		$rootScope.emails = [];
-	   		$rootScope.refferedbys = [];
-	   		$rootScope.notes = [];
-	   		$rootScope.company = [];
-	   		$rootScope.additionalfields = [];
-	   		$rootScope.imageSrc="";
-	   		$rootScope.prospective_client = false;
-	   		$rootScope.isEditForm = false;
-	   		$rootScope.imageSrc = "";
-	   		$rootScope.prospective_client = false;
-	   		$(".active").removeClass("active");
-
-			setTimeout(function(){
-				$("#home").addClass('active');
-			},  100);
+	   		$scope.showList();
 		}
 
 		$scope.removeAdditionalField = function(index){

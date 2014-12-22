@@ -21,8 +21,21 @@ angular.module('myApp.filters', [])
       if(category){
         var con = new Array();
         angular.forEach(contacts, function(val , i){
-          console.log(val);
           if(val.category_id.categorie == category)
+            con.push(val);
+        });
+        return con;
+    } else {
+      return contacts;
+    } 
+    }
+  })
+.filter('filterProspectiveClient',function(){
+    return function(contacts,isProspective, category){
+      if(category == "Clients" && isProspective){
+        var con = new Array();
+        angular.forEach(contacts, function(val , i){
+          if(typeof val.prospective_client !='undefined' && val.prospective_client)
             con.push(val);
         });
         return con;

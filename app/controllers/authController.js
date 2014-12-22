@@ -13,14 +13,14 @@ authController.login = function(){
 	var password = req.body.password;
 	if(username){
 		if(password){
-			if(username == 'admin' && password == 'admin123'){
+			if(username == 'nimra@lawoffice.com' && password == 'admin123'){
 				req.user = {
-					username : 'admin'
+					username : 'nimra@lawoffice.com'
 				};
 				console.log(req.user);
 				res.json({success:true});
 			} else {
-				res.json({success:false,error:"Username or password invalid"});
+				res.json({success:false,error:"Invalid username or password."});
 			}
 		} else {
 			res.json({success:false,error:"Password Required"});

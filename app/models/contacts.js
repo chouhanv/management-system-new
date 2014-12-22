@@ -23,6 +23,10 @@ module.exports = (function () {
         imageSrc:{
             type:String
         },
+        prospective_client:{
+            type:Boolean,
+            default:false
+        },
         status : {
             type : String,
             default :  10
