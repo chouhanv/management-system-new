@@ -16,6 +16,16 @@ angular.module('myApp.directives', [])
       }
     };
   })
+  .directive('stopEvent', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            element.bind('click', function (e) {
+                e.stopPropagation();
+            });
+        }
+    };
+ })
   .directive('dynamic', function ($compile) {
     return {
       restrict: 'A',
@@ -32,12 +42,10 @@ angular.module('myApp.directives', [])
     return {
       link: function($scope,el){
         el.bind("mouseover", function(e){
-          console.log("mouseover");
           $(this).find("i").css("display","block");
         });
         el.bind("mouseout", function(e){
           $(this).find("i").css("display","none");
-          console.log("mouseout");
         })
       }
     }
@@ -105,7 +113,7 @@ angular.module('myApp.directives', [])
             ngModel.$setViewValue($el.val());
             scope.$apply();
           });
-        }, 100);
+        }, 10);
       }
     }
     

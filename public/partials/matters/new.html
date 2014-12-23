@@ -1,0 +1,1008 @@
+<ul class="breadcrumb" data-ng-init="getContactes();getContactCategories();">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Matters</a></li>
+    <li ng-show="isNewMatter"><a href="#">New</li>
+    <li ng-if="filterBy" class="active">New</li>
+</ul>
+
+<div class="page-title">                    
+    <h2><span class="fa fa-th-large"></span> Matter <!-- <small>{{categoryWiseContact.length}} contacts</small> --></h2>
+</div>
+
+
+<!-- <div class="row">
+	<div class="">
+		
+	</div>
+</div> -->
+	<div class="panel panel-default tabs usr-contacts" data-ng-init="getMatters()">                            
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active matterslist"><a href="#matterslist" role="tab" data-toggle="tab" data-ng-init="removeExtrasTag()">Matters</a></li>
+            <li ng-if="isNewMatter" class="newmatter"><a hovereffect href="#newmatter" role="tab" data-toggle="tab">New Matter <i class="fa fa-times" style="cursor:pointer;float:right; display:none" ng-click="discardNewMatter()"></i></a></li>
+        </ul>                            
+        <div class="panel-body tab-content">
+            <div class="tab-pane active" id="matterslist">
+            	<div class="row">
+            		<div class="col-sm-3">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="fa fa-search"></span>
+                            </div>
+                            <input type="text" class="form-control" ng-model="matterSearch" placeholder="Search..."/>  
+                        </div>
+                    </div>
+	                <div class="col-sm-2">
+	                    <div class="form-group">
+	                        <select ng-select class="form-control select" ng-model="sortBy" data-style="btn btn-default">
+	                            <option value="">Sort by</option>
+	                            <option value="matter.property.matter_name">Matter Name</option>
+	                            <option value="matter.type">Matter Type</option>
+	                            <option value="matter.property.property_type">Property Type</option>
+	                            <option value="matter.property.sales_type">Sales Type</option>
+	                            <option value="date">Newest</option>
+	                            <option value="-date">Oldest</option>
+	                        </select>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="btn-group">
+                            <button class="btn btn-default" ng-click="filterMatterType=''">All</button>
+                            <button class="btn btn-default" ng-click="filterMatterType='Open'">Open</button>                   
+                            <button class="btn btn-default" ng-click="filterMatterType='Closed'">Closed</button>
+                        </div>
+	                </div>
+	                <div class="col-sm-2">
+	                	
+	                </div>
+	                <div class="col-sm-2" style="text-align:right">
+	                	<div class="form-group">
+	                		<button type="button" class="btn btn-success" ng-click="newMatter()">
+	                			<i class="fa fa-plus"></i>
+	                			Matter
+	                		</button>
+	                	</div>
+	                </div>
+	            </div>
+	            <br>
+                <div class="row detl-lst">
+                	<div class="col-md-3" ng-repeat="m in matters | filterMatter:filterMatterType | filter:matterSearch | orderBy:sortBy:reverse">
+                        <!-- CONTACT ITEM -->
+                        <div class="panel panel-default contct-detl">
+                            <div class="panel-body profile">
+                                
+                                <div class="profile-data">
+                                    <div class="profile-data-name">{{m.matter.property.matter_name}}</div>
+                                    <!-- <div class="profile-data-title">Singer-Songwriter</div> -->
+                                </div>
+                            </div>                                
+                            <div class="panel-body">                                    
+                                <div class="contact-info">
+                                    <p><small>Matter Type</small><br/>{{m.matter.type}}</p>
+                                    <p><small>Property Type</small><br/>{{m.matter.property.property_type}}</p>
+                                    <p><small>Sale Type</small><br/>{{m.matter.property.sales_type}}</p>
+                                    <p><small>Address</small><br/>{{m.matter.property.addreses[0].addressline1 + "" + m.matter.property.addreses[0].city + "" + m.matter.property.addreses[0].state + " " + m.matter.property.addreses[0].zip}}</p> 
+                                </div>
+                            </div>                                
+                        </div>
+                        <!-- END CONTACT ITEM -->
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="newmatter">
+                
+            	<div class="panel-default tabs usr-contacts">
+					<div class="row">
+				      <div class="col-sm-10">
+				          <ul class="nav nav-tabs">
+				            <li ng-click="openTab('matter')"><a href="javascript:;">Matter</a></li>
+				            <li ng-click="openTab('parties')"><a href="javascript:;">Parties</a></li>
+				            <li ng-click="openTab('activity')"><a href="javascript:;">Activity</a></li>
+				            <li ng-click="openTab('documents')"><a href="javascript:;">Documents</a></li>
+				          </ul>
+				        </div>
+				      </div>
+				      <div class="col-sm-2" style="margin-top:-33px; float:right;">
+				        <div class="btn-group">
+				            <a type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"> {{matterForm.type}} <span class="caret"></span></a>
+				            <ul class="dropdown-menu" role="menu">
+				            	<li role="presentation" class="dropdown-header">Select Matter Type</li>
+				                <li><a href="javascript:;" ng-click="matterForm.type='Open'">Open</a></li>
+				                <li><a href="javascript:;" ng-click="matterForm.type='Closed'">Closed</a></li>
+				            </ul>
+				        </div>
+				      </div>
+				    </div>
+
+				    <div class="panel-body tab-content">
+				    	
+				    	<div class="form-group" ng-show="showTab=='matter'">
+				              <form name="matter_form" ng-submit="matterFormSubmit(matter_form)" novalidate>
+				                <div class="row">
+				                  <div class="col-sm-4">
+
+				                    <div class="form-group">
+				                      <h3>Property</h3>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                      		<div class="col-sm-12">
+					                      		<div class="form-group">
+					                      			<input type="text" class="form-control" ng-model="matterForm.property.matter_name" placeholder="Matter Name*" name="matter_name" required>
+					                      			<span class="help-block form-error" ng-show="matter_form.matter_name.$error.required  && matter_form_submited">Required*.</span>
+					                      		</div>
+					                      </div>
+				                      </div>
+				                    </div>
+
+				                    <!-- <div class="form-group">
+				                      <select ng-select class="form-control" name="type" ng-model="matterForm.type" required>
+				                        <option value="Open">Open</option>
+				                        <option value="Closed">Closed</option>
+				                      </select>
+				                    </div> -->
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <select ng-select name="sales_type" required class="form-control" ng-model="matterForm.property.sales_type">
+				                              <option value="">--Sales Type--</option>
+				                              <option value="Purchase">Purchase</option>
+				                              <option value="Sale">Sale</option>
+				                            </select>
+				                            <span class="help-block form-error" ng-show="matter_form.sales_type.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <select ng-select name="property_type" required class="form-control" ng-model="matterForm.property.property_type">
+				                              <option value="">--Property Type--</option>
+				                              <option value="Residential">Residential</option>
+				                              <option value="Commercial">Commercial</option>
+				                            </select>
+				                            <span class="help-block form-error" ng-show="matter_form.property_type.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <select ng-select name="house_type" required class="form-control" ng-model="matterForm.property.house_type">
+				                              <option value="">--House Type--</option>
+				                              <option value="Family House">Family House</option>
+				                              <option value="Other">Other</option>
+				                            </select>
+				                            <span class="help-block form-error" ng-show="matter_form.house_type.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <select ng-select name="no_of_floors" required class="form-control" ng-model="matterForm.property.no_of_floors">
+				                              <option value=0>--No Of Floors--</option>
+				                              <option value=1>1</option>
+				                              <option value=2>2</option>
+				                              <option value=3>3</option>
+				                              <option value=4>4</option>
+				                              <option value=5>5</option>
+				                              <option value=6>6</option>
+				                            </select>
+				                            <span class="help-block form-error" ng-show="matter_form.no_of_floors.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <select ng-select name="no_of_buyers" ng-change="setBuyersLength()" required class="form-control" ng-model="matterForm.property.no_of_buyers">
+				                              <option value=0>--No Of Buyers--</option>
+				                              <option value=1>1</option>
+				                              <option value=2>2</option>
+				                              <option value=3>3</option>
+				                              <option value=4>4</option>
+				                              <option value=5>5</option>
+				                              <option value=6>6</option>
+				                            </select>
+				                            <span class="help-block form-error" ng-show="matter_form.no_of_buyers.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <select ng-select name="no_of_salers" ng-change="setSellersLength()" required class="form-control" ng-model="matterForm.property.no_of_salers">
+				                              <option value=0>--No Of Salers--</option>
+				                              <option value=1>1</option>
+				                              <option value=2>2</option>
+				                              <option value=3>3</option>
+				                              <option value=4>4</option>
+				                              <option value=5>5</option>
+				                              <option value=6>6</option>
+				                            </select>
+				                            <span class="help-block form-error" ng-show="matter_form.no_of_salers.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <label class="ui-checkbox">
+				                        <input type="checkbox" name="has_tenants" ng-model="matterForm.property.has_tenants">
+				                        <span><b>Has Tenants</b></span>
+				                      </label>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div ng-repeat="address in matterForm.property.addreses track by $index">
+				                        <div class="name-block">
+				                          <label for="exampleInputEmail1">Property Address <i ng-if="$index>0" class="fa  fa-close" ng-click="removeAddress($index)"></i></label>
+				                        </div>
+				<!-- 
+
+				                        <div class="panel-body name-popup"> 
+				                          
+				                          <p class="hash" ng-click="open('myModalContent2.html',$index,'addresstype')" style="cursor:pointer"></p>
+				                        </div>  -->
+				                        <div class="form-group">
+					                      	<div class="row">
+					                      		<div class="col-sm-12">
+							                        <div class="form-group">
+							                          <ng-form name="addresLine1Form">
+							                            <input type="text" class="form-control" name="addressline1"  placeholder="Address Line1*"data-ng-model="address.addressline1" required>
+							                            <span class="help-block form-error" ng-show="addresLine1Form.addressline1.$error.required  && matter_form_submited">Address line1 required.</span>
+							                         </ng-form>
+							                        </div>
+							                	</div>
+							                </div>
+							            </div>
+				                      
+				                      	<div class="form-group">
+				                      		<div class="row">
+				                      			<div class="col-sm-12">
+							                        <div class="form-group">
+							                          <ng-form name="addresLine2Form">
+							                            <input type="text" class="form-control" name="addressline2" placeholder="Address Line2" data-ng-model="address.addressline2" required>
+							                            <span class="help-block form-error" ng-show="addresLine2Form.addressline2.$error.required  && matter_form_submited">Address line2 required.</span>
+							                          </ng-form>
+							                        </div>
+							                    </div>
+							                </div>
+							            </div>
+				                        <div class="form-group">
+				                           <div class="row">
+				                             <div class="col-md-6">
+				                                <ng-form name="addressCityForm">
+				                                  <input  type="text" class="form-control" name="city" placeholder="City*" data-ng-trim='false'data-ng-model="address.city" required>
+				                                  <span class="help-block form-error" ng-show="addressCityForm.city.$error.required  && matter_form_submited">Required*.</span> 
+				                                </ng-form>          
+				                               
+				                              </div>
+				                              <div class="col-md-3">
+				                                  <ng-form name="addresStateForm">
+				                                    <input  type="text" class="form-control" name="state" placeholder="State*" data-ng-trim='false' data-ng-model="address.state" required>
+				                                    <span class="help-block form-error" ng-show="addresStateForm.state.$error.required  && matter_form_submited">State required.</span> 
+				                                  </ng-form>                 
+				                              </div>
+				                              <div class="col-md-3">
+				                                  <ng-form name="addresZipForm">
+				                                    <input  type="text" class="form-control" name="zip" ng-pattern="/^\d{5}(?:[-\s]\d{4})?$/" placeholder="Zip*" data-ng-model="address.zip" required>
+				                                    <span class="help-block form-error" ng-show="addresZipForm.zip.$error.required  && matter_form_submited">Zip required.</span>
+				                                    <span class="help-block form-error" ng-show="addresZipForm.zip.$error.pattern && matter_form_submited">Invalid zip.</span>
+				                                  </ng-form>                      
+				                              </div>
+				                            </div>
+				                          </div>
+				                        </div>
+
+				                        <div class="form-group">
+				                          <button type="button" ng-click="addAddress()">+</button>
+				                        </div>
+				                      </div>
+
+				                  </div>
+
+
+				                  <div class="col-sm-4">
+				                    <div class="form-group">
+				                      <h3>Finance</h3>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Price*" name="price" required ng-model="matterForm.finances.price">
+				                            <span class="help-block form-error" ng-show="matter_form.price.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <select ng-select name="finance_type" required class="form-control" ng-model="matterForm.finances.finance_type">
+				                              <option value="">--Finance Type--</option>
+				                              <option value="Cash">Cash</option>
+				                              <option value="Mortgage">Mortgage</option>
+				                              <option value="Mortgage+Cash">Mortgage+Cash</option>
+				                            </select>
+				                            <span class="help-block form-error" ng-show="matter_form.finance_type.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group" ng-if="matterForm.finances.finance_type != 'Cash'">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <select ng-select name="no_of_lenders" required class="form-control" ng-model="matterForm.finances.no_of_lenders" required>
+				                              <option value=0>--No Of Lenders--</option>
+				                              <option value=1>1</option>
+				                              <option value=2>2</option>
+				                              <option value=3>3</option>
+				                              <option value=4>4</option>
+				                              <option value=5>5</option>
+				                              <option value=6>6</option>
+				                            </select>
+				                            <span class="help-block form-error" ng-show="(matter_form.no_of_lenders.$error.required  && matter_form_submited)">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <select ng-select name="mortgage_type" required class="form-control" ng-model="matterForm.finances.mortgage_type">
+				                              <option value="">--Mortgage Years--</option>
+				                              <option value="2014">2014</option>
+				                              <option value="2015">2015</option>
+				                              <option value="2016">2016</option>
+				                              <option value="2017">2017</option>
+				                              <option value="2018">2018</option>
+				                              <option value="2019">2019</option>
+				                            </select>
+				                            <span class="help-block form-error" ng-show="matter_form.mortgage_type.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Cash Total Amount*" name="cash_total_amount" required ng-model="matterForm.finances.cash_total_amount">
+				                            <span class="help-block form-error" ng-show="matter_form.cash_total_amount.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Mortgage Total Amount*" name="mortgage_total_amount" required ng-model="matterForm.finances.mortgage_total_amount">
+				                            <span class="help-block form-error" ng-show="matter_form.mortgage_total_amount.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Earnest Money*" name="earnest_money" required ng-model="matterForm.finances.earnest_money">
+				                            <span class="help-block form-error" ng-show="matter_form.earnest_money.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div> 
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Advance Payment Amount*" name="advance_payment_amount" required ng-model="matterForm.finances.advance_payment_amount">
+				                            <span class="help-block form-error" ng-show="matter_form.advance_payment_amount.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Mortgage Monthly Amount*" name="mortgage_monthly_amount" required ng-model="matterForm.finances.mortgage_monthly_amount">
+				                            <span class="help-block form-error" ng-show="matter_form.mortgage_monthly_amount.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Mortgage B Amount*" name="mortgage_b_amount" required ng-model="matterForm.finances.mortgage_b_amount">
+				                            <span class="help-block form-error" ng-show="matter_form.mortgage_b_amount.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Mortgage Policy Amount*" name="mortgage_policy_amount" required ng-model="matterForm.finances.mortgage_policy_amount">
+				                            <span class="help-block form-error" ng-show="matter_form.mortgage_policy_amount.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Mortgage B Policy Amount*" name="mortgage_b_policy_amount" required ng-model="matterForm.finances.mortgage_b_policy_amount">
+				                            <span class="help-block form-error" ng-show="matter_form.mortgage_b_policy_amount.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <h3>Title</h3>
+				                    </div>
+
+				                    <div class="form-group">
+				                      	<div class="row">
+				                      		<div class="col-sm-12">
+				                    			<div class="form-group">
+							                      	<input type="text" class="form-control" disabled="disabled" placeholder="Mortgage B Policy Amount*" name="unique_number" required ng-model="matterForm.title.unique_number">
+							                    </div>
+							                </div>
+							            </div>
+							        </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <label class="ui-checkbox">
+				                              <input type="checkbox" name="patriot" ng-model="matterForm.title.patriot">
+				                              <span><b>Patriot (PN)</b></span>
+				                            </label>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <label class="ui-checkbox">
+				                              <input type="checkbox" name="air_resources" ng-model="matterForm.title.air_resources">
+				                              <span><b>Air Resources (AR)</b></span>
+				                            </label>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <label class="ui-checkbox">
+				                              <input type="checkbox" name="bankruptcy" ng-model="matterForm.title.bankruptcy">
+				                              <span><b>Bankruptcy (BK)</b></span>
+				                            </label>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <label class="ui-checkbox">
+				                              <input type="checkbox" name="certificate_of_occupancy" ng-model="matterForm.title.certificate_of_occupancy">
+				                              <span><b>Certificate of Occupancy (CO)</b></span>
+				                            </label>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <label class="ui-checkbox">
+				                              <input type="checkbox" name="emergency_repair" ng-model="matterForm.title.emergency_repair">
+				                              <span><b>Emergency Repair (ER)</b></span>
+				                            </label>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <label class="ui-checkbox">
+				                              <input type="checkbox" name="fire_department" ng-model="matterForm.title.fire_department">
+				                              <span><b>Fire Department (FE)</b></span>
+				                            </label>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <label class="ui-checkbox">
+				                              <input type="checkbox" name="oil_burner_permit" ng-model="matterForm.title.oil_burner_permit">
+				                              <span><b>Oil Burner Permit (FO)</b></span>
+				                            </label>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <label class="ui-checkbox">
+				                              <input type="checkbox" name="flood_zone" ng-model="matterForm.title.flood_zone">
+				                              <span><b>Flood Zone (FZ)</b></span>
+				                            </label>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                  </div>
+				                  <div class="col-sm-4">
+				                    <div class="form-group">
+				                      <h3>Fees & Taxes</h3>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="purchase Policy Fee*" name="purchase_policy_fee" required ng-model="matterForm.fees_and_taxes.purchase_policy_fee">
+				                            <span class="help-block form-error" ng-show="matter_form.purchase_policy_fee.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="purchase Policy Fee*" name="purchase_policy_b_fee" required ng-model="matterForm.fees_and_taxes.purchase_policy_b_fee">
+				                            <span class="help-block form-error" ng-show="matter_form.purchase_policy_b_fee.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Homestead Tax*" name="homestead_tax" required ng-model="matterForm.fees_and_taxes.homestead_tax">
+				                            <span class="help-block form-error" ng-show="matter_form.homestead_tax.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Loan Origination Fee*" name="loan_origination_fee" required ng-model="matterForm.fees_and_taxes.loan_origination_fee">
+				                            <span class="help-block form-error" ng-show="matter_form.loan_origination_fee.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <div class="row">
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            <input type="text" class="form-control" placeholder="Maintenance Fees*" name="maintenance_fees" required ng-model="matterForm.fees_and_taxes.maintenance_fees">
+				                            <span class="help-block form-error" ng-show="matter_form.maintenance_fees.$error.required  && matter_form_submited">Required*.</span>
+				                          </div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                          <div class="form-group">
+				                            
+				                          </div>
+				                        </div>
+				                      </div>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <h3>Notes</h3>
+				                    </div>
+
+				                    <div class="form-group">
+				                      	<div class="row">
+				                      		<div class="col-sm-12">
+							                    <div class="form-group" ng-repeat = "note in matterForm.notes track by $index">
+							                      <textarea class="form-control" name="notes" placeholder="Note" rows="15"></textarea>
+							                    </div>
+							                </div>
+							            </div>
+							        </div>
+				                    <div class="form-group">
+				                      <button type="submit" class="btn btn-primary">Next &nbsp<i class="fa  fa-long-arrow-right"></i></button>
+				                    </div>
+				                  </div>
+				                </div>
+				              </form>
+				            </div>
+
+				            <div class="form-group" ng-show="showTab=='parties'">
+				              <form name="parties_form" ng-submit="partiesFormSubmit(parties_form)" novalidate>
+				                <div class="row">
+				               
+				                  <div class="col-sm-2">
+
+				                    <div class="form-group">
+				                      <h3>Seller<!-- <spna ng-click="addSeller();">+</spna> --></h3>
+				                    </div>
+
+				                    <div class="form-group" ng-repeat="(i, seler) in partiesForm.sellers track by $index">
+				                      <ng-form name="innerForm">
+				                        
+				                        <select ng-select class="form-control" name="sellers" ng-model="partiesForm.sellers[i]" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="client in allContactes" ng-selected="partiesForm.sellers[i] == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
+				                       </select>
+				                       <i class="fa  fa-close" ng-click="removeSeller(i)"></i>
+				                        <span class="help-block form-error" ng-show="innerForm.sellers.$error.required && parties_form_submiter">Required*.</span>
+				                      </ng-form>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Agent <!-- <spna ng-click="addSellerAgent();">+</spna> --></h3>
+				                    </div>
+				                    <div class="form-group" ng-repeat="(i,seller_agent) in partiesForm.sellers_agent track by $index">
+				                      <ng-form name="innerForm">
+				                        <select ng-select class="form-control" name="agent" ng-model="partiesForm.sellers_agent[i]" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="agent in allContactes" ng-selected="partiesForm.sellers_agent[i] == agent._id" value="{{agent._id}}" ng-if="agent.category_id.categorie=='Real Estate Agents'">{{agent.name.firstname + " " + agent.name.lastname}}</option>
+				                       </select>
+				                        <i class="fa  fa-close" ng-click="removeSellerAgent($index)"></i>
+				                        <span class="help-block form-error" ng-show="innerForm.agent.$error.required && parties_form_submiter">Required*.</span>
+				                      </ng-form>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Attorney <!-- <spna ng-click="addSellerAttorney();">+</spna> --></h3></h3>
+				                    </div>
+				                    <div class="form-group" ng-repeat="(i,seller_attorney) in partiesForm.sellers_attorney track by $index">
+				                      <ng-form name="innerForm">
+				                        <select ng-select class="form-control" name="seller_attorney" ng-model="partiesForm.sellers_attorney[$index]" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="attor in allContactes" ng-selected="partiesForm.sellers_attorney[i] == attor._id" value="{{attor._id}}" ng-if="attor.category_id.categorie=='Attorneys'">{{attor.name.firstname + " " + attor.name.lastname}}</option>
+				                        </select>
+				                        <i class="fa  fa-close" ng-click="removeSellerAttorney($index)"></i>
+				                        <span class="help-block form-error" ng-show="innerForm.seller_attorney.$error.required && parties_form_submiter">Required*.</span>
+				                      </ng-form>
+				                    </div>
+				                  </div>
+
+				                  <div class="col-sm-2">
+				                    <div class="form-group">
+				                      <h3>Buyer<!-- <spna ng-click="addBuyers();">+</spna> --></h3>
+				                    </div>
+				                    <div class="form-group" ng-repeat="(i,buyer) in partiesForm.buyers track by $index">
+				                      <ng-form name="innerForm">
+				                        <select ng-select class="form-control" name="buyers" ng-model="partiesForm.buyers[i]" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="client in allContactes" ng-selected="partiesForm.buyers[i] == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
+				                       </select>
+				                        <i class="fa  fa-close" ng-click="removeBuyer($index)"></i>
+				                        <span class="help-block form-error" ng-show="innerForm.buyers.$error.required && parties_form_submiter">Required*.</span>
+				                      </ng-form>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Agent <!-- <spna ng-click="addBuyersAgent();">+</spna> --></h3>
+				                    </div>
+				                    <div class="form-group" ng-repeat="(i, buyer_agent) in partiesForm.buyers_agent track by $index">
+				                      <ng-form name="innerForm">
+				                        <select ng-select class="form-control" name="agent" ng-model="partiesForm.buyers_agent[i]" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="agent in allContactes" ng-selected="partiesForm.buyers_agent[i] == agent._id" value="{{agent._id}}" ng-if="agent.category_id.categorie=='Real Estate Agents'">{{agent.name.firstname + " " + agent.name.lastname}}</option>
+				                       </select>
+				                        <i class="fa  fa-close" ng-click="removeBuyersAgent($index)"></i>
+				                        <span class="help-block form-error" ng-show="innerForm.agent.$error.required && parties_form_submiter">Required*.</span>
+				                      </ng-form>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Attorney <!-- <spna ng-click="addBuyersAttorney();">+</spna> --></h3>
+				                    </div>
+				                    <div class="form-group" ng-repeat="buyers_attorney in partiesForm.buyers_attorney track by $index">
+				                      <ng-form>
+				                        <select ng-select class="form-control" name="buyers_attorney" ng-model="partiesForm.buyers_attorney[$index]" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="attor in allContactes" ng-selected="partiesForm.buyers_attorney[i] == attor._id" value="{{attor._id}}" ng-if="attor.category_id.categorie=='Attorneys'">{{attor.name.firstname + " " + attor.name.lastname}}</option>
+				                        </select>
+				                        <i class="fa  fa-close" ng-click="removeBuyersAttorney($index)"></i>
+				                        <span class="help-block form-error" ng-show="innerForm.buyers_attorney.$error.required && parties_form_submiter">Required*.</span>
+				                      </ng-form>
+				                    </div>
+
+				                  </div>
+
+				                  <div class="col-sm-2">
+				                    <div class="form-group">
+				                      <h3>Lender</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="buyers_attorney" ng-model="partiesForm.lender" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="land in allContactes" ng-selected="partiesForm.lender[$index] == land._id" value="{{attor._id}}" ng-if="land.category_id.categorie=='Lenders'">{{land.name.firstname + " " + land.name.lastname}}</option>
+				                      </select>
+				                      <span class="help-block form-error" ng-show="parties_form.lender.$error.required && parties_form_submiter" required>Required*.</span>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Attorney</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="lender_attorney" ng-model="partiesForm.lender_attorney" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="attor in allContactes" ng-selected="partiesForm.lender_attorney == attor._id" value="{{attor._id}}" ng-if="attor.category_id.categorie=='Attorneys'">{{attor.name.firstname + " " + attor.name.lastname}}</option>
+				                      </select>
+				                      <span class="help-block form-error" ng-show="parties_form.lender_attorney.$error.required && parties_form_submiter" required>Required*.</span>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Agent</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="lender_agent" ng-model="partiesForm.lender_agent" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="agent in allContactes" ng-selected="partiesForm.lender_agent == agent._id" value="{{agent._id}}" ng-if="agent.category_id.categorie=='Real Estate Agents'">{{agent.name.firstname + " " + agent.name.lastname}}</option>
+				                       </select>
+				                      <span class="help-block form-error" ng-show="parties_form.lender_agent.$error.required && parties_form_submiter" required>Required*.</span>
+				                    </div>
+				                  </div>
+
+				                  <div class="col-sm-2">
+				                    <div class="form-group">
+				                      <h3>Surveyor</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="surveyor" ng-model="partiesForm.surveyor" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="surv in allContactes" ng-selected="partiesForm.surveyor == surv._id" value="{{surv._id}}" ng-if="surv.category_id.categorie=='Surveyors'">{{surv.name.firstname + " " + surv.name.lastname}}</option>
+				                       </select>
+				                      <span class="help-block form-error" ng-show="parties_form.surveyor.$error.required && parties_form_submiter" required>Required*.</span>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Past Inspector</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="past_inspector" ng-model="partiesForm.past_inspector" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="p_ins in allContactes" ng-selected="partiesForm.past_inspector == p_ins._id" value="{{p_ins._id}}" ng-if="p_ins.category_id.categorie=='Pest Inspectors'">{{p_ins.name.firstname + " " + p_ins.name.lastname}}</option>
+				                       </select>
+				                      <span class="help-block form-error" ng-show="parties_form.past_inspector.$error.required && parties_form_submiter">Required*.</span>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Building Inspector</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="building_inspector" ng-model="partiesForm.building_inspector" required>
+				                          <option value="">--Select--</option>
+				                          <option ng-repeat="b_ins in allContactes" ng-selected="partiesForm.building_inspector == b_ins._id" value="{{b_ins._id}}" ng-if="b_ins.category_id.categorie=='Building Inspector'">{{b_ins.name.firstname + " " + b_ins.name.lastname}}</option>
+				                       </select>
+				                      <span class="help-block form-error" ng-show="parties_form.building_inspector.$error.required && parties_form_submiter">Required*.</span>
+				                    </div>
+				                    <div ng-repeat="(i,additionalfield) in partiesForm.additionalfields track by $index" class="form-group">
+				                      <ng-form name="additionalForm">
+				                        <label>{{additionalfield.key}} <i class="fa  fa-close" ng-click="removeAdditionalField(i)"></i></label>
+
+				                        <select ng-select class="form-control" name="aditional_value" ng-model="additionalfield.value" required>
+				                          <option value="">--{{additionalfield.key}}--</option>
+				                          <option ng-repeat="a_f in allContactes" ng-selected="additionalfield.value == a_f._id" value="{{p_ins._id}}" ng-if="a_f.category_id.categorie==additionalfield.key">{{a_f.name.firstname + " " + a_f.name.lastname}}</option>
+				                       </select>
+
+				                        <!-- <input type="text" class="form-control" placeholder="{{additionalfield.key}}*" name="aditional_value" data-ng-model="additionalfield.value" required /> -->
+				                        <span class="help-block form-error" ng-show="additionalForm.aditional_value.$error.required  && parties_form_submiter">Please enter {{additionalfield.key}}.</span>
+				                      </ng-form>
+				                    </div>
+				                    <div class="form-group">
+				                          <button type="button" ng-click="isAdditionalFields=true">+</button>
+				                          <div ng-show="isAdditionalFields">
+				                            <ul>
+				                              <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Surveyors');">Surveyors</label></li>
+				                              <li><label ng-click="isAdditionalFields=false;addAitionalFiel('FedEx Account Number');">FedEx Account Number</label></li>
+				                              <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Pest Inspector');">Pest Inspector</label></li>
+				                              <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Building Inspector');">Building Inspector</label></li>
+				                              <li><label ng-click="isAdditionalFields=false;addAitionalFiel('Appraiser');">Appraiser</label></li>
+				                            </ul>
+				                          </div>
+				                        </div>
+
+				                  </div>
+				                  <div class="col-sm-3">
+				                    <div class="form-group">
+				                      <h3>Title Company</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="title_company" ng-model="partiesForm.title_company" required>
+				                          <option value="">--Title Company--</option>
+				                          <option ng-repeat="t_c in allContactes" ng-selected="partiesForm.title_company == t_c._id" value="{{t_c._id}}" ng-if="t_c.category_id.categorie=='Title Companies'">{{t_c.name.firstname + " " + t_c.name.lastname}}</option>
+				                       </select>
+				                      <span class="help-block form-error" ng-show="parties_form.title_company.$error.required && parties_form_submiter">Required*.</span>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Title Search</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="title_search" ng-model="partiesForm.title_search" required>
+				                          <option value="">--Title Company--</option>
+				                          <option ng-repeat="t_s in allContactes" ng-selected="partiesForm.title_search == t_s._id" value="{{t_s._id}}" ng-if="t_s.category_id.categorie=='Title Search'">{{t_s.name.firstname + " " + t_s.name.lastname}}</option>
+				                       </select>
+				                      <span class="help-block form-error" ng-show="parties_form.title_search.$error.required && parties_form_submiter">Required*.</span>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Under Writer</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="under_writer" ng-model="partiesForm.under_writer" required>
+				                          <option value="">--Title Company--</option>
+				                          <option ng-repeat="u_w in allContactes" ng-selected="partiesForm.under_writer == u_w._id" value="{{u_w._id}}" ng-if="u_w.category_id.categorie=='Under Writer'">{{u_w.name.firstname + " " + u_w.name.lastname}}</option>
+				                       </select>
+				                      <span class="help-block form-error" ng-show="parties_form.under_writer.$error.required && parties_form_submiter">Required*.</span>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Closer</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="closer" ng-model="partiesForm.closer" required>
+				                          <option value="">--Closer--</option>
+				                          <option ng-repeat="c in allContactes" ng-selected="partiesForm.closer == c._id" value="{{c._id}}" ng-if="c.category_id.categorie=='Closer'">{{c.name.firstname + " " + c.name.lastname}}</option>
+				                       </select>
+				                      <span class="help-block form-error" ng-show="parties_form.closer.$error.required && parties_form_submiter">Required*.</span>
+				                    </div>
+				                    <div class="form-group">
+				                      <h3>Recording Office</h3>
+				                    </div>
+				                    <div class="form-group">
+				                      <select ng-select class="form-control" name="recording_office" ng-model="partiesForm.recording_office" required>
+				                          <option value="">--Recording Office--</option>
+				                          <option ng-repeat="r_o in allContactes" ng-selected="partiesForm.recording_office == r_o._id" value="{{r_o._id}}" ng-if="r_o.category_id.categorie=='Recording Office'">{{r_o.name.firstname + " " + r_o.name.lastname}}</option>
+				                       </select>
+				                      <span class="help-block form-error" ng-show="parties_form.recording_office.$error.required && parties_form_submiter">Required*.</span>
+				                    </div>
+
+				                    <div class="form-group">
+				                      <button type="button" class="btn btn-primary" ng-click="openTab('matter')"><i class="fa  fa-long-arrow-left"></i> Previous</button>
+				                      <button type="submit" class="btn btn-primary">Next <i class="fa  fa-long-arrow-right"></i></button>
+				                    </div>
+				                  </div>
+				                  
+				                </div>
+				              </form>
+				            </div>
+
+				            <div class="form-group" ng-show="showTab=='activity'">
+				              <h3>Activity</h3>
+				              <div class="form-group">
+				                <div class="panel-body name-popup"> 
+				                  <script type="text/ng-template" id="activity_popup.html">
+				                    <form name="activity_form" novalidate ng-submit="saveActivity(activity_form)">
+				                      <div class="modal-header">
+				                        <h3>Activity</h3>
+				                      </div>  
+				                        <div class="modal-body">
+				                          <div class="row">
+				                            <div class="col-sm-4">
+				                              <div class="input-group ui-datepicker" data-ng-controller="DatepickerDemoCtrl">   
+				                                  <div class="input-group ui-datepicker" in>
+				                                    <input type="text" 
+				                                       class="form-control"
+				                                       datepicker-popup="{{format}}"
+				                                       ng-model="new_activity.date"
+				                                       is-open="opened"
+				                                       min=""
+				                                       max="'2015-06-22'"
+				                                       datepicker-options="dateOptions" 
+				                                       date-disabled="disabled(date, mode)"
+				                                       ng-required="true" 
+				                                       close-text="Close">
+				                                    <span class="input-group-addon" ng-click="open($event)"><i class="fa fa-calendar"></i></span>
+				                                </div>
+				                              </div>
+				                            </div>
+				                            <div class="col-sm-4">
+				                              <div ng-model="new_activity.time" ng-change="changed()" style="display:inline-block;" data-ng-controller="TimepickerDemoCtrl">
+				                                  <timepicker class="ui-timepicker" hour-step="hstep" minute-step="mstep" show-meridian="true"></timepicker>
+				                              </div> 
+				                            </div>
+				                            <div class="col-sm-4">
+				                              <label class="ui-checkbox">
+				                                <input type="checkbox" name="add_to_schedule" ng-model="new_activity.add_to_schedule">
+				                                <span><b>Add To Schedule</b></span>
+				                              </label>
+				                            </div>
+				                          </div>
+				                          <br><br>
+				                          <div class="row">
+				                            <div class="col-sm-1"></div>
+				                            <div class="col-sm-10">
+				                              <div class="form-group">
+				                                <input type="text" class="form-control" placeholder="Activity" name="activity" ng-model="new_activity.activity" required>
+				                                <span class="help-block form-error" ng-show="activity_form.activity.$error.required && activity_form_submited">Required*.</span>
+				                              </div>
+				                              <div class="form-group">
+				                                <input type="text" class="form-control" placeholder="Remark" name="remark" ng-model="new_activity.remark">
+				                              </div>
+				                            </div>
+				                            <div class="col-sm-1"></div>
+				                          </div>
+				                        </div>
+				                        <div class="modal-footer">
+				                          <button type="submit" class="btn btn-primary">Save</button>
+				                          <button class="btn btn-warning" type="button" ng-click="cancleActivity()">Cancel</button>
+				                        </div>
+				                    </form>
+				                  </script>
+				                  <p>
+				                    <i ng-click="open('activity_popup.html')" class="fa fa-2x fa-plus-square" style="cursor:pointer"></i>
+				                  </p>
+				                </div> 
+				              </div>
+				              <table class="table">
+				                <tr ng-repeat="a in activity">
+				                  <td>{{getFormatedDate(a.date)}}</td>
+				                  <td>{{getTimeFromDate(a.time)}}</td>
+				                  <td>{{a.activity}}</td>
+				                  <td>{{a.remark}}</td>
+				                  <td></td>
+				                  <td>{{a.user}}</td>
+				                </tr>
+				              </table>
+				              <div class="form-group" style="float:right">
+				                <button type="button" class="btn btn-primary" ng-click="openTab('parties')"><i class="fa  fa-long-arrow-left"></i>Previous</button>
+				                <button type="submit" ng-click="openTab('documents')" class="btn btn-primary">Next <i class="fa  fa-long-arrow-right"></i></button>
+				              </div>
+				            </div>
+
+				            <div class="form-group" ng-show="showTab=='documents'">
+				              <h3>Documents</h3>
+
+				              <div class="form-group">
+				                <div class="panel-body name-popup"> 
+				                  <script type="text/ng-template" id="document_popup.html">
+				                    <form name="document_form" enctype='multipart/form-data' novalidate ng-submit="saveDocument(document_form)">
+				                      <div class="modal-header">
+				                        <h3>Document</h3>
+				                      </div>  
+				                        <div class="modal-body">
+				                          <div class="row">
+				                            <div class="col-sm-1"></div>
+				                            <div class="col-sm-10">
+				                              <div class="form-group">
+				                                <input type="text" class="form-control" placeholder="Document Name" name="name" ng-model="new_document.name" required>
+				                                <span class="help-block form-error" ng-show="document_form.name.$error.required && document_form_submited">Required*.</span>
+				                              </div>
+				                              <div class="form-group">
+				                                <input type="text" class="form-control" placeholder="Document Notes" name="notes" ng-model="new_document.notes" required>
+				                                <span class="help-block form-error" ng-show="document_form.notes.$error.required && document_form_submited">Required*.</span>
+				                              </div>
+				                              <div class="'form-group">
+				                              <input data-ui-file-upload class="btn-primary" type="file" name="file" id="file" file-model="myFile" required>
+				                              <span class="help-block form-error" ng-show="documentFileRequired">Required*.</span>
+				                              </div>
+				                            </div>
+				                            <div class="col-sm-1"></div>
+				                          </div>
+				                        </div>
+				                        <div class="modal-footer">
+				                          <button type="submit" class="btn btn-primary">Save</button>
+				                          <button class="btn btn-warning" ng-click="cancleDocument()">Cancel</button>
+				                        </div>
+				                    </form>
+				                  </script>
+				                  <p>
+				                    <i ng-click="open('document_popup.html')" class="fa fa-2x fa-plus-square" style="cursor:pointer"></i>
+				                    <i class="fa fa-2x fa-cloud-download" ng-click="downloadDocuments"></i>
+				                  </p>
+				                </div> 
+				              </div>
+				              <table class="table">
+				                <tr ng-repeat="d in documents track by $index">
+				                  <td>
+				                      <input type="checkbox" name="is_checked" ng-model="document.is_checked">
+				                  </td>
+				                  <td>{{d.name}}</td>
+				                  <td>{{d.notes}}</td>
+				                  <td>{{d.user}}</td>
+				                </tr>
+				              </table>
+				              <div class="form-group" style="float:right">
+				                <button type="button" class="btn btn-primary" ng-click="openTab('activity')"><i class="fa fa-long-arrow-left"></i> Previous</button>
+				                <button type="button" class="btn btn-success" ng-click="saveMatter()">Save Matter</button>
+				              </div>
+				            </div>
+
+				    </div>
+
+				</div>
+
+
+            </div>
+        </div>
+    </div>                                                   
+    <!-- END TABS -->          
+
+

@@ -8,7 +8,8 @@ var myApp = angular.module('myApp', [
   'myApp.controllers',
   'myApp.sidebarController',
   'myApp.homeController',
-  'myApp.contactController'
+  'myApp.contactController',
+  'myApp.matterController'
 ]);
 myApp.config(function($stateProvider, $urlRouterProvider) {
   console.log("test");
@@ -42,6 +43,11 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     .state("/tagsks", {
       url: "/tasks",
       templateUrl: "/partials/tasks/task.html"
+    })
+    .state("/matters/new", {
+      url: "/matters/new",
+      templateUrl: "/partials/matters/new.html",
+      controller : 'matterController'
     })
 })
 .run(function($rootScope, $location, $http, $window){

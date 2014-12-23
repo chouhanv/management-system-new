@@ -15,6 +15,7 @@ angular.module('myApp.contactController', [])
 	$scope.isShowProspectiveClient = {status:false};
 	$scope.sortBy = "";
 	$rootScope.isEditForm = false;
+	$scope.isEditContact = false;
 		$rootScope.tabs = [];
 		$rootScope.tabContent = [];
 		$rootScope.openedTabs = [];
@@ -86,11 +87,10 @@ angular.module('myApp.contactController', [])
 
 
 		$rootScope.getFile = function (file) {
-			console.log(file);
-        $rootScope.progress = 0;
-        fileReader.readAsDataUrl(file, $rootScope)
-          .then(function(result) {
-              $rootScope.imageSrc = result;
+        	$rootScope.progress = 0;
+        	fileReader.readAsDataUrl(file, $rootScope)
+          		.then(function(result) {
+              	$rootScope.imageSrc = result;
           });
 	    };
 	 
@@ -123,7 +123,6 @@ angular.module('myApp.contactController', [])
 		$scope.saveContact = function(form) {
 			$scope.contact_form_submited = true;
 		   	if(form.$valid){
-		   		console.log($rootScope.category_id);
 		   		$scope.contactdata = {
 		   			category_id : $rootScope.category_id,
 			   		addreses:$rootScope.addreses,
@@ -254,7 +253,7 @@ angular.module('myApp.contactController', [])
 	   }
 
 		$scope.showtab = function(index){
-
+			console.log("here i am");
 			$scope.formEditMode = true;
 			$scope.createMode = false;
 
@@ -263,6 +262,7 @@ angular.module('myApp.contactController', [])
 				$("#tab"+index).addClass('active');
 			},  100);
 			$rootScope.isEditForm = true;
+			$scope.isEditContact = false;
 			$scope.editFormIndex = index;
 			$rootScope.category_id = $rootScope.tabs[index].contact.category_id._id;
 	   		$rootScope.addreses = $rootScope.tabs[index].contact.addreses;
@@ -395,79 +395,90 @@ angular.module('myApp.contactController', [])
 			$scope.showtab(index);
 		}
 
+		$scope.isEditContact = false;
+
 		$scope.showList = function(){
-			$scope.formEditMode = false;
-			$scope.createMode = false;
-			$rootScope.isEditForm = false;
+			
 			$(".active").removeClass("active");
-			console.log("dadasda");
+			setTimeout(function(){
+				$rootScope.isEditForm = false;
+				$scope.isEditContact = false;
+				$scope.$apply();
+			},1000);
 			setTimeout(function(){
 				$("#home").addClass('active');
-			},  100);
 
-			$rootScope.prospective_client = {status:false};
-			$rootScope.imageSrc = "";
-			$rootScope.addreses = [{
-		      addressline1 : "",
-		      addressline2 : "",
-		      city         : "",
-		      state        : "",
-		      zip          : "",
-		      addresstype  : "",
-		      mailing      : false,
-		      billing      : false,
-		      poboxno      : false,
-		      streetnumber : "",
-		      streetname   : "",
-		      streetsuffix : "",
-		      unitnumber   : "",
-		      unitdesignator : "",
-		      buildingnumber  : "",
-		      buildingdoorcode : "",
-		      buildingdoorbell : "",
-		      pobox            : "",
-		      streetnameaka    : "",
-		      Intersectingstreet1 : "",
-		      Intersectingstreet2 : "",
-		      neighborhood        : ""
-		    }];
-		    $rootScope.name = {
-		      prefix:"",
-		      firstname:"",
-		      lastName:"",
-		      middlename:"",
-		      suffix:"",
-		      initial:"",
-		      sortname:"",
-		      additinalname:"",
-		      lettersalutation:""
+				$scope.formEditMode = false;
+				$scope.createMode = false;
+				$rootScope.isEditForm = false;
+				$scope.isEditContact = false;
 
-		    };
-		    $rootScope.phones = [{
-		               phonetype : "",
-		               sms : false,
-		               mms : false,
-		               smartphone : false,
-		               country : "",
-		               area    : "",
-		               Number  : "",
-		               ext      : "",
-		               homephone : "",
-		               cellphone : ""
-		    }];
-		    $rootScope.company = {
-		      companyname:"",
-		      dbaname:"",
-		      namephonetic:"",
-		      taxid:""
-		    };
-		    $rootScope.emails = [""];
-		    $rootScope.refferedbys = [""];
-		    $rootScope.notes = [""];
+				$rootScope.prospective_client = {status:false};
+				$rootScope.imageSrc = "";
+				$rootScope.addreses = [{
+			      addressline1 : "",
+			      addressline2 : "",
+			      city         : "",
+			      state        : "",
+			      zip          : "",
+			      addresstype  : "",
+			      mailing      : false,
+			      billing      : false,
+			      poboxno      : false,
+			      streetnumber : "",
+			      streetname   : "",
+			      streetsuffix : "",
+			      unitnumber   : "",
+			      unitdesignator : "",
+			      buildingnumber  : "",
+			      buildingdoorcode : "",
+			      buildingdoorbell : "",
+			      pobox            : "",
+			      streetnameaka    : "",
+			      Intersectingstreet1 : "",
+			      Intersectingstreet2 : "",
+			      neighborhood        : ""
+			    }];
+			    $rootScope.name = {
+			      prefix:"",
+			      firstname:"",
+			      lastName:"",
+			      middlename:"",
+			      suffix:"",
+			      initial:"",
+			      sortname:"",
+			      additinalname:"",
+			      lettersalutation:""
 
-		    $rootScope.additionalfields = [];
-		    $rootScope.isAdditionalFields = false;
+			    };
+			    $rootScope.phones = [{
+			               phonetype : "",
+			               sms : false,
+			               mms : false,
+			               smartphone : false,
+			               country : "",
+			               area    : "",
+			               Number  : "",
+			               ext      : "",
+			               homephone : "",
+			               cellphone : ""
+			    }];
+			    $rootScope.company = {
+			      companyname:"",
+			      dbaname:"",
+			      namephonetic:"",
+			      taxid:""
+			    };
+			    $rootScope.emails = [""];
+			    $rootScope.refferedbys = [""];
+			    $rootScope.notes = [""];
 
+			    $rootScope.additionalfields = [];
+			    $rootScope.isAdditionalFields = false;
+
+			    
+
+			},  200);
 		}
 
 		$scope.discardContact = function(index){

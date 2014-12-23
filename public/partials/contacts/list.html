@@ -15,12 +15,13 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li style="width:100px;" ng-class="{'active': !isEditForm}" ng-click="showList();"><a style="width:100px;" href="#home" data-toggle="tab" role="tab" class="fa fa-list fa-2x"></a></li>
                         <li style="width:150px; padding-left:5px;" ng-repeat="tab in tabs track by $index" id="tab{{$index}}">
-                            <a hovereffect style="width:auto;" role="tab" style="text-align:center;" ng-click="showtab($index)" href="#form-edit" data-toggle="tab">
-                            {{tab.title}}
-                            <i class="fa fa-times" style="cursor:pointer;float:right; display:none" ng-click="discardContact($index)"></i>
+                            <a hovereffect style="width:auto;" ng-click="showtab($index);" role="tab" style="text-align:center;" href="#form-edit" data-toggle="tab">
+                            <span on-click="$(this).parent.click();">{{tab.title}}</span>
+                            <i class="fa fa-times" style="cursor:pointer;float:right; display:none" ng-click="discardContact($index);$event.stopPropagation();"></i>
                             </a>
                         </li>
                     </ul>
+                    {{isEditContact}}{{isEditForm}}
                     <div class="panel-body tab-content">
                         <div class="tab-pane" ng-class="{'active': !isEditForm}" id="home">
                                          
@@ -103,7 +104,7 @@
                                                 <div class="contact-info">
                                                     <p><small>Mobile</small><br/><span ng-repeat="phone in contact.phones">{{phone.cellphone}}, {{phone.homephone}}<br></span></p>
                                                     <p><small>Email</small><br/><span ng-repeat="email in contact.emails">{{email}} </span></p>
-                                                    <p><small>Address</small><br/><span ng-repeat="address in contact.addreses">{{address.addressline1}} {{address.addressline2}} , {{address.city}}, {{address.state}}-{{address.zip}}</span></p>                                   
+                                                    <p><small>Address</small><br/><span ng-repeat="address in contact.addreses">{{address.addressline1}} , {{address.city}}, {{address.state}}-{{address.zip}}</span></p>                                   
                                                 </div>
                                             </div>                                
                                         </div>
@@ -113,8 +114,521 @@
                             </div>
                             <!-- END PAGE CONTENT WRAPPER -->  
                         </div>
-                        <div ng-show="isEditForm" class="{{isEditForm?'active':''}}" class="tab-pane" id="form-edit">
-                            <form id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContact(contact_form, editFormIndex)" novalidate>   
+                        <div ng-show="isEditForm" ng-class="{'active': isEditForm}" class="tab-pane" id="form-edit">
+                             <div class="row" style="border-bottom:2px solid #e8e8e8;font-size:15px; padding-bottom:5px">
+                                <div class="col-sm-2">
+                                    <span>Contact Info</span>
+                                </div>
+                                <div class="col-sm-1">
+                                    <span>Matters</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-default">Delete</button>
+                                    <button class="btn btn-default" ng-click="discardContact(editFormIndex)">Discart</button>
+                                    <button class="btn btn-primary" ng-show="!isEditContact" ng-click="isEditContact=true">Edit</button>
+                                    <button class="btn btn-primary" ng-if="isEditContact">Save</button>
+                                </div>
+                            </div>
+                            <form ng-if="!isEditContact" id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContact(contact_form, editFormIndex)" novalidate>   
+                                <div class="page-content-wrap">                
+                                   
+                                    <div class="row">
+
+                                            <div class="col-sm-2">
+                                            <div class="col-md-12">
+                                                <div class="panel-body">
+                                                    <div class="profile-image">
+                                                        <img class="prfl-pic" style="width:80px; height:80px; border-radius:50%" src="{{imageSrc?imageSrc:'/img/Avatar.jpg'}}" onclick="$('#selectImage').click();" alt="">
+                                                        <input type="file" ng-show="false" ng-file-select id="selectImage">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" ng-show="category.categorie == 'Clients'">
+                                                <label class="switch">
+                                                    <input type="checkbox" ng-model="prospective_client.status"/>
+                                                    <span></span>
+                                                </label>
+                                                <label>Prospective Client</label>
+                                            </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+
+                                            <!-- START VALIDATIONENGINE PLUGIN -->
+                                            <div class="block">
+
+                                                <div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="defModalHead">Name</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Prefix</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                           
+                                                                            {{name.prefix}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>First Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.firstname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Middle</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.middlename}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Last</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.lastname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Suffix</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.suffix}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Initials</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.initial}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Short Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.sortname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Additinal Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                           {{name.additinalname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Letter Salutation</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.lettersalutation}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>    
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <h3>{{name.firstname}} {{name.lastname}}</h3>
+                                                    </div>
+                                                </div>
+
+                                                 <div class="modal" id="modal_company" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="defModalHead">Company</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{company.companyname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>DBA</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{company.dbaname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Company Name Phonetic</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{company.namephonetic}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Tax Id</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{company.taxid}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div> 
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <h4>{{company.companyname}}</h4>
+                                                    </div>
+                                                </div>
+
+                                                <div ng-repeat = "address in addreses track by $index">
+
+                                                    <div class="modal" id="modal_address{{$index}}" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="defModalHead">Addresses</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Type</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.addresstype}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                
+                                                   
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label></label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <label class="ui-checkbox">
+                                                                          {{address.mailing}}
+                                                                          <span>Mailing</span></label>
+                                                                        <label class="ui-checkbox">
+                                                                          {{address.billing}}
+                                                                          <span>Billing</span></label>
+                                                                        <label class="ui-checkbox">
+                                                                          {{address.poboxno}}
+                                                                          <span>P.O.Box</span></label>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Number</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.streetnumber}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.streetname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Suffix</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.streetsuffix}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Unit Number</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.unitnumber}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Unit Designator</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.unitdesignator}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Building</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.buildingnumber}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Door Code</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.buildingdoorcode}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Door Bell</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.buildingdoorbell}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>P.O.Box</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.pobox}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Name AKA</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.streetnameaka}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Intersecting Street1</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.Intersectingstreet1}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Intersecting Street2</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.Intersectingstreet2}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Neighborhood</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.neighborhood}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            {{address.addressline1}}
+                                                            <br>
+                                                            {{address.addressline2}}
+                                                           <br>
+                                                           {{address.city}} , {{address.state}} {{address.zip}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div ng-repeat= "phone in phones track by $index">
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Business Phone : {{phone.business_phone}}</label>
+                                                                </a>
+                                                            </div>
+                                                        </div> 
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Home Phone : {{phone.homephone}}</label>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Cell : {{phone.cellphone}}</label>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                                                                                                                                          
+                                                </div>
+
+                                                <div ng-repeat= "email in emails track by $index">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12" style="padding-top:5px;">
+                                                            <label style="color:#434a54">Emails : {{emails[$index]}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>                                               
+                                            <!-- END VALIDATIONENGINE PLUGIN -->
+
+                                            </div>
+                                            <div class="col-md-4">                        
+
+                                            <!-- START JQUERY VALIDATION PLUGIN -->
+                                            <div class="block">
+
+                                                <div>
+                                                    <div style="padding-left:10px">  
+                                                        <label style="color:#434a54">Notes</label>
+                                                    </div>
+                                                    <div ng-repeat="note in notes track by $index">
+                                                        <div class="form-group">
+                                                            <div class="col-md-12">
+                                                                <textarea class="form-control" readonly="readonly" data-ng-model="notes[$index]" placeholder="Note" rows="5"></textarea> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                            
+                                            </div>
+                                    </div>
+                                        
+                                </div>
+                                <!-- END PAGE CONTENT WRAPPER -->
+                            </form>
+
+                            <form ng-if="isEditContact" id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContact(contact_form, editFormIndex)" novalidate>   
                                 <div class="page-content-wrap">                
                                 
                                     <div class="row">

@@ -28,8 +28,22 @@ angular.module('myApp.filters', [])
     } else {
       return contacts;
     } 
-    }
-  })
+  }
+})
+.filter('filterMatter', function(){
+  return function(matters,type){
+      if(type){
+        var mat = new Array();
+        angular.forEach(matters, function(val , i){
+          if(val.matter.type == type)
+            mat.push(val);
+        });
+        return mat;
+    } else {
+      return matters;
+    } 
+  }
+})
 .filter('filterProspectiveClient',function(){
     return function(contacts,isProspective, category){
       if(category == "Clients" && isProspective){
