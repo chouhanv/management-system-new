@@ -333,12 +333,12 @@ angular.module('myApp.matterController', [])
 	}
 
 	$rootScope.partiesForm = {
-		sellers : [""],
-		sellers_attorney:[""],
-		sellers_agent:[""],
-		buyers : [""],
-		buyers_attorney:[""],
-		buyers_agent:[""],
+		sellers : [null],
+		sellers_attorney:[null],
+		sellers_agent:[null],
+		buyers : [null],
+		buyers_attorney:[null],
+		buyers_agent:[null],
 		lender:null,
 		lender_attorney:null,
 		lender_agent:null,
@@ -502,12 +502,12 @@ angular.module('myApp.matterController', [])
 	}
 
 	$rootScope.addSeller = function(){
-		$rootScope.partiesForm.sellers.push("");
+		$rootScope.partiesForm.sellers.push(null);
 		$rootScope.matterForm.property.no_of_salers = $rootScope.partiesForm.sellers.length;
 	}
 
 	$rootScope.addBuyers = function(){
-		$rootScope.partiesForm.buyers.push("");
+		$rootScope.partiesForm.buyers.push(null);
 		$rootScope.matterForm.property.no_of_buyers = $rootScope.partiesForm.buyers.length;
 	}
 
@@ -524,24 +524,24 @@ angular.module('myApp.matterController', [])
 	$rootScope.setSellersLength = function(){
 		$rootScope.partiesForm.sellers = [];
 		for(var x = 0; x < $rootScope.matterForm.property.no_of_salers; x++){
-			$rootScope.partiesForm.sellers.push("");
+			$rootScope.partiesForm.sellers.push(null);
 		}
 	}
 
 	$rootScope.setBuyersLength = function(){
 		$rootScope.partiesForm.buyers = [];
 		for(var x = 0; x < $rootScope.matterForm.property.no_of_buyers; x++){
-			$rootScope.partiesForm.buyers.push("");
+			$rootScope.partiesForm.buyers.push(null);
 		}
 		console.log($rootScope.partiesForm.buyers);
 	}
 
 	$rootScope.addSellerAgent = function(){
-		$rootScope.partiesForm.sellers_agent.push("");
+		$rootScope.partiesForm.sellers_agent.push(null);
 	}
 
 	$rootScope.addSellerAttorney = function(){
-		$rootScope.partiesForm.sellers_attorney.push("");
+		$rootScope.partiesForm.sellers_attorney.push(null);
 	}
 
 	$rootScope.removeSellerAgent = function(index){
@@ -553,11 +553,11 @@ angular.module('myApp.matterController', [])
 	}
 
 	$rootScope.addBuyersAgent = function(){
-		$rootScope.partiesForm.buyers_agent.push("");
+		$rootScope.partiesForm.buyers_agent.push(null);
 	}
 
 	$rootScope.addBuyersAttorney = function(){
-		$rootScope.partiesForm.buyers_attorney.push("");
+		$rootScope.partiesForm.buyers_attorney.push(null);
 	}
 
 	$rootScope.removeBuyersAgent = function(index){
