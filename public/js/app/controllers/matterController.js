@@ -1,6 +1,6 @@
 angular.module('myApp.matterController', [])
-.controller('matterController', function( $rootScope, $scope, $window, $location,$http) {
-	$rootScope.convertTime = function(date){
+.controller('matterController', function( $scope, $rootScope, $window, $location,$http) {
+	$scope.convertTime = function(date){
 	    var system_date  = Date.parse(date);;
 	    var user_date = new Date();
 	    var diff = Math.floor((user_date - system_date) / 1000);
@@ -18,31 +18,31 @@ angular.module('myApp.matterController', [])
 	    return "on " + date.split("T")[0];
 	  };
 
-	 $rootScope.getTimeFromDate = function(date){
+	 $scope.getTimeFromDate = function(date){
 	 	var system_date  = new Date(date.toLocaleString());
 	 	var h = system_date.getHours();
 		var m = system_date.getMinutes();
 		return h > 12 ? (h-12 + ":" + (m > 9 ? m : 0+""+m) + " PM"):(h + ":" + (m > 9 ? m : 0+""+m) + " AM");
 	 }
 
-	 $rootScope.setMatterType = function(matterType){
-	 	$rootScope.currentMatterType = matterType;
+	 $scope.setMatterType = function(matterType){
+	 	$scope.currentMatterType = matterType;
 	 }
 
-	 $rootScope.matterTabShow = 'listTab';
-	 $rootScope.matterTabs = [];
-	 $rootScope.openedMatters = [];
+	 $scope.matterTabShow = 'listTab';
+	 $scope.matterTabs = [];
+	 $scope.openedMatters = [];
 
-	 $rootScope.addMatterTab = function(id){
+	 $scope.addMatterTab = function(id){
 	 	var matter = {};
-		angular.forEach($rootScope.matters, function(val, i){
+		angular.forEach($scope.matters, function(val, i){
 			if(val._id == id){
-				matter = $rootScope.matters[i];
+				matter = $scope.matters[i];
 			}
 		});
 	 	var isOpened = false;
 	 	$('#myTab .active').removeClass('active');
-	 	angular.forEach($rootScope.matterTabs, function(val, i){
+	 	angular.forEach($scope.matterTabs, function(val, i){
 	 		if(val._id == matter._id){
 	 			isOpened = true;
 	 			val.class = 'active';
@@ -51,81 +51,91 @@ angular.module('myApp.matterController', [])
 	 		}
 	 	});
 	 	if(!isOpened){
-	 		$rootScope.matterTabs.push({name:matter.matter.property.matter_name, _id:matter._id, class:'active'});
-	 		$rootScope.openedMatters.push(matter);
+	 		$scope.matterTabs.push({name:matter.matter.property.matter_name, _id:matter._id, class:'active'});
+	 		$scope.openedMatters.push(matter);
 	 	}
 
-	 	$rootScope.matterForm = matter.matter;
- 		$rootScope.partiesForm = matter.parties;
+	 	$scope.matterForm = matter.matter;
+ 		$scope.partiesForm = matter.parties;
 
-			for (var key in $rootScope.partiesForm) {
-				//console.log($rootScope.partiesForm[key]);
-				if($.isArray($rootScope.partiesForm[key])){
-					var arr = [];
-					angular.forEach($rootScope.partiesForm[key], function(val,i){
+		for (var key in $scope.partiesForm) {
+			//console.log($scope.partiesForm[key]);
+			if($.isArray($scope.partiesForm[key])){
+				var arr = [];
+				angular.forEach($scope.partiesForm[key], function(val,i){
+					if(val && val._id)
 						arr.push(val._id);
-					});
-					$rootScope.partiesForm[key] = arr;
-				} else {
-					$rootScope.partiesForm[key] = $rootScope.partiesForm[key]._id;
-				}
+					else
+						arr.push(null);
+				});
+				$scope.partiesForm[key] = arr;
+			} else {
+				if($scope.partiesForm[key] && $scope.partiesForm[key]._id)
+					$scope.partiesForm[key] = $scope.partiesForm[key]._id;
+				else
+					$scope.partiesForm[key] = null;
 			}
- 		// angular.forEach($rootScope.partiesForm, function(val, i){
- 		// 	console.log(val,i);
- 		// 	if($.isArray(val)){
- 		// 		angular.forEach($rootScope.partiesForm[i], function(v, x){
- 		// 			console.log($rootScope.partiesForm[i])
- 		// 		});
- 		// 	} else {
-
- 		// 	}
-
-
- 		// });
- 		$rootScope.activity = matter.activity;
- 		$rootScope.documents = matter.documents;
- 		$rootScope.matter_id = matter._id;
- 		$rootScope.matterTabShow = 'matterTab';
+		}
+ 		$scope.activity = matter.activity;
+ 		$scope.documents = matter.documents;
+ 		$scope.matter_id = matter._id;
+ 		$scope.matterTabShow = 'matterTab';
+ 		
+ 		$(".matterslist").removeClass("active");
+ 		$(".newmatter").removeClass("active");
+		setTimeout(function(){
+			$(".matter"+id).addClass('active');
+			$("#matterTab"+id).find("a").get(0).click();
+		},100);
 	 }
 
-	 $rootScope.showMatterTab = function(index){
+	 $scope.showMatterTab = function(index){
+	 	$scope.showTab='matter';
 	 	$('#myTab .active').removeClass('active');
-	 	var matter = $rootScope.openedMatters[index];
-	 	angular.forEach($rootScope.matterTabs, function(val, i){
+	 	$("#newMatter").removeClass('active');
+	 	$("#matterslist").removeClass("active");
+	 	$("#viewmatter").addClass('active');
+	 	var matter = $scope.openedMatters[index];
+	 	angular.forEach($scope.matterTabs, function(val, i){
 	 		if(val._id == matter._id){
-	 			$rootScope.matterTabs[i].class = 'active';
-			 	$rootScope.matterForm = matter.matter;
-		 		$rootScope.partiesForm = matter.parties;
-		 		$rootScope.activity = matter.activity;
-		 		$rootScope.documents = matter.documents;
-		 		$rootScope.matter_id = matter._id;
-		 		$rootScope.matterTabShow = 'matterTab';
+	 			$scope.matterTabs[i].class = 'active';
+			 	$scope.matterForm = matter.matter;
+		 		$scope.partiesForm = matter.parties;
+		 		$scope.activity = matter.activity;
+		 		$scope.documents = matter.documents;
+		 		$scope.matter_id = matter._id;
+		 		$scope.matterTabShow = 'matterTab';
 	 		} else {
 	 			val.class = '';
 	 		}
 	 	});
 	 }
 
-	 $rootScope.discardMatter = function(index){
-	 	$rootScope.matterTabs.splice(index, 1);
-	 	$rootScope.openedMatters.splice(index,1);
-	 	$rootScope.matterTabShow = 'listTab';
+	 $scope.discardMatter = function(index){
+	 	$scope.matterTabs.splice(index, 1);
+	 	$scope.openedMatters.splice(index,1);
+	 	$scope.matterTabShow = 'listTab';
 	 	$('#myTab #home').addClass('active');
 	 }
 
-	 $rootScope.updateMatter = function(){
+	 $scope.updateMatter = function(){
+	 	$scope.matterUpdateMessage = "Saving Matter.";
 	 	$http.post('/updateMatter', {
-			matter:$rootScope.matterForm,
-			parties:$rootScope.partiesForm,
-			activity:$rootScope.activity,
-			documents:$rootScope.documents,
-			matter_id:$rootScope.matter_id
+			matter:$scope.matterForm,
+			parties:$scope.partiesForm,
+			activity:$scope.activity,
+			documents:$scope.documents,
+			matter_id:$scope.matter_id
 		})
 		.success(function(data){
 			if(data.success){
-				console.log("matter saved");
+				$scope.matterUpdateMessage = "Matter Successfully Saved.";
+				setTimeout(function(){
+					$(".matterslist a").click();
+				},1000);
 			} else {
 				console.log(data);
+				$scope.matterUpdateMessage = "Please Try Again.";
 			}
 		})
 		.error(function(error){
@@ -133,18 +143,19 @@ angular.module('myApp.matterController', [])
 		});
 	 }
 
-	 $rootScope.showMatterList = function(){
+	 $scope.showMatterList = function(){
+	 	$scope.matterUpdateMessage = "";
 	 	$("#myTab .active").removeClass('active');
-	 	$rootScope.matterTabShow = 'listTab';
+	 	$scope.matterTabShow = 'listTab';
 	 	$("#home").addClass('active');
 	 }
 
-	 $rootScope.getMatters = function(){
-	 	$http.get('/getMatters/'+$rootScope.currentMatterType)
+	 $scope.getMatters = function(){
+	 	$http.get('/getMatters/'+$scope.currentMatterType)
 	 	.success(function(data){
 	 		if(data.success){
-	 			$rootScope.matters = data.matters;
-	 			$rootScope.getStartChars();
+	 			$scope.matters = data.matters;
+	 			$scope.getStartChars();
 	 		} else {
 	 			console.log(data);
 	 		}
@@ -154,32 +165,32 @@ angular.module('myApp.matterController', [])
 	 	})
 	 }
 
-	 $rootScope.startChars = [];
-	 $rootScope.filterChar = '';
-	 $rootScope.setFilterChar = function(ch){
-	 	$rootScope.filterChar = ch;
+	 $scope.startChars = [];
+	 $scope.filterChar = '';
+	 $scope.setFilterChar = function(ch){
+	 	$scope.filterChar = ch;
 	 }
-	 $rootScope.getStartChars = function(){
-	 	angular.forEach($rootScope.matters, function(val, i){
+	 $scope.getStartChars = function(){
+	 	angular.forEach($scope.matters, function(val, i){
 	 		var ch = val.matter.property.matter_name.charAt(0).toUpperCase();
 	 		var isFind = false;
-	 		angular.forEach($rootScope.startChars, function(val, i){
+	 		angular.forEach($scope.startChars, function(val, i){
 	 			if(ch == val)
 	 				isFind = true;
 	 		});
-	 		if(!isFind) $rootScope.startChars.push(ch);
+	 		if(!isFind) $scope.startChars.push(ch);
 	 	});
-	 	$rootScope.startChars.sort();
+	 	$scope.startChars.sort();
 	 }
 
-	 $rootScope.deleteMatter = function(id){
+	 $scope.deleteMatter = function(id){
 
 	 	$http.post('/deleteMatter', {id:id})
 	 	.success(function(data){
 	 		if(data.success){
-	 			angular.forEach($rootScope.matters, function(val, i){
+	 			angular.forEach($scope.matters, function(val, i){
 	 				if(val._id == id)
-	 					$rootScope.matters.splice(i, 1);
+	 					$scope.matters.splice(i, 1);
 	 			});
 	 		}
 	 	})
@@ -188,13 +199,13 @@ angular.module('myApp.matterController', [])
 	 	})
 	 }
 
-	 $rootScope.searchByChar = function(data){
+	 $scope.searchByChar = function(data){
 	 	console.log(data);
 	 }
 
-	$rootScope.downloadDocuments = function(){
+	$scope.downloadDocuments = function(){
 		var downloadedFiles = [];
-		angular.forEach($rootScope.documents, function(val, i){
+		angular.forEach($scope.documents, function(val, i){
 			if(val.is_checked){
 				downloadedFiles.push(val.document);
 
@@ -214,7 +225,7 @@ angular.module('myApp.matterController', [])
 		}
 	}
 
-	 $rootScope.getDateAndTime = function(date){
+	 $scope.getDateAndTime = function(date){
 
 	 	var system_date  = new Date(date);
 	 	var h = system_date.getHours();
@@ -231,7 +242,7 @@ angular.module('myApp.matterController', [])
 
 	 }
 
-	 $rootScope.getFormatedDate = function(date){
+	 $scope.getFormatedDate = function(date){
 
 	 	var system_date  = new Date(date);
 		var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
@@ -245,20 +256,20 @@ angular.module('myApp.matterController', [])
 
 	$http.get("/getUniqueNumber")
 	.success(function(data){
-		$rootScope.uniqueNumber = data.uniqueNumber;
-		$rootScope.matterForm.title.unique_number = data.uniqueNumber;
+		$scope.uniqueNumber = data.uniqueNumber;
+		$scope.matterForm.title.unique_number = data.uniqueNumber;
 	})
 	.error(function(error){
 		console.log(error);
 	});
 
-	$rootScope.showTab='matter';
+	$scope.showTab='matter';
 
-	$rootScope.openTab = function(tab){
-		$rootScope.showTab = tab;
+	$scope.openTab = function(tab){
+		$scope.showTab = tab;
 	}
 
-	$rootScope.matterForm = {
+	$scope.matterForm = {
 		property : {
 
 			matter_name:"",
@@ -311,7 +322,7 @@ angular.module('myApp.matterController', [])
 			mortgage_b_policy_amount:""
 		},
 		title:{
-			unique_number:$rootScope.uniqueNumber,
+			unique_number:$scope.uniqueNumber,
 			patriot:false,
 			air_resources:false,
 			bankruptcy:false,
@@ -332,7 +343,7 @@ angular.module('myApp.matterController', [])
 		type:"Open"
 	}
 
-	$rootScope.partiesForm = {
+	$scope.partiesForm = {
 		sellers : [null],
 		sellers_attorney:[null],
 		sellers_agent:[null],
@@ -352,29 +363,37 @@ angular.module('myApp.matterController', [])
 		closer:null
 	}
 
-	$rootScope.formData = new FormData();
+	$scope.formData = new FormData();
 
-	$rootScope.activity = [];
-	$rootScope.documents = [];
+	$scope.activity = [];
+	$scope.documents = [];
 
-	$rootScope.new_activity = {
+	$scope.new_activity = {
 		add_to_schedule:false,
 		date:new Date(),
-		time:new Date(),
+		time:new Date().getTime(),
 		activity:"",
-		remark:"",
+		remark:"ccc",
 		user:"Test"
 	};
 
-	$rootScope.new_document = {
+	$scope.new_document = {
 		name : "",
-		document:$rootScope.myFile,
+		document:$scope.myFile,
 		notes:"",
 		user : "test"
 	}
 
-	$rootScope.resetActivity = function(){
-		$rootScope.new_activity = {
+	$scope.saveActivity = function(isMatterExist){
+		$scope.activity.push($scope.new_activity);
+		$scope.resetActivity();
+		if(isMatterExist){
+			$scope.updateMatter();
+		}
+	}
+
+	$scope.resetActivity = function(){
+		$scope.new_activity = {
 			add_to_schedule:false,
 			date:new Date(),
 			time:new Date(),
@@ -382,27 +401,29 @@ angular.module('myApp.matterController', [])
 			remark:"",
 			user:"Test"
 		};
+		console.log($scope.new_activity);
+
 	}
 
 	$scope.editActivity = function(activity, index){
-		$rootScope.new_activity.add_to_schedule = activity.add_to_schedule;
-		$rootScope.new_activity.date = activity.date;
-		$rootScope.new_activity.time = activity.time;
-		$rootScope.new_activity.activity = activity.activity;
-		$rootScope.new_activity.remark = activity.remark;
-		$rootScope.new_activity.user = activity.user;
-		$rootScope.activityEditIndex = index;
+		$scope.new_activity.add_to_schedule = activity.add_to_schedule;
+		$scope.new_activity.date = activity.date;
+		$scope.new_activity.time = activity.time;
+		$scope.new_activity.activity = activity.activity;
+		$scope.new_activity.remark = activity.remark;
+		$scope.new_activity.user = activity.user;
+		$scope.activityEditIndex = index;
 	}
 
-	$rootScope.editDocument = function(d,index){
-		$rootScope.new_document.name = d.name;
-		$rootScope.new_document.notes = d.notes;
-		$rootScope.new_document.user = d.user;
-		$rootScope.documentEditIndex = index;
+	$scope.editDocument = function(d,index){
+		$scope.new_document.name = d.name;
+		$scope.new_document.notes = d.notes;
+		$scope.new_document.user = d.user;
+		$scope.documentEditIndex = index;
 	}
 
-	$rootScope.resetDocument = function(){
-		$rootScope.new_document = {
+	$scope.resetDocument = function(){
+		$scope.new_document = {
 			name : "",
 			document:"",
 			notes:"",
@@ -410,33 +431,37 @@ angular.module('myApp.matterController', [])
 		}
 	}
 
-	$rootScope.saveMatter = function(){
+	$scope.saveMatter = function(){
 		$http.post('/saveMatter', {
-			matter:$rootScope.matterForm,
-			parties:$rootScope.partiesForm,
-			activity:$rootScope.activity,
-			documents:$rootScope.documents
+			matter:$scope.matterForm,
+			parties:$scope.partiesForm,
+			activity:$scope.activity,
+			documents:$scope.documents
 		})
 		.success(function(data){
+			
 			if(data.success){
-				console.log("matter saved");
-				$rootScope.matter_form_submited = false;
-				$rootScope.parties_form_submiter = false;
+				$scope.matterUpdateMessage = "Matter Successfully Saved.";
+				$scope.matter_form_submited = false;
+				$scope.parties_form_submiter = false;
+				setTimeout(function(){
+					$(".matterslist a").click();
+				},1000);
 			} else {
-				console.log(data);
+				$scope.matterUpdateMessage = "Please Try Again.";
 			}
-			$rootScope.getMatters();
+			$scope.getMatters();
 		})
 		.error(function(error){
 			console.log(error);
 		});
 	}
 
-	$rootScope.getContacts = function(){
+	$scope.getContacts = function(){
 	    $http.get('/getContacts')
 	    .success(function(data){
 	    	if (data.success) {
-    			$rootScope.contactes = data.contactes;
+    			$scope.contactes = data.contactes;
     		}
 	    })
 	    .error(function(error){
@@ -445,134 +470,134 @@ angular.module('myApp.matterController', [])
 	}
 
 
-	$scope.items=["item1","item2","item3"],
+	// $scope.items=["item1","item2","item3"],
 
 
-	$scope.open = function(templateUrl,index,type) {
-		if (type== "phonetype"){
-			$rootScope.phonepop = $rootScope.phones[index];
-		};
-		if (type == "addresstype") {
-				$rootScope.addresspop = $rootScope.matterForm.property.addreses[index];
-			};
-		var modalInstance;
-		modalInstance=$modal.open({
-			templateUrl:templateUrl, controller:"ModalInstanceCtrl", 
-			resolve:{
-				items:function(){
-					return $scope.items
-				}
-			}
-		}), modalInstance.result.then(function(selectedItem){
-			$scope.selected=selectedItem
-		}, function(){
-        		//$log.info("Modal dismissed at: "+new Date)
-        }
-    )};
+	// $scope.open = function(templateUrl,index,type) {
+	// 	if (type== "phonetype"){
+	// 		$scope.phonepop = $scope.phones[index];
+	// 	};
+	// 	if (type == "addresstype") {
+	// 			$scope.addresspop = $scope.matterForm.property.addreses[index];
+	// 		};
+	// 	var modalInstance;
+	// 	modalInstance=$modal.open({
+	// 		templateUrl:templateUrl, controller:"ModalInstanceCtrl", 
+	// 		resolve:{
+	// 			items:function(){
+	// 				return $scope.items
+	// 			}
+	// 		}
+	// 	}), modalInstance.result.then(function(selectedItem){
+	// 		$scope.selected=selectedItem
+	// 	}, function(){
+ //        		//$log.info("Modal dismissed at: "+new Date)
+ //        }
+ //    )};
 
 
-	$rootScope.partiesFormSubmit = function(form){
-		//$rootScope.parties_form_submiter = true;
+	$scope.partiesFormSubmit = function(form){
+		//$scope.parties_form_submiter = true;
 		//if(form.$valid){
-			$rootScope.openTab('activity');
+			$scope.openTab('activity');
 		//}
 	}
 
-	$rootScope.addAitionalFiel = function(key){
-   		$rootScope.partiesForm.additionalfields.push({key:key,value:""});
+	$scope.addAitionalFiel = function(key){
+   		$scope.partiesForm.additionalfields.push({key:key,value:""});
     }
 
-    $rootScope.addAddress = function(){
-    	$rootScope.matterForm.property.addreses.push({});
+    $scope.addAddress = function(){
+    	$scope.matterForm.property.addreses.push({});
     }
 
     $scope.removeAddress = function(index){
-		$rootScope.matterForm.property.addreses.splice(index,1);
+		$scope.matterForm.property.addreses.splice(index,1);
 	}
 
-    $rootScope.removeAdditionalField = function(index){
-		$rootScope.partiesForm.additionalfields.splice(index,1);
+    $scope.removeAdditionalField = function(index){
+		$scope.partiesForm.additionalfields.splice(index,1);
 	}
 
-	$rootScope.matterFormSubmit = function(form){
-		//$rootScope.matter_form_submited = true;
+	$scope.matterFormSubmit = function(form){
+		//$scope.matter_form_submited = true;
 		//if(form.$valid){
-			$rootScope.openTab('parties');
+			$scope.openTab('parties');
 		//}
 	}
 
-	$rootScope.addSeller = function(){
-		$rootScope.partiesForm.sellers.push(null);
-		$rootScope.matterForm.property.no_of_salers = $rootScope.partiesForm.sellers.length;
+	$scope.addSeller = function(){
+		$scope.partiesForm.sellers.push(null);
+		$scope.matterForm.property.no_of_salers = $scope.partiesForm.sellers.length;
 	}
 
-	$rootScope.addBuyers = function(){
-		$rootScope.partiesForm.buyers.push(null);
-		$rootScope.matterForm.property.no_of_buyers = $rootScope.partiesForm.buyers.length;
+	$scope.addBuyers = function(){
+		$scope.partiesForm.buyers.push(null);
+		$scope.matterForm.property.no_of_buyers = $scope.partiesForm.buyers.length;
 	}
 
-	$rootScope.removeSeller = function(index){
-		$rootScope.partiesForm.sellers.splice(index, 1);
-		$rootScope.matterForm.property.no_of_salers = $rootScope.partiesForm.sellers.length;
+	$scope.removeSeller = function(index){
+		$scope.partiesForm.sellers.splice(index, 1);
+		$scope.matterForm.property.no_of_salers = $scope.partiesForm.sellers.length;
 	}
 
-	$rootScope.removeBuyer = function(index){
-		$rootScope.partiesForm.buyers.splice(index, 1);
-		$rootScope.matterForm.property.no_of_buyers = $rootScope.partiesForm.buyers.length;
+	$scope.removeBuyer = function(index){
+		$scope.partiesForm.buyers.splice(index, 1);
+		$scope.matterForm.property.no_of_buyers = $scope.partiesForm.buyers.length;
 	}
 
-	$rootScope.setSellersLength = function(){
-		$rootScope.partiesForm.sellers = [];
-		for(var x = 0; x < $rootScope.matterForm.property.no_of_salers; x++){
-			$rootScope.partiesForm.sellers.push(null);
+	$scope.setSellersLength = function(){
+		$scope.partiesForm.sellers = [];
+		for(var x = 0; x < $scope.matterForm.property.no_of_salers; x++){
+			$scope.partiesForm.sellers.push(null);
 		}
 	}
 
-	$rootScope.setBuyersLength = function(){
-		$rootScope.partiesForm.buyers = [];
-		for(var x = 0; x < $rootScope.matterForm.property.no_of_buyers; x++){
-			$rootScope.partiesForm.buyers.push(null);
+	$scope.setBuyersLength = function(){
+		$scope.partiesForm.buyers = [];
+		for(var x = 0; x < $scope.matterForm.property.no_of_buyers; x++){
+			$scope.partiesForm.buyers.push(null);
 		}
-		console.log($rootScope.partiesForm.buyers);
+		console.log($scope.partiesForm.buyers);
 	}
 
-	$rootScope.addSellerAgent = function(){
-		$rootScope.partiesForm.sellers_agent.push(null);
+	$scope.addSellerAgent = function(){
+		$scope.partiesForm.sellers_agent.push(null);
 	}
 
-	$rootScope.addSellerAttorney = function(){
-		$rootScope.partiesForm.sellers_attorney.push(null);
+	$scope.addSellerAttorney = function(){
+		$scope.partiesForm.sellers_attorney.push(null);
 	}
 
-	$rootScope.removeSellerAgent = function(index){
-		$rootScope.partiesForm.sellers_agent.splice(index,1);
+	$scope.removeSellerAgent = function(index){
+		$scope.partiesForm.sellers_agent.splice(index,1);
 	}
 
-	$rootScope.removeSellerAttorney = function(index){
-		$rootScope.partiesForm.sellers_attorney.splice(index,1);
+	$scope.removeSellerAttorney = function(index){
+		$scope.partiesForm.sellers_attorney.splice(index,1);
 	}
 
-	$rootScope.addBuyersAgent = function(){
-		$rootScope.partiesForm.buyers_agent.push(null);
+	$scope.addBuyersAgent = function(){
+		$scope.partiesForm.buyers_agent.push(null);
 	}
 
-	$rootScope.addBuyersAttorney = function(){
-		$rootScope.partiesForm.buyers_attorney.push(null);
+	$scope.addBuyersAttorney = function(){
+		$scope.partiesForm.buyers_attorney.push(null);
 	}
 
-	$rootScope.removeBuyersAgent = function(index){
-		$rootScope.partiesForm.buyers_agent.splice(index,1);
+	$scope.removeBuyersAgent = function(index){
+		$scope.partiesForm.buyers_agent.splice(index,1);
 	}
 
-	$rootScope.removeBuyersAttorney = function(index){
-		$rootScope.partiesForm.buyers_attorney.splice(index,1);
+	$scope.removeBuyersAttorney = function(index){
+		$scope.partiesForm.buyers_attorney.splice(index,1);
 	}
 
-	$rootScope.getAttornies = function(){
+	$scope.getAttornies = function(){
 		$http.post('/getContact',{category_id : 3})
 	    .success(function(data){
 	    	if (data) {
-	    			$rootScope.attorneys = data.data;
+	    			$scope.attorneys = data.data;
 	    		}
 	    })
 	    .error(function(error){
@@ -582,6 +607,8 @@ angular.module('myApp.matterController', [])
 
 	$scope.newMatter = function(){
 		$scope.isNewMatter = true;
+		$scope.clearMatterForm();
+		$scope.showTab='matter';
 		$(".matterslist").removeClass("active");
 		setTimeout(function(){
 			$(".newmatter a").click();
@@ -603,7 +630,7 @@ angular.module('myApp.matterController', [])
 	}
 
 	$scope.clearMatterForm = function(){
-		$rootScope.matterForm = {
+		$scope.matterForm = {
 			property : {
 				matter_name:"",
 				sales_type:"",
@@ -655,7 +682,7 @@ angular.module('myApp.matterController', [])
 				mortgage_b_policy_amount:""
 			},
 			title:{
-				unique_number:$rootScope.uniqueNumber,
+				unique_number:$scope.uniqueNumber,
 				patriot:false,
 				air_resources:false,
 				bankruptcy:false,
@@ -676,13 +703,13 @@ angular.module('myApp.matterController', [])
 			type:"Open"
 		}
 
-		$rootScope.partiesForm = {
-			sellers : [""],
-			sellers_attorney:[""],
-			sellers_agent:[""],
-			buyers : [""],
-			buyers_attorney:[""],
-			buyers_agent:[""],
+		$scope.partiesForm = {
+			sellers : [null],
+			sellers_attorney:[null],
+			sellers_agent:[null],
+			buyers : [null],
+			buyers_attorney:[null],
+			buyers_agent:[null],
 			lender:null,
 			lender_attorney:null,
 			lender_agent:null,
@@ -696,24 +723,25 @@ angular.module('myApp.matterController', [])
 			closer:null
 		}
 
-		$rootScope.formData = new FormData();
+		$scope.formData = new FormData();
 
-		$rootScope.activity = [];
+		$scope.activity = [];
 
-		$rootScope.documents = [];
+		$scope.documents = [];
 
-		$rootScope.new_activity = {
+		$scope.new_activity = {
 			add_to_schedule:false,
 			date:new Date(),
 			time:new Date(),
 			activity:"",
-			remark:"",
+			remark:"ccc",
 			user:"Test"
 		};
 
-		$rootScope.new_document = {
+
+		$scope.new_document = {
 			name : "",
-			document:$rootScope.myFile,
+			document:$scope.myFile,
 			notes:"",
 			user : "test"
 		}

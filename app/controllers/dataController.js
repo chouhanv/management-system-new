@@ -87,7 +87,7 @@ dataController.saveMatter = function(){
 			} else if(!matter){
 				th.res.json({success:false, message:"Error in processing request"});
 			} else {
-				th.res.json({success:false, message:"matter created", matter:matter});
+				th.res.json({success:true, message:"matter created", matter:matter});
 			}
 		});
 	} else {
@@ -149,7 +149,7 @@ dataController.updateMatter = function(){
 			if(error){
 				th.res.json({success:false, message:"Error in processing."});
 			} else if(status){
-				th.res.json({success:false, message:"Matter updated"});
+				th.res.json({success:true, message:"Matter updated"});
 			} else {
 				th.res.json({success:false, message:"Matter can not be updated, please try again."});
 			}
