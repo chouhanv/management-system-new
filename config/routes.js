@@ -29,8 +29,9 @@ module.exports = function routes() {
   this.post('/updateMatter', 'data#updateMatter');
   this.post('/download/documents', 'data#downloadDocuments');
   this.post('/deleteMatter', 'data#deleteMatter');
-  this.post('/saveSchedule', 'data#saveSchedule');
 
+  this.post('/saveSchedule', 'data#saveSchedule');
+  this.post('/deleteSchedule', 'data#deleteSchedule');
   this.get('/getSchedules', 'data#getSchedules');
 
   this.get('/getContacts', 'data#getContacts');

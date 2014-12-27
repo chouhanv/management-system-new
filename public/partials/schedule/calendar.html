@@ -18,7 +18,6 @@
                         </div>                                                                                
                     </div>
                     <!-- END CONTENT FRAME TOP -->
-                    
                     <!-- START CONTENT FRAME LEFT -->
                     <div class="content-frame-left">
                         <h4>New Event</h4>
@@ -58,13 +57,96 @@
                             <div class="col-md-12">
                                 <div id="alert_holder"></div>
                                 <div class="calendar">                                
-                                    <div id="calendar" calendar></div>                            
+                                    <div id="calendar" data-ng-init="getSchedules()"></div>                            
                                 </div>
                             </div>
                         </div>
                         
                     </div>                    
                     <!-- END CONTENT FRAME BODY -->
-                    
                 </div>               
                 <!-- END CONTENT FRAME -->
+
+                <a href="javascript:;" class="btn btn-default modal_calender" style="display:none" newSchedule data-toggle="modal" data-target="#modal_calender">Small</a>
+
+                <div class="modal" id="modal_calender" tabindex="-1" role="dialog" aria-labelledby="smallModalHead" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background:white; border-bottom:none;">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="smallModalHead">New Schedule</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        When :
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{getDateAndTime(newSchedule.start)}}
+                                        
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        What :
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" ng-model="newSchedule.title">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="background:white; border-top:none; text-align:right">
+                                <button type="button" ng-click="saveSchedule()" class="btn btn-primary" data-dismiss="modal">Save Schedule</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="javascript:;" class="btn btn-default modal_calender_edit" style="display:none" newSchedule data-toggle="modal" data-target="#modal_calender_edit">Small</a>
+
+                <div class="modal" id="modal_calender_edit" tabindex="-1" role="dialog" aria-labelledby="smallModalHead" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background:white; border-bottom:none;">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="smallModalHead">Schedule</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        When :
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <span style="cursor:pointer" ng-show="!isEditSchedule" ng-click="editSchedule()">{{getDateAndTime(newSchedule.start)}}</span>
+                                        <div class="input-group" ng-show="isEditSchedule">
+                                             <input datepicker type="text" class="form-control "data-date-format="MM-dd-yyyy" data-date-viewmode="months" ng-model="newSchedule.start"/>
+                                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        What :
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="form-group">
+                                            <input type="text" ng-if="isEditSchedule" class="form-control" ng-model="newSchedule.title"> 
+                                            <span style="cursor:pointer" ng-click="editSchedule();" ng-if="!isEditSchedule">{{newSchedule.title}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="background:white; border-top:none; text-align:right">
+                                <a href="javascript:;" ng-if="!isEditSchedule" ng-click="editSchedule()">Edit</a> &nbsp
+                                <button type="button" ng-show="isEditSchedule" class="btn btn-danger" data-dismiss="modal" ng-click="deleteSchedule()">Delete</button>
+                                <button type="button" ng-click="saveSchedule()" ng-show="isEditSchedule" class="btn btn-primary" data-dismiss="modal">Save Schedule</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>        
+
+                <!-- EOF MODALS -->

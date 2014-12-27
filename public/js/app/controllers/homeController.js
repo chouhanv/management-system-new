@@ -130,6 +130,72 @@ angular.module('myApp.homeController', [])
         }).disableSelection();
         
     }
+
+        $rootScope.convertTime = function(date){
+        var system_date  = Date.parse(date);;
+        var user_date = new Date();
+        var diff = Math.floor((user_date - system_date) / 1000);
+        if (diff <= 1) {return "just now";}
+        if (diff < 20) {return diff + " seconds ago";}
+        if (diff < 40) {return "half a minute ago";}
+        if (diff < 60) {return "less than a minute ago";}
+        if (diff <= 90) {return "one minute ago";}
+        if (diff <= 3540) {return Math.round(diff / 60) + " minutes ago";}
+        if (diff <= 5400) {return "1 hour ago";}
+        if (diff <= 86400) {return Math.round(diff / 3600) + " hours ago";}
+        if (diff <= 129600) {return "1 day ago";}
+        if (diff < 604800) {return Math.round(diff / 86400) + " days ago";}
+        if (diff <= 777600) {return "1 week ago";}
+        return "on " + date.split("T")[0];
+      };
+
+     $rootScope.getTimeFromDate = function(date){
+        var system_date  = new Date(date.toLocaleString());
+        var h = system_date.getHours();
+        var m = system_date.getMinutes();
+        return h > 12 ? (h-12 + ":" + (m > 9 ? m : 0+""+m) + " PM"):(h + ":" + (m > 9 ? m : 0+""+m) + " AM");
+     }
+
+     $rootScope.getDateAndTime = function(date){
+        if(date){
+
+            var system_date  = new Date(date.toString());
+            var h = system_date.getHours();
+            var m = system_date.getMinutes();
+
+            var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
+            var curr_date = system_date.getDate();
+            var curr_month = system_date.getMonth();
+            var curr_year = system_date.getFullYear();
+            
+            return (m_names[curr_month]  + " " + curr_date + ", " +  curr_year) + " " + (h > 12 ? (h-12 + ":" + (m > 9 ? m : 0+""+m) + " PM"):(h + ":" + (m > 9 ? m : 0+""+m) + " AM"));
+
+        } else {
+            var d = new Date();
+            var h = d.getHours();
+            var m = d.getMinutes();
+            var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+            var curr_date = d.getDate();
+            var curr_month = d.getMonth();
+            var curr_year = d.getFullYear();
+            
+            return (m_names[curr_month]  + " " + curr_date + ", " +  curr_year) + " " + (h > 12 ? (h-12 + ":" + (m > 9 ? m : 0+""+m) + " PM"):(h + ":" + (m > 9 ? m : 0+""+m) + " AM"));
+        }
+     }
+
+
+     $rootScope.getFormatedDate = function(date){
+
+        var system_date  = new Date(date);
+        var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        var curr_date = system_date.getDate();
+        var curr_month = system_date.getMonth();
+        var curr_year = system_date.getFullYear();
+
+        return (curr_date+"-"+m_names[curr_month]+"-"+curr_year);
+
+     }
 	
 });
 

@@ -851,63 +851,8 @@
 		                    <a href="javascript:;" style="cursor:pointer" class="btn btn-default" data-toggle="modal" data-target="#modal_basic">
 		                    	+
 		                    </a>
-		                        <div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
-							        <div class="modal-dialog">
-							            <div class="modal-content">
-							                <div class="modal-header">
-							                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" ng-click="resetActivity()">Close</span></button>
-							                    <h4 class="modal-title" id="defModalHead">Activity</h4>
-							                </div>
-							                <div class="modal-body">
-							                    <div class="row">
-							                    	<div class="col-sm-4">
-							                    		<div class="input-group" >
-							                                <input datepicker type="text" class="form-control"data-date-format="MM-dd-yyyy" data-date-viewmode="months" ng-model="new_activity.date"/>
-							                                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-							                            </div>
-							                    	</div>
-							                    	<div class="col-sm-4">
-							                    		<div class="input-group bootstrap-timepicker">
-							                                <input type="text" ng-model="new_activity.time" class="form-control timepicker" timepicker/>
-							                                <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
-							                            </div>
-							                    	</div>
-							                    	<div class="col-sm-4">
-							                    		<label class="check"><input type="checkbox" class="icheckbox" ng-model="new_activity.add_to_schedule" icheck/> Add To Schedule</label>
-							                    	</div>
-							                    </div>
-							                    <br><br>{{new_activity}}
-							                    <div class="row">
-							                    	<div class="col-sm-12">
-							                    		<div class="form-group">
-							                    			<select ng-select class="form-control" ng-model="new_activity.activity">
-							                    				<option value="">--Activity type--</option>
-							                    				<option value="Initial Contact">Initial Contact</option>
-							                    				<option value="First Meeting">First Meeting</option>
-							                    				<option value="Contract Received">Contract Received</option>
-							                    				<option value="Contract Signed">Contract Signed</option>
-							                    			</select>
-							                    		</div>
-							                    	</div>
-							                    </div>
-							                    <br><br>
-							                    <div class="row">
-							                    	<div class="col-sm-12">
-							                    		<textarea class="summernote" texteditor ng-model="new_activity.remark"></textarea>
-							                    		<!-- <wysiwyg textarea-id="question" textarea-class="form-control"  textarea-height="180px" textarea-name="textareaQuestion" textarea-required ng-model="new_activity" enable-bootstrap-title="true"></wysiwyg> -->
-							                    	</div>
-							                    </div>
-							                </div>
-							                <div class="modal-footer">
-							                	<button type="button" class="btn btn-default" ng-click="saveActivity(false)" data-dismiss="modal">Save</button>
-							                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							                </div>
-							            </div>
-							        </div>
-							    </div>
-
 		              </div>
-		              <div class="row">
+		              <!-- <div class="row">
 		              	<div class="col-sm-1">
 		              		<div class="form-group">
 				              	<select ng-select class="form-control" ng-model="sortActivity">
@@ -920,23 +865,24 @@
 				              	</select>
 				            </div>
 		              	</div>
-		              </div>
+		              </div> -->
 		              <div class="row">
-		              	<div class="col-sm-6">
-		              		<table class="table" data-ng-init="selectedActivityToShowRemark=''">
-				                <tr ng-click="selectedActivityToShowRemark=a" ng-repeat="a in activity | orderBy:sortActivity:reverse">
-				                  <td>{{getFormatedDate(a.date)}}</td>
-				                  <td>{{getTimeFromDate(a.time)}}</td>
-				                  <td>{{a.activity}}</td>
-				                  <td>{{a.remark}}</td>
-				                  <td></td>
+		              	<div class="col-sm-10">
+		              		<table class="table">
+				                <tr ng-repeat="a in activity | orderBy:sortActivity:reverse">
+				                  <td>{{a.date}}</td>
+				                  <td>{{a.time}}</td>
+				                  <td><span>{{a.activity}}</span></td>
 				                  <td>{{a.user}}</td>
+				                  <td dynamic="a.remark"></td>
 				                </tr>
 				            </table>
-		              	</div>{{selectedActivityToShowRemark}}
-		              	<div class="col-sm-6">
-		              		<textarea class="summernote" texteditor ng-if="selectedActivityToShowRemark" ng-model="selectedActivityToShowRemark.remark"></textarea>
 		              	</div>
+		              	<!-- <div class="col-sm-6">
+		              		<div class="form-group activity-remark">
+		              		{{remarkShow}}
+		              		</div>
+		              	</div> -->
 		              </div>
 		              <div class="form-group" style="float:right">
 		                <button type="button" class="btn btn-primary" ng-click="openTab('parties')"><i class="fa  fa-long-arrow-left"></i>Previous</button>
@@ -946,13 +892,15 @@
 
 		            <div class="form-group" ng-show="showTab=='documents'">
 		              <h3>Documents</h3>
-
-		              <div class="form-group">
-		                    <i ng-click="open('document_popup.html')" class="fa fa-2x fa-plus-square" style="cursor:pointer"></i>
-		                    <i class="fa fa-2x fa-cloud-download" ng-click="downloadDocuments"></i>
+		              <div class="row">
+		              	<div class="col-sm-1">
+		              		<a href="javascript:;" style="cursor:pointer" class="btn btn-default" data-toggle="modal" data-target="#modal_document">
+		                    	+
+		                    </a>
+		              	</div>
 		              </div>
 		              <table class="table">
-		                <tr ng-repeat="d in documents track by $index">
+		                <tr ng-repeat="d in documents track by $index | orderBy:sortActivity:reverse">
 		                  <td>
 		                      <input type="checkbox" name="is_checked" ng-model="document.is_checked">
 		                  </td>
@@ -1491,10 +1439,9 @@
 
 		                    <div class="form-group" ng-repeat="(i, seler) in partiesForm.sellers track by $index">
 		                      <ng-form name="innerForm">
-		                        
 		                        <select ng-select class="form-control" name="sellers" ng-model="partiesForm.sellers[i]" required>
 		                          <option value="">--Select--</option>
-		                          <option ng-repeat="client in allContactes" ng-selected="partiesForm.sellers[i] == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
+		                          <option ng-repeat="client in allContactes" ng-selected="seler == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
 		                       </select>
 		                       <i class="fa  fa-close" ng-click="removeSeller(i)"></i>
 		                        <span class="help-block form-error" ng-show="innerForm.sellers.$error.required && parties_form_submiter">Required*.</span>
@@ -1726,19 +1673,48 @@
 
 		            <div class="form-group" ng-show="showTab=='activity'">
 		              <h3>Activity</h3>
-		              <div class="form-group">
-		                    <i ng-click="open('activity_popup.html')" class="fa fa-2x fa-plus-square" style="cursor:pointer"></i> 
+		              <div class="row">
+		              	<div class="col-sm-1">
+		              		 <a href="javascript:;" style="cursor:pointer" class="btn btn-default" data-toggle="modal" data-target="#modal_basic">
+		                    	+
+		                    </a>
+		              	</div>
+		              	<div class="col-sm-1">
+		              		<div class="form-group">
+				              	<select ng-select class="form-control" ng-model="sortActivity">
+				              		<option value="">Sort By</option>
+				              		<option value="add_to_schedule">Schedule</option>
+				              		<option value="-date">Date</option>
+				              		<option value="time">Time</option>
+				              		<option value="user">User</option>
+				              		<option value="remark">Remark</option>
+				              	</select>
+				            </div>
+		              	</div>
 		              </div>
-		              <table class="table">
-		                <tr ng-repeat="a in activity">
-		                  <td>{{getFormatedDate(a.date)}}</td>
-		                  <td>{{getTimeFromDate(a.time)}}</td>
-		                  <td>{{a.activity}}</td>
-		                  <td>{{a.remark}}</td>
-		                  <td></td>
-		                  <td>{{a.user}}</td>
-		                </tr>
-		              </table>
+		              <div class="row">
+		              	<div class="col-sm-10">
+		              		<table class="table">
+				                <tr ng-repeat="a in activity track by $index | orderBy:sortActivity:reverse" showeditlink>
+				                  <td>{{a.date}}</td>
+				                  <td>{{a.time}}</td>
+				                  <td><span>{{a.activity}}</span></td>
+				                  <td>{{a.user}}</td>
+				                  <td>
+				                  <a style="display:none;" ng-click="editActivity(a, $index);" href="javascript:;" style="cursor:pointer" data-toggle="modal" data-target="#modal_basic_edit">
+				                    	Edit
+				                    </a>
+				                  </td>
+				                  <td dynamic="a.remark"></td>
+				                </tr>
+				            </table>
+		              	</div>
+		              	<!-- <div class="col-sm-6">
+		              		<div class="form-group activity-remark">
+		              		{{remarkShow}}
+		              		</div>
+		              	</div> -->
+		              </div>
 		              <div class="form-group" style="float:right">
 		                <button type="button" class="btn btn-primary" ng-click="openTab('parties')"><i class="fa  fa-long-arrow-left"></i>Previous</button>
 		                <button type="submit" ng-click="openTab('documents')" class="btn btn-primary">Next <i class="fa  fa-long-arrow-right"></i></button>
@@ -1747,15 +1723,29 @@
 
 		            <div class="form-group" ng-show="showTab=='documents'">
 		              <h3>Documents</h3>
-
-		              <div class="form-group">
-		                    <i ng-click="open('document_popup.html')" class="fa fa-2x fa-plus-square" style="cursor:pointer"></i>
-		                    <i class="fa fa-2x fa-cloud-download" ng-click="downloadDocuments"></i>
+		              <div class="row">
+		              	<div class="col-sm-1">
+		              		<a href="javascript:;" style="cursor:pointer" class="btn btn-default" data-toggle="modal" data-target="#modal_document">
+		                    	+
+		                    </a>
+		                    <i class="fa fa-2x fa-cloud-download" ng-click="downloadDocuments()"></i>
+		              	</div>
+		              	<div class="col-sm-2">
+		              		<div class="form-group">
+				              	<select ng-select class="form-control" ng-model="sortDocument">
+				              		<option value="">Sort By</option>
+				              		<option value="-date">Date</option>
+				              		<option value="user">User</option>
+				              		<option value="name">Name</option>
+				              		<option value="notes">Notes</option>
+				              	</select>
+				            </div>
+		              	</div>
 		              </div>
 		              <table class="table">
-		                <tr ng-repeat="d in documents track by $index">
+		                <tr ng-repeat="d in documents track by $index | orderBy:sortActivity:reverse">
 		                  <td>
-		                      <input type="checkbox" name="is_checked" ng-model="document.is_checked">
+		                      <input type="checkbox" name="is_checked" ng-model="d.is_checked">
 		                  </td>
 		                  <td>{{d.name}}</td>
 		                  <td>{{d.notes}}</td>
@@ -1765,7 +1755,7 @@
 		              <div class="form-group" style="text-align:right">{{matterUpdateMessage}}</div>
 		              <div class="form-group" style="float:right">
 		                <button type="button" class="btn btn-primary" ng-click="openTab('activity')"><i class="fa fa-long-arrow-left"></i> Previous</button>
-		                <button type="button" class="btn btn-success" ng-click="updateMatter()">Update Matter</button>
+		                <button type="button" class="btn btn-success" ng-click="updateMatter(true)">Save Matter</button>
 		              </div>
 		            </div>
 				</div>
@@ -1776,3 +1766,161 @@
     <!-- END TABS -->          
 
 
+    <div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" ng-click="resetActivity()">Close</span></button>
+                    <h4 class="modal-title" id="defModalHead">Activity</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                    	<div class="col-sm-4">
+                    		<div class="input-group">
+                                <input datepicker type="text" id="activity_date" class="form-control"data-date-format="MM-dd-yyyy" data-date-viewmode="months" ng-model="new_activity.date"/>
+                                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                    	</div>
+                    	<div class="col-sm-4">
+                    		<div class="input-group bootstrap-timepicker" style="z-index:9999;">
+                                <input type="text" id="activity_time" ng-model="new_activity.time" class="form-control" timepicker/>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                            </div>
+                    	</div>
+                    	<div class="col-sm-4">
+                    		<label class="check"><input id="activity_schedule" type="checkbox" class="icheckbox" ng-model="new_activity.add_to_schedule" icheck/> Add To Schedule</label>
+                    	</div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                    	<div class="col-sm-12">
+                    		<div class="form-group">
+                    			<select ng-select class="form-control" id="activity_type" ng-model="new_activity.activity">
+                    				<option value="">--Activity type--</option>
+                    				<option value="Initial Contact">Initial Contact</option>
+                    				<option value="First Meeting">First Meeting</option>
+                    				<option value="Contract Received">Contract Received</option>
+                    				<option value="Contract Signed">Contract Signed</option>
+                    			</select>
+                    		</div>
+                    	</div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                    	<div class="col-sm-12">
+                    		<textarea class="summernote" id="activity_remark" texteditor ng-model="new_activity.remark"></textarea>
+                    		<!-- <wysiwyg textarea-id="question" textarea-class="form-control"  textarea-height="180px" textarea-name="textareaQuestion" textarea-required ng-model="new_activity" enable-bootstrap-title="true"></wysiwyg> -->
+                    	</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                	<button type="button" class="btn btn-default" ng-click="saveActivity(false)" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal" id="modal_basic_edit" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" id="close-edited-activity" ng-click="resetActivity()">Close</span></button>
+                    <h4 class="modal-title" id="defModalHead">Activity</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                    	<div class="col-sm-4">
+                    		<div class="input-group">
+                                <input datepicker type="text" id="activity_date" class="form-control"data-date-format="MM-dd-yyyy" data-date-viewmode="months" ng-model="new_activity.date"/>
+                                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                    	</div>
+                    	<div class="col-sm-4">
+                    		<div class="input-group bootstrap-timepicker">
+                                <input type="text" id="activity_time" ng-model="new_activity.time" class="form-control" timepicker/>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                            </div>
+                    	</div>
+                    	<div class="col-sm-4">
+                    		<label class="check"><input id="activity_schedule" type="checkbox" class="icheckbox" ng-model="new_activity.add_to_schedule" icheck/> Add To Schedule</label>
+                    	</div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                    	<div class="col-sm-12">
+                    		<div class="form-group">
+                    			<select ng-select class="form-control" id="activity_type" ng-model="new_activity.activity">
+                    				<option value="">--Activity type--</option>
+                    				<option value="Initial Contact">Initial Contact</option>
+                    				<option value="First Meeting">First Meeting</option>
+                    				<option value="Contract Received">Contract Received</option>
+                    				<option value="Contract Signed">Contract Signed</option>
+                    			</select>
+                    		</div>
+                    	</div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                    	<div class="col-sm-12">
+                    		<textarea class="summernote" id="activity_remark" texteditor ng-model="new_activity.remark"></textarea>
+                    		<!-- <wysiwyg textarea-id="question" textarea-class="form-control"  textarea-height="180px" textarea-name="textareaQuestion" textarea-required ng-model="new_activity" enable-bootstrap-title="true"></wysiwyg> -->
+                    	</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                	<button type="button" class="btn btn-default" ng-click="updateActivity()" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="modal" id="modal_document" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" id="close-document-model" ng-click="resetDocument()">Close</span></button>
+                    <h4 class="modal-title" id="defModalHead">Document</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                    	<div class="col-sm-12">
+                    		<div class="form-group">
+                    			<input type="text" placeholder="Document Name" class="form-control" ng-model="new_document.name">
+                    		</div>
+                    	</div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                    	<div class="col-sm-12">
+                    		<textarea id="document_remark" class="form-control" placeholder="Document Notes" ng-model="new_document.notes"></textarea>
+                    	</div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                    	<div class="col-sm-12">
+                    		<input type="file" name="file" id="file" class="fileinput" class="btn btn-default"/>
+                    	</div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                	<div class="row">
+                		<div class="col-sm-10" style="text-align:left">
+                			{{fileUploadMessage}}
+                		</div>
+                		<div class="col-sm-2">
+                			<button type="button" class="btn btn-default" ng-click="saveDocument(false)">Save</button>
+                		</div>
+                		
+                	</div>
+                </div>
+            </div>
+        </div>
+    </div>

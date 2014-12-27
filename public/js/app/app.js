@@ -9,7 +9,9 @@ var myApp = angular.module('myApp', [
   'myApp.sidebarController',
   'myApp.homeController',
   'myApp.contactController',
-  'myApp.matterController'
+  'myApp.matterController',
+  'myApp.ScheduleAndTaskController',
+  'myApp.usersController'
 ]);
 myApp.config(function($stateProvider, $urlRouterProvider) {
   console.log("test");
@@ -24,13 +26,11 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     // })
     .state('/contacts/list', {
       url:"/contacts/list",
-      templateUrl:"/partials/contacts/list.html",
-      controller : 'contactController'
+      templateUrl:"/partials/contacts/list.html"
     })
     .state('/contacts/create', {
       url:"/contacts/create",
-      templateUrl:"/partials/contacts/create.html",
-      controller : 'contactController'
+      templateUrl:"/partials/contacts/create.html"
     })
     .state("/dashboard", {
       url: "/dashboard",
@@ -46,8 +46,12 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     })
     .state("/matters/new", {
       url: "/matters/new",
-      templateUrl: "/partials/matters/new.html",
-      controller : 'matterController'
+      templateUrl: "/partials/matters/new.html"
+    })
+    .state("/superadmin/users", {
+      url:"/superadmin/users",
+      templateUrl:"/partials/superadmin/users.html",
+      controller : "usersController"
     })
 })
 .run(function($rootScope, $location, $http, $window){

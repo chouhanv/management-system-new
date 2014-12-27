@@ -16,7 +16,7 @@
     </head>
     <body ng-controller="homeController">
         <!-- START PAGE CONTAINER -->
-        <div class="page-container">
+        <div class="page-container" ng-controller="contactController">
             
             <!-- START PAGE SIDEBAR -->
             <div class="page-sidebar" ng-controller="sidebarController">
@@ -70,7 +70,7 @@
                         </ul> -->
                     </li>
                     <li>
-                        <a href="#"><span class="fa fa-cog"></span> <span class="xn-text">Admin</span></a>
+                        <a href="javascript:;" ng-click="changePath('/superadmin/users')"><span class="fa fa-cog"></span> <span class="xn-text">Admin</span></a>
                     </li>                
                 </ul>
                 <!-- END X-NAVIGATION -->
@@ -78,7 +78,7 @@
             <!-- END PAGE SIDEBAR -->
             
             <!-- PAGE CONTENT -->
-            <div class="page-content">
+            <div class="page-content" ng-controller="matterController">
                 
                 <!-- START X-NAVIGATION VERTICAL -->
                 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
@@ -106,7 +106,7 @@
                 </ul>
                 <!-- END X-NAVIGATION VERTICAL -->                     
 
-                <div ui-view>
+                <div ui-view ng-controller="ScheduleAndTaskController">
                     
                 </div>                             
             </div>            
@@ -155,6 +155,8 @@
         <script src="/js/app/controllers/sidebarController.js"></script>
         <script src="/js/app/controllers/contactController.js"></script>
         <script src="/js/app/controllers/matterController.js"></script>
+        <script src="/js/app/controllers/ScheduleAndTaskController.js"></script>
+        <script src="/js/app/controllers/usersController.js"></script>
         <script src="/js/app/directives/directives.js"></script>
         <script src="/js/app/filters/filters.js"></script>
         <script src="/js/app/services/services.js"></script>
@@ -187,13 +189,12 @@
         <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-file-input.js"></script>
         <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-select.js"></script>
         <script type="text/javascript" src="js/plugins/tagsinput/jquery.tagsinput.min.js"></script>
-        <script type='text/javascript' src='js/plugins/bootstrap/bootstrap-select.js'></script>
         <script type='text/javascript' src='js/plugins/validationengine/languages/jquery.validationEngine-en.js'></script>
         <script type='text/javascript' src='js/plugins/validationengine/jquery.validationEngine.js'></script>      
 
         <script type='text/javascript' src='js/plugins/jquery-validation/jquery.validate.js'></script>                
         <script type='text/javascript' src='js/plugins/maskedinput/jquery.maskedinput.min.js'></script>
-        <script type="text/javascript" src="js/plugins/fullcalendar/fullcalendar.min.js"></script>
+        <script type="text/javascript" src="js/plugins/fullcalendar/fullcalendar.js"></script>
         
         <script type="text/javascript" src="js/plugins/codemirror/codemirror.js"></script>        
         <script type='text/javascript' src="js/plugins/codemirror/mode/htmlmixed/htmlmixed.js"></script>
@@ -204,6 +205,8 @@
         <script type='text/javascript' src="js/plugins/codemirror/mode/php/php.js"></script>    
         <script type="text/javascript" src="js/plugins/summernote/summernote.js"></script>
 
+        <script type="text/javascript" src="js/scripts/datetimepicker/bootstrap-datetimepicker.js"></script>
+
         <!-- END THIS PAGE PLUGINS-->        
 
         <!-- START TEMPLATE -->
@@ -212,6 +215,7 @@
         <script type="text/javascript" src="js/plugins.js"></script>        
         <script type="text/javascript" src="js/actions.js"></script>
         <script type="text/javascript" src="js/demo_tasks.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
         
         <!-- END TEMPLATE -->
 
@@ -234,7 +238,6 @@
         .input-heading:{
             color: #434a54;
         }
-
     </style>
     </body>
 </html>

@@ -226,8 +226,17 @@ dataController.saveSchedule = function(){
 	var end = th.req.param('end');
 	var start = th.req.param('start');
 	var title = th.req.param('title');
+	var _id = th.req.param('_id');
 
-	if(end && start && title){
+	if(start && title && _id){
+		Schedules.update({_id:id},{end:end, start:start, title:title}, function(err, status){
+			if(err){
+				th.res.json({success:false, message:"Error in processing."});
+			} else {
+				th.res.json({success:true, message:"Schedule updated."});
+			}
+		});
+	} else if(start && title){
 		Schedules.create({end:end, start:start, title:title, created_date:new Date()}, function(err, schedule){
 			if(err){
 				th.res.json({success:false, message:"Error in processing."});
@@ -240,9 +249,27 @@ dataController.saveSchedule = function(){
 	}
 }
 
+dataController.deleteSchedule = function(){
+	var th = this;
+	var req = th.req;
+	var res = th.res;
+	var _id = req.param('_id');
+	if(_id){
+		Schedules.update({_id:_id}, {is_deleted:true}, function(err, status){
+			if(err){
+				th.res.json({success:false, message:"Error in processing."});
+			} else {
+				th.res.json({success:true, message:"Schedule deleted."});
+			}
+		});
+	} else {
+		th.res.json("Parameter missing");
+	}
+}
+
 dataController.getSchedules = function(){
 	var th = this;
-	Schedules.find({}, function(error, schedules){
+	Schedules.find({is_deleted:false}, function(error, schedules){
 		if(error){
 			th.res.json({success:false, message:"Error in processing."});
 		} else {
