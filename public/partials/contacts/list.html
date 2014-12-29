@@ -87,7 +87,7 @@
                                     </div>
                                 </div>
                                 <div class="row detl-lst">
-                                <div class="col-md-3" style="min-height:350px;" ng-click="createNewTab(contact)" ng-repeat="contact in allContactes | filter:contactSearch | filterByCategory:filterBy | filterProspectiveClient:isShowProspectiveClient.status:filterBy | orderBy:sortBy:reverse">
+                                <div class="col-md-3" style="min-height:360px;max-height:360;overflow:hidden" ng-click="createNewTab(contact)" ng-repeat="contact in allContactes | filter:contactSearch | filterByCategory:filterBy | filterProspectiveClient:isShowProspectiveClient.status:filterBy | orderBy:sortBy:reverse">
                                         <!-- CONTACT ITEM -->
                                         <div class="panel panel-default contct-detl">
                                             <div class="panel-body profile">
@@ -127,7 +127,7 @@
                                 <div class="col-sm-3">
                                     <button class="btn btn-default">Delete</button>
                                     <button class="btn btn-default" ng-click="discardContact(editFormIndex)">Discart</button>
-                                    <button class="btn btn-primary" ng-show="!isEditContact" ng-click="isEditContact=true">Edit</button>
+                                    <button class="btn btn-primary" ng-show="!isEditContact" ng-click="setEditMode(true)">Edit</button>
                                     <!-- <button class="btn btn-primary" ng-if="isEditContact">Save</button> -->
                                 </div>
                             </div>
@@ -641,7 +641,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12" ng-show="category.categorie == 'Clients'">
+                                        <div class="col-md-12" ng-show="category.categorie == 'Client'">
                                             <label class="switch">
                                                 <input type="checkbox" ng-model="prospective_client.status"/>
                                                 <span></span>

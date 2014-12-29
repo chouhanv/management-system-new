@@ -154,7 +154,6 @@ angular.module('myApp.contactController', [])
 		$rootScope.initContactContactCategory = function(category){
 			$rootScope.category_id = category._id;
 			$rootScope.category = category;
-			console.log(category);
 		}
 
 		$rootScope.submitContact = function(form, index){
@@ -249,8 +248,11 @@ angular.module('myApp.contactController', [])
 	   }
 
 	   $rootScope.addContactAitionalFields = function(key){
-	   	console.log(key);
 	   	$rootScope.additionalfields.push({key:key,value:""});
+	   }
+
+	   $rootScope.setEditMode = function(mode){
+	   	$rootScope.isEditContact = mode;
 	   }
 
 		$rootScope.showtab = function(index, isNew){
@@ -262,13 +264,16 @@ angular.module('myApp.contactController', [])
 				$("#tab"+index).addClass('active');
 			},  100);
 			
-			if(!isNew && $rootScope.openedTabs[index] != "new") {
+			
+			if(!isNew && isNew !='undefined' && $rootScope.openedTabs[index] != "new") {
 				$rootScope.isEditForm = true;
 				$rootScope.isEditContact = false;
+				console.log("from here");
 			}
 			else {
 				$rootScope.isEditContact = true;
 				$rootScope.isEditForm = true;
+				console.log("i from here");
 			}
 			$rootScope.editFormIndex = index;
 			$rootScope.category_id = $rootScope.tabs[index].contact.category_id._id;
