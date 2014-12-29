@@ -128,7 +128,7 @@
                                     <button class="btn btn-default">Delete</button>
                                     <button class="btn btn-default" ng-click="discardContact(editFormIndex)">Discart</button>
                                     <button class="btn btn-primary" ng-show="!isEditContact" ng-click="isEditContact=true">Edit</button>
-                                    <button class="btn btn-primary" ng-if="isEditContact">Save</button>
+                                    <!-- <button class="btn btn-primary" ng-if="isEditContact">Save</button> -->
                                 </div>
                             </div>
                             <form ng-if="!isEditContact" id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContact(contact_form, editFormIndex)" novalidate>   
@@ -1270,7 +1270,7 @@
                                                 </div>
                                             </div>
                                             <div class="btn-group pull-right">
-                                                <button class="btn btn-primary" type="submit">Submit</button>
+                                                <button class="btn btn-primary" type="submit">Save</button>
                                             </div> 
                                         </div>
                                     </div>

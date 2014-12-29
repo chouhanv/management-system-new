@@ -260,7 +260,8 @@ angular.module('myApp.contactController', [])
 			setTimeout(function(){
 				$("#tab"+index).addClass('active');
 			},  100);
-			if(!isNew) {
+			
+			if(!isNew && $rootScope.openedTabs[index] != "new") {
 				$rootScope.isEditForm = true;
 				$rootScope.isEditContact = false;
 			}
