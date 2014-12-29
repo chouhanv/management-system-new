@@ -248,7 +248,8 @@ angular.module('myApp.contactController', [])
 	   	$rootScope.notes.push("");
 	   }
 
-	   $rootScope.addAitionalFiel = function(key){
+	   $rootScope.addContactAitionalFields = function(key){
+	   	console.log(key);
 	   	$rootScope.additionalfields.push({key:key,value:""});
 	   }
 
