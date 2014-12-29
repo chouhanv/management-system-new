@@ -25,7 +25,7 @@ module.exports = (function () {
         },
         prospective_client:{
             type:Boolean,
-            default:false
+            default:""
         },
         status : {
             type : String,

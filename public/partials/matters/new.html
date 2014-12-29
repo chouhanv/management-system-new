@@ -615,7 +615,7 @@
 		                        
 		                        <select ng-select class="form-control" name="sellers" ng-model="partiesForm.sellers[i]" required>
 		                          <option value="">--Select--</option>
-		                          <option ng-repeat="client in allContactes" ng-selected="partiesForm.sellers[i] == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
+		                          <option ng-repeat="client in allContactes" ng-selected="partiesForm.sellers[i] == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Client'">{{client.name.firstname + " " + client.name.lastname}}</option>
 		                       </select>
 		                       <i class="fa  fa-close" ng-click="removeSeller(i)"></i>
 		                        <span class="help-block form-error" ng-show="innerForm.sellers.$error.required && parties_form_submiter">Required*.</span>
@@ -657,7 +657,7 @@
 		                      <ng-form name="innerForm">
 		                        <select ng-select class="form-control" name="buyers" ng-model="partiesForm.buyers[i]" required>
 		                          <option value="">--Select--</option>
-		                          <option ng-repeat="client in allContactes" ng-selected="partiesForm.buyers[i] == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
+		                          <option ng-repeat="client in allContactes" ng-selected="partiesForm.buyers[i] == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Client'">{{client.name.firstname + " " + client.name.lastname}}</option>
 		                       </select>
 		                        <i class="fa  fa-close" ng-click="removeBuyer($index)"></i>
 		                        <span class="help-block form-error" ng-show="innerForm.buyers.$error.required && parties_form_submiter">Required*.</span>
@@ -1441,7 +1441,7 @@
 		                      <ng-form name="innerForm">
 		                        <select ng-select class="form-control" name="sellers" ng-model="partiesForm.sellers[i]" required>
 		                          <option value="">--Select--</option>
-		                          <option ng-repeat="client in allContactes" ng-selected="seler == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
+		                          <option ng-repeat="client in allContactes" ng-selected="seler == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Client'">{{client.name.firstname + " " + client.name.lastname}}</option>
 		                       </select>
 		                       <i class="fa  fa-close" ng-click="removeSeller(i)"></i>
 		                        <span class="help-block form-error" ng-show="innerForm.sellers.$error.required && parties_form_submiter">Required*.</span>
@@ -1483,7 +1483,7 @@
 		                      <ng-form name="innerForm">
 		                        <select ng-select class="form-control" name="buyers" ng-model="partiesForm.buyers[i]" required>
 		                          <option value="">--Select--</option>
-		                          <option ng-repeat="client in allContactes" ng-selected="partiesForm.buyers[i] == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
+		                          <option ng-repeat="client in allContactes" ng-selected="partiesForm.buyers[i] == client._id" value="{{client._id}}" ng-if="client.category_id.categorie=='Client'">{{client.name.firstname + " " + client.name.lastname}}</option>
 		                       </select>
 		                        <i class="fa  fa-close" ng-click="removeBuyer($index)"></i>
 		                        <span class="help-block form-error" ng-show="innerForm.buyers.$error.required && parties_form_submiter">Required*.</span>

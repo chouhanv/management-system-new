@@ -82,7 +82,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2" ng-if="filterBy=='Clients'">
+                                    <div class="col-sm-2" ng-if="filterBy=='Client'">
                                         <label class="check"><input type="checkbox" ng-model="isShowProspectiveClient.status" class="icheckbox"/> Prospective Client</label>
                                     </div>
                                 </div>
@@ -137,21 +137,28 @@
                                     <div class="row">
 
                                             <div class="col-sm-2">
-                                            <div class="col-md-12">
-                                                <div class="panel-body">
-                                                    <div class="profile-image">
-                                                        <img class="prfl-pic" style="width:80px; height:80px; border-radius:50%" src="{{imageSrc?imageSrc:'/img/Avatar.jpg'}}" onclick="$('#selectImage').click();" alt="">
-                                                        <input type="file" ng-show="false" ng-file-select id="selectImage">
+                                                <div class="col-md-12">
+                                                    <div class="panel-body">
+                                                        <div class="profile-image">
+                                                            <img class="prfl-pic" style="width:80px; height:80px; border-radius:50%" src="{{imageSrc?imageSrc:'/img/Avatar.jpg'}}" onclick="$('#selectImage').click();" alt="">
+                                                            <input type="file" ng-show="false" ng-file-select id="selectImage">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12" ng-show="category.categorie == 'Clients'">
-                                                <label class="switch">
-                                                    <input type="checkbox" ng-model="prospective_client.status"/>
-                                                    <span></span>
-                                                </label>
-                                                <label>Prospective Client</label>
-                                            </div>
+                                                <div class="col-md-12" ng-show="category.categorie == 'Client'">
+                                                    <label class="switch">
+                                                        <input type="checkbox" ng-model="prospective_client.status"/>
+                                                        <span></span>
+                                                    </label>
+                                                    <label>Prospective Client</label>
+                                                </div>
+                                                <div class="col-md-12" ng-show="category.categorie == 'Client' || prospective_client.status == true || prospective_client.status == false">
+                                                    <label class="switch">
+                                                        <input type="checkbox" ng-model="prospective_client.status"/>
+                                                        <span></span>
+                                                    </label>
+                                                    <label>Prospective Client</label>
+                                                </div>
                                             </div>
 
                                             <div class="col-md-4">
@@ -173,7 +180,6 @@
                                                                     </div>
                                                                     <div class="col-sm-8">
                                                                         <div class="form-group">
-                                                                           
                                                                             {{name.prefix}}
                                                                         </div>
                                                                     </div>
@@ -641,7 +647,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12" ng-show="category.categorie == 'Client'">
+                                        <div class="col-md-12" ng-show="category.categorie == 'Client' || prospective_client.status == true || prospective_client.status == false">
                                             <label class="switch">
                                                 <input type="checkbox" ng-model="prospective_client.status"/>
                                                 <span></span>
