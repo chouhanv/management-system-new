@@ -1,5 +1,6 @@
 var express = require('express')
-  , poweredBy = require('connect-powered-by');
+  , poweredBy = require('connect-powered-by')
+  , bodyParser = require('body-parser');
 
 module.exports = function() {
   // Use middleware.  Standard [Connect](http://www.senchalabs.org/connect/)
@@ -13,6 +14,9 @@ module.exports = function() {
   this.use(express.favicon());
   this.use(express.static(__dirname + '/../../public'));
   this.use(express.bodyParser());
+  this.use(express.json({limit: '50mb'}));
+  // this.use(bodyParser.json({limit: '50mb'}));
+  this.use(express.urlencoded({limit: '50mb'}));
   this.use(express.methodOverride());
   this.use(this.router);
   this.use(express.errorHandler());

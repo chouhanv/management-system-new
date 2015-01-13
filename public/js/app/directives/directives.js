@@ -16,7 +16,54 @@ angular.module('myApp.directives', [])
       }
     };
   })
-  
+  .directive('getcontactname', function($compile){
+    return {
+      restrict: 'A',
+      replace: true,
+      link: function (rootScope, ele, attrs) {
+        rootScope.$watch(attrs.getcontactname, function(id) {
+          if(id && id != null && id != undefined){
+            angular.forEach(rootScope.allContactes, function(val,i){
+              if(val._id == id){
+                $(ele).html("<b>"+val.name.firstname + " " + val.name.lastname+"</b>");
+              }
+            });
+          } else {
+            $(ele).html("<b>Not Selected</b>");
+          }
+        });
+      }
+    };
+  })
+  .directive('userimage', function($compile){
+    return {
+      restrict: 'A',
+      replace: true,
+      link: function (rootScope, ele, attrs) {
+        rootScope.$watch(attrs.userimage, function(id) {
+          angular.forEach(rootScope.adminUsers, function(val,i){
+            if(val._id == id){
+              if(val.imageSrc)
+                $(ele).attr("src",val.imageSrc);
+              else
+                $(ele).attr("src","/assets/images/users/User_Avatar_Gray.png");
+            }
+          });
+        });
+      }
+    };
+  })
+  .directive('customscroll', function($compile){
+    return {
+      link:function(scope, element, attrs){
+        console.log("scroll......");
+        var $el = $(element);
+        $el.mCustomScrollbar(
+          {axis:"y", autoHideScrollbar: true, scrollInertia: 20, advanced: {autoScrollOnFocus: false}}
+          );
+      }
+    }
+  })
   .directive('calenderedit', function ($compile) {
     // return {
     //   link: function (rootScope, ele, attrs) {
@@ -39,7 +86,6 @@ angular.module('myApp.directives', [])
           ngxOnshow: '&'
         },
         link: function (scope, element, attrs) {
-          console.log("inside link function")
           attrs.$observe('showApp', function (newValue) {
             newValue === "true" && scope.ngxOnshow()
           })
@@ -61,10 +107,23 @@ angular.module('myApp.directives', [])
     return {
       link: function($rootScope,el){
         el.bind("mouseover", function(e){
-          $(this).find("i").css("display","block");
+          $(this).find("i").css("visibility","visible");
         });
         el.bind("mouseout", function(e){
-          $(this).find("i").css("display","none");
+          $(this).find("i").css("visibility","hidden");
+        })
+      }
+    }
+  })
+  .directive("hovereffectactivity", function($compile){
+    return {
+      link: function($rootScope,el){
+        var $el = $(el);
+        $el.parent().parent().bind("mouseover", function(e){
+          $(this).find("i").css("visibility","visible");
+        });
+        $el.parent().parent().bind("mouseout", function(e){
+          $(this).find("i").css("visibility","hidden");
         })
       }
     }
@@ -182,6 +241,25 @@ angular.module('myApp.directives', [])
       }
   })
 
+  .directive('texteditorremark', function(){
+      return {
+        link:function(rootScope, el, attrs, ngModel){
+          var $el = $(el);
+          $el.summernote({height: 150,
+               codemirror: {
+                  mode: 'text/html',
+                  htmlMode: true,
+                  lineNumbers: true,
+                  theme: 'default'
+                }
+            });
+          setTimeout(function(){
+            $(".remark-editor .note-editable").html(rootScope.remarkShow);
+        }, 10);
+        }
+      }
+  })
+
   .directive('ngSelect', function(){
     // return {
     //   require: 'ngModel',
@@ -224,6 +302,17 @@ angular.module('myApp.directives', [])
         el.bind("change", function(e){
           $rootScope.file = (e.srcElement || e.target).files[0];
           $rootScope.getFile($rootScope.file);
+        });
+      }
+
+    }
+  })
+  .directive("ngUserFileSelect",function(){
+    return {
+      link: function($rootScope,el){
+        el.bind("change", function(e){
+          $rootScope.file = (e.srcElement || e.target).files[0];
+          $rootScope.getUserFile($rootScope.file);
         });
       }
 
@@ -285,7 +374,7 @@ angular.module('myApp.directives', [])
       require: 'ngModel',
       link: function(rootScope, elm, attr, ngModel){
         var elm = $(elm);
-        elm.datepicker();
+        elm.datepicker({useCurrent: true});
        //elm.data("DateTimePicker").setMinDate(new Date());
         // elm.data("DateTimePicker").setMaxDate(new Date("+6d"));
         elm.on('change', function (ee, aa) {
@@ -300,7 +389,7 @@ angular.module('myApp.directives', [])
       require: 'ngModel',
       link : function(rootScope, elm, attr, ngModel){
         var elm = $(elm);
-        elm.datetimepicker();
+        elm.datetimepicker({useCurrent: true});
         $(".bootstrap-datetimepicker-widget").attr("style","z-index:9999");
        //elm.data("DateTimePicker").setMinDate(new Date());
         // elm.data("DateTimePicker").setMaxDate(new Date("+6d"));
@@ -316,7 +405,7 @@ angular.module('myApp.directives', [])
       require: 'ngModel',
       link : function(rootScope, elm, attr, ngModel){
         var elm = $(elm);
-        elm.datetimepicker({pickDate : false});
+        elm.datetimepicker({pickDate : false,useCurrent: true});
         $(".bootstrap-datetimepicker-widget").attr("style","z-index:9999");
        //elm.data("DateTimePicker").setMinDate(new Date());
         // elm.data("DateTimePicker").setMaxDate(new Date("+6d"));

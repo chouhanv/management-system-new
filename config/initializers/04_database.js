@@ -1,5 +1,5 @@
 module.exports = function() {
   var mongoose = require('mongoose'),
-  dbAddress = ['mongodb://localhost:27017/managementsystem'];
+  dbAddress = ['104.207.132.73:27017/managementsystem'];
   mongoose.connect(dbAddress);
 }

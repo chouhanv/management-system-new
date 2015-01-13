@@ -12,7 +12,7 @@ angular.module('myApp.controllers', [])
 		$http.post('/login',$scope.login_data)
 		.success(function(data){
 			if(data.success){
-				$window.location.href = '/home#dashboard';
+				$window.location.href = '/home/'+data.userId+'/#dashboard';
 			} else {
 				$scope.login_error = data.error;
 			}

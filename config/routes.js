@@ -10,21 +10,18 @@ module.exports = function routes() {
 
   //this.post('/login','auth#create');
   //this.get('/home', 'pages#main');
-  this.get('/home', 'pages#home');
+  this.get('/home/:id', 'pages#home');
   this.post('/getCategorie','auth#getCategorie');
   this.post('/login', 'auth#login');
   /**
    * Contact/Client routes 
-   */
+  */
   this.post('/createContact','data#createContact');
   this.post('/getContact','data#getContact');
   this.post('/updateContact','data#updateContact');
-  this.get('/getUniqueNumber', 'data#getUniqueNumber');
-
+  this.get('/getNewMatterTitle', 'data#getNewMatterTitle');
   this.post('/uploadFile', 'data#uploadFile');
-
   this.post('/saveMatter', 'data#saveMatter');
-
   this.get('/getMatters/:matterType', 'data#getMatters');
   this.post('/updateMatter', 'data#updateMatter');
   this.post('/download/documents', 'data#downloadDocuments');
@@ -33,9 +30,18 @@ module.exports = function routes() {
   this.post('/saveSchedule', 'data#saveSchedule');
   this.post('/deleteSchedule', 'data#deleteSchedule');
   this.get('/getSchedules', 'data#getSchedules');
+  this.post('/ignoreScheudle', 'data#ignoreScheudle');
 
   this.get('/getContacts', 'data#getContacts');
-
+  this.post('/deleteContact', 'data#deleteContact');
 
   this.get('/isLoginedIn', 'pages#isLoginedIn');
+
+  this.get('/getAdminUsers', 'data#getAdminUsers');
+  this.post('/saveAdminUsers', 'data#saveAdminUsers');
+
+  this.get('/getUserDetail/:id', 'data#getUserDetail');
+
+  this.post('/saveTask', 'data#saveTask');
+  this.get('/getTasks','data#getTasks');
 }

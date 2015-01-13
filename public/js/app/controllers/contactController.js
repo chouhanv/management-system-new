@@ -10,6 +10,7 @@ angular.module('myApp.contactController', [])
 		$rootScope.filterBy = filterBy;
 	}
 
+    
 	$rootScope.formEditMode = false;
 	$rootScope.createMode = false;
 	$rootScope.isShowProspectiveClient = {status:false};
@@ -85,7 +86,6 @@ angular.module('myApp.contactController', [])
 
 		$rootScope.items=["item1","item2","item3"],
 
-
 		$rootScope.getFile = function (file) {
         	$rootScope.progress = 0;
         	fileReader.readAsDataUrl(file, $rootScope)
@@ -99,32 +99,14 @@ angular.module('myApp.contactController', [])
 	    });
 
 
-		$rootScope.open=function(templateUrl,index,type) {
-			if (type== "phonetype"){
-				$rootScope.phonepop = $rootScope.phones[index];
-			};
-			if (type == "addresstype"){
-				$rootScope.addresspop = $rootScope.addreses[index];
-			};
-			var modalInstance;
-			modalInstance=$modal.open({
-				templateUrl:templateUrl, controller:"ModalInstanceCtrl", 
-				resolve:{
-					items:function(){
-						return $rootScope.items
-					}
-				}
-			}), modalInstance.result.then(function(selectedItem){
-				$rootScope.selected=selectedItem
-			}, function(){
-            		//$log.info("Modal dismissed at: "+new Date)
-            	}
-        )},
 		$rootScope.saveContact = function(form) {
 			$rootScope.contact_form_submited = true;
 		   	if(form.$valid){
 		   		$rootScope.contactdata = {
 		   			category_id : $rootScope.category_id,
+		   			contact_id : $rootScope.contact_id,
+		   			emailsclient:$rootScope.emailsclient,
+
 			   		addreses:$rootScope.addreses,
 			   		company:$rootScope.company,
 			   		phones:$rootScope.phones,
@@ -139,7 +121,7 @@ angular.module('myApp.contactController', [])
 			   	$http.post('/createContact',{contactdata : $rootScope.contactdata})
 			   	.success(function(data){
 			   		if (data){
-			   				$rootScope.message = data.message;
+			   			$rootScope.message = data.message;
 		   			}
 		   			else {
 		   				$rootScope.message = "Try Again";
@@ -150,6 +132,35 @@ angular.module('myApp.contactController', [])
 			   	});
 			}
 		}
+		$rootScope.weblogin = {
+			email : "",
+			password : "",
+			is_enabled : false
+		}
+
+		 $rootScope.generatePass =function() {
+		 	if($rootScope.weblogin.email == "") {alert("Please enter login email."); return;}
+		 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+		 var string_length = 6;
+		 var genPassword = '';
+		 var charCount = 0;
+		 var numCount = 0;
+
+		 for (var i=0; i<string_length; i++) {
+		      // If random bit is 0, there are less than 3 digits already saved, and there are not already 5 characters saved, generate a numeric value. 
+		     if((Math.floor(Math.random() * 2) == 0) && numCount < 3 || charCount >= 5) {
+		         var rnum = Math.floor(Math.random() * 10);
+		         genPassword += rnum;
+		         numCount += 1;
+		     } else {
+		          //If any of the above criteria fail, go ahead and generate an alpha character from the chars string
+		         var rnum = Math.floor(Math.random() * chars.length);
+		        genPassword += chars.substring(rnum,rnum+1);
+		         charCount += 1;
+		     }
+		 }
+		  $rootScope.weblogin.password = genPassword;
+		}
 
 		$rootScope.initContactContactCategory = function(category){
 			$rootScope.category_id = category._id;
@@ -157,8 +168,8 @@ angular.module('myApp.contactController', [])
 		}
 
 		$rootScope.submitContact = function(form, index){
-			$rootScope.contact_form_submited = true;
-		   	if(form.$valid){
+			// $rootScope.contact_form_submited = true;
+		 //   	if(form.$valid){
 		   		var contact_id;
 		   		for(var x=0; x<$rootScope.openedTabs.length; x++){
 					if(x == index){
@@ -209,10 +220,74 @@ angular.module('myApp.contactController', [])
 				   		console.log(error)
 				   	});
 			   	}
-			}
+			//}
 			
 			
 		}
+
+		$rootScope.submitContactEdit = function(form, index){
+			//$rootScope.contact_form_submited = false;
+		   	//if(form.$valid){
+		   		var contact_id;
+		   		for(var x=0; x<$rootScope.openedTabs.length; x++){
+					if(x == index){
+						contact_id = $rootScope.openedTabs[x];
+					}
+				}
+		   		$rootScope.contactdata = {
+		   			contact_id:contact_id,
+		   			category_id : $rootScope.category_id,
+			   		addreses:$rootScope.addreses,
+			   		company:$rootScope.company,
+			   		phones:$rootScope.phones,
+			   		name:$rootScope.name,
+			   		emails:$rootScope.emails,
+			   		refferedbys:$rootScope.refferedbys,
+			   		notes:$rootScope.notes,
+			   		additionalfields:$rootScope.additionalfields,
+			   		imageSrc : $rootScope.imageSrc,
+			   		prospective_client:$rootScope.prospective_client.status
+			   	};
+			   	if(contact_id == 'new'){
+			   		$http.post('/createContact',{contactdata : $rootScope.contactdata, weblogin:$rootScope.weblogin})
+				   	.success(function(data){
+				   		if (data){
+				   			$rootScope.message = data.message;
+				   			$rootScope.getContacts();
+				   			$rootScope.showList();
+				   			setTimeout(function(){
+				   				$rootScope.message = "";
+				   				$rootScope.$apply();
+				   			},5000);
+			   			}
+			   			else {
+			   				$rootScope.message = "Try Again";
+			   			}
+				   	})
+				   	.error(function(error){
+				   		console.log(error)
+				   	});
+			   	} else {
+			   		$http.post('/updateContact',{contactdata : $rootScope.contactdata,weblogin:$rootScope.weblogin})
+				   	.success(function(data){
+				   		if (data){
+			   				$rootScope.message = data.message;
+			   				setTimeout(function(){
+				   				$rootScope.message = "";
+				   				$rootScope.$apply();
+				   			},5000);
+		   				}
+			   			else {
+			   				$rootScope.message = "Try Again";
+			   			}
+				   	})
+				   	.error(function(error){
+				   		console.log(error)
+				   	});
+			   	}
+			//}
+		}
+
 
 		$rootScope.expandPhone = function() {
 		   	$rootScope.phones.push({
@@ -268,13 +343,14 @@ angular.module('myApp.contactController', [])
 			if(!isNew && isNew !='undefined' && $rootScope.openedTabs[index] != "new") {
 				$rootScope.isEditForm = true;
 				$rootScope.isEditContact = false;
-				console.log("from here");
+				$rootScope.isMatterShowTab = true;
 			}
 			else {
 				$rootScope.isEditContact = true;
 				$rootScope.isEditForm = true;
-				console.log("i from here");
+				$rootScope.isMatterShowTab = false;
 			}
+			$rootScope.displayedContactId = $rootScope.openedTabs[index];
 			$rootScope.editFormIndex = index;
 			$rootScope.category_id = $rootScope.tabs[index].contact.category_id._id;
 	   		$rootScope.addreses = $rootScope.tabs[index].contact.addreses;
@@ -287,6 +363,18 @@ angular.module('myApp.contactController', [])
 	   		$rootScope.additionalfields = $rootScope.tabs[index].contact.additionalfields;
 	   		$rootScope.imageSrc = $rootScope.tabs[index].contact.imageSrc;
 	   		$rootScope.prospective_client.status = $rootScope.tabs[index].contact.prospective_client;
+	   		if($rootScope.tabs[index].contact.clientweblogin){
+	   			$rootScope.weblogin._id = $rootScope.tabs[index].contact.clientweblogin._id;
+	   			$rootScope.weblogin.email = $rootScope.tabs[index].contact.clientweblogin.email;
+		       	$rootScope.weblogin.password = $rootScope.tabs[index].contact.clientweblogin.password;
+		        $rootScope.weblogin.is_enabled = $rootScope.tabs[index].contact.clientweblogin.is_enabled;
+	   		}
+
+	   		angular.forEach($scope.categories, function(val, i){
+	   			if(val._id == $rootScope.category_id){
+	   				$rootScope.initContactContactCategory(val);
+	   			}
+	   		});
 		}
 
 		$rootScope.newContact = function(){
@@ -488,19 +576,43 @@ angular.module('myApp.contactController', [])
 
 			    $rootScope.additionalfields = [];
 			    $rootScope.isAdditionalFields = false;
-
-			    
-
+			    $rootScope.weblogin.email = "";
+		       	$rootScope.weblogin.password = "";
+		        $rootScope.weblogin.is_enabled = false;
 			},  200);
 		}
 
 		$rootScope.discardContact = function(index){
-			
 			$rootScope.tabs.splice(index, 1);
 			$rootScope.tabContent.splice(index, 1);
 			$rootScope.openedTabs.splice(index, 1);
-	   		$rootScope.showList();
+			$rootScope.showList();
 		}
+
+		$rootScope.deleteContact = function(index){
+
+	  		var id = $rootScope.openedTabs[index];
+	  		if($rootScope.openedTabs[index])
+	  			$http.post('/deleteContact',{id:id})
+	  			.success(function(data){
+	  				if(data.success){
+				   		$rootScope.showList();
+				   		angular.forEach($rootScope.allContactes, function(val,i){
+				   			if(val._id == id){
+				   				$rootScope.allContactes.splice(i,1);
+				   			}
+				   		});
+				   		$rootScope.tabs.splice(index, 1);
+						$rootScope.tabContent.splice(index, 1);
+						$rootScope.openedTabs.splice(index, 1);
+	  				} else {
+	  					console.log(data);
+	  				}
+	  			})
+	  			.error(function(error){
+	  				console.log(error);
+	  			});
+	    }
 
 		$rootScope.removeAdditionalField = function(index){
 			angular.forEach($rootScope.additionalfields, function(val, i){
@@ -552,6 +664,12 @@ angular.module('myApp.contactController', [])
 		    .error(function(error){
 		    	console.log(error);
 		    });
+		}
+
+		$rootScope.addMatterTabFromContact = function(id){
+			setTimeout(function(){
+				$rootScope.addMatterTab(id);
+			},5000);
 		}
 
 

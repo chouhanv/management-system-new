@@ -9,25 +9,56 @@
     <h2><span class="fa fa-users"></span> Users</h2>
 </div>
 
-<div class="panel panel-default" data-ng-init="getAdminUsers();">
 
-
-
-</div>
-
-<div class="panel panel-default tabs">                            
+<div class="panel panel-default tabs" data-ng-init="getAdminUsers();">                            
     <ul role="tablist" class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" role="tab" href="#tab-first" aria-expanded="true">First</a></li>
-        <li class=""><a data-toggle="tab" role="tab" href="#tab-second" aria-expanded="false">Second</a></li>
-        <li class=""><a data-toggle="tab" role="tab" href="#tab-third" aria-expanded="false">Third</a></li>
-        <li class=""><a data-toggle="tab" role="tab" href="#tab-fourth" aria-expanded="false">Fourth</a></li>
+        <li class="active"><a data-toggle="tab" role="tab" href="#tab-first" aria-expanded="true">Admin Users</a></li>
+        <!-- <li class=""><a data-toggle="tab" role="tab" href="#tab-second" aria-expanded="false">Client Users</a></li> -->
+        <!-- <li class=""><a data-toggle="tab" role="tab" href="#tab-third" aria-expanded="false">Third</a></li>
+        <li class=""><a data-toggle="tab" role="tab" href="#tab-fourth" aria-expanded="false">Fourth</a></li> -->
     </ul>                            
     <div class="panel-body tab-content">
         <div id="tab-first" class="tab-pane active">
             <div class="row">
-            	<div>
-            		
+            	<div class="col-sm-2">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#modal_basic" ng-click="resetAdminUser();">New User</button>
             	</div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-1">
+                    
+                </div>
+                <div class="col-sm-10">
+                    <table class="table table-hover">
+                        <tr>
+                            <td></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>Email</td>
+                            <td>Role</td>
+                            <td>Status</td>
+                            <td></td>
+                        </tr>
+                        <tr ng-repeat="au in adminUsers">
+                            <td>
+                                <img class="prfl-pic" style="width:30px; height:30px; border-radius:50%" src="{{au.imageSrc?au.imageSrc:'/img/Avatar.jpg'}}" alt="{{au.first_name + " " + au.last_name}}">
+                            </td>
+                            <td>{{au.first_name}}</td>
+                            <td>{{au.last_name}}</td>
+                            <td>{{au.email}}</td>
+                            <td>{{au.role}}</td>
+                            <td>{{au.is_active}}</td>
+                            <td>
+                                <a  href="javascript:;" data-toggle="modal" ng-click="editUser(au)" data-target="#modal_basic_edit">Edit</a> | 
+                                <a href="javascript:;" ng-click="deleteAdminUser(au)" ng-confirm-click>Delete</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-1">
+                    
+                </div>
             </div>
         </div>
         <div id="tab-second" class="tab-pane">
@@ -40,6 +71,206 @@
             
 
 
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="admin_users" ng-submit="saveAdminUser(admin_users);" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close close_model_popup" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="defModalHead">User</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="profile-image">
+                                <img class="prfl-pic" style="width:80px; height:80px; border-radius:50%" src="{{adminUser.imageSrc?adminUser.imageSrc:'/img/Avatar.jpg'}}" onclick="$('#selectImage').click();" alt="">
+                                <input type="file" ng-show="false" ng-user-file-select id="selectImage">
+                            </div>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    First Name*
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" ng-pattern="/^[a-zA-Z ]+$/" placeholder="first name" name="first_name" ng-model="adminUser.first_name" required>
+                                    <span class="help-block form-error" ng-show="admin_users.first_name.$error.required  && adminuser_form_submited">Enter valid first name*.</span>
+                                    <span class="help-block form-error" ng-show="admin_users.first_name.$error.pattern  && adminuser_form_submited">Enter valid name.</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Last Name*
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" ng-pattern="/^[a-zA-Z ]+$/" placeholder="last name" name="last_name" ng-model="adminUser.last_name" required>
+                                    <span class="help-block form-error" ng-show="admin_users.last_name.$error.required  && adminuser_form_submited">Enter valid last name*.</span>
+                                    <span class="help-block form-error" ng-show="admin_users.last_name.$error.pattern  && adminuser_form_submited">Enter valid name.</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Email*
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="email" placeholder="email" name="email" ng-model="adminUser.email" required>
+                                    <span class="help-block form-error" ng-show="admin_users.email.$error.required  && adminuser_form_submited">Please enter valid email address.</span>
+                                    <span class="help-block" ng-show="admin_users.email.$error.email && adminuser_form_submited">Please enter valid email address.</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Password*
+                                </div>
+                                <div class="col-sm-8">
+                                    <!-- <input class="form-control" type="text" placeholder="password" name="" ng-model="adminUser.password" required>
+                                    <span class="help-block form-error" ng-show="admin_users.password.$error.required  && adminuser_form_submited">Required*.</span> -->
+                                    <input type="password" ng-model="adminUser.password" name="password" ng-minlength="6" class="form-control" placeholder="Password" required>
+                                      <span class="help-block form-error" ng-show="admin_users.password.$error.required  && adminuser_form_submited">required*</span>
+                                      <span class="help-block form-error" ng-show="admin_users.password.$error.minlength">Password must be at least 6 characters.</span> 
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Confirm Password*
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" placeholder="Confirm Password" ng-model="adminUser.confirm_password" name="confirm_password" required>
+                                    <span class="help-block form-error" ng-show="admin_users.confirm_password.$error.required && adminuser_form_submited">Required*.</span>
+                                    <span class="help-block form-error" ng-show="!admin_users.confirm_password.$error.required && adminUser.confirm_password != adminUser.password && adminuser_form_submited">Password & Confirm Password do not match.</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Role*
+                                </div>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="role" ng-model="adminUser.role" required>
+                                        <option value="Super Admin">Super Admin</option>
+                                        <option value="Manager">Manager</option>
+                                    </select>
+                                    <span class="help-block form-error" ng-show="admin_users.role.$error.required  && adminuser_form_submited">Required*.</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Login Status*
+                                </div>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="is_active" ng-model="adminUser.is_active" required>
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                    <span class="help-block form-error" ng-show="admin_users.is_active.$error.required  && adminuser_form_submited">Required*.</span>
+                                </div>
+                            </div>
+                            <div class="row" style="text-align:right">
+                                {{userMessage}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal_basic_edit" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="admin_users" ng-submit="saveAdminUser(admin_users);" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close close_model_popup" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="defModalHead">User</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="profile-image">
+                                <img class="prfl-pic" style="width:80px; height:80px; border-radius:50%" src="{{adminUser.imageSrc?adminUser.imageSrc:'/img/Avatar.jpg'}}" onclick="$('#selectImage').click();" alt="">
+                                <input type="file" ng-show="false" ng-user-file-select id="selectImage">
+                            </div>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    First Name*
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" placeholder="first name" name="first_name" ng-model="adminUser.first_name" required>
+                                    <span class="help-block form-error" ng-show="admin_users.first_name.$error.required  && adminuser_form_submited">Required*.</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Last Name*
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" placeholder="last name" name="last_name" ng-model="adminUser.last_name" required>
+                                    <span class="help-block form-error" ng-show="admin_users.last_name.$error.required  && adminuser_form_submited">Required*.</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Email*
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="email" placeholder="email" name="email" ng-model="adminUser.email" required>
+                                    <span class="help-block form-error" ng-show="admin_users.email.$error.required  && adminuser_form_submited">Required*.</span>
+                                    <span class="help-block" ng-show="admin_users.$error.email && adminuser_form_submited">Please enter valid email address.</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Role*
+                                </div>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="role" ng-model="adminUser.role" required>
+                                        <option value="Super Admin">Super Admin</option>
+                                        <option value="Manager">Manager</option>
+                                    </select>
+                                    <span class="help-block form-error" ng-show="admin_users.role.$error.required  && adminuser_form_submited">Required*.</span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Login Status*
+                                </div>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="is_active" ng-model="adminUser.is_active" required>
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                    <span class="help-block form-error" ng-show="admin_users.is_active.$error.required  && adminuser_form_submited">Required*.</span>
+                                </div>
+                            </div>
+                            <div class="row" style="text-align:right">
+                                {{userMessage}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

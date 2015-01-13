@@ -21,7 +21,7 @@ angular.module('myApp.filters', [])
       if(category){
         var con = new Array();
         angular.forEach(contacts, function(val , i){
-          if(val.category_id.categorie == category)
+          if(val.category_id && val.category_id.categorie && val.category_id.categorie == category)
             con.push(val);
         });
         return con;
@@ -56,8 +56,79 @@ angular.module('myApp.filters', [])
     } else {
       return contacts;
     } 
-    }
-  })
+  }
+})
+.filter('matterContactFilter', function(){
+  return function(matters, contactId){
+      if(contactId){
+        var data = [];
+        angular.forEach(matters, function(val, i){
+          if(val.parties.building_inspector && val.parties.building_inspector == contactId){
+            data.push(val);
+          } else if(val.parties.closer && val.parties.closer == contactId){
+              data.push(val);
+          } else if(val.parties.lender && val.parties.lender == contactId){
+              data.push(val);
+          } else if(val.parties.lender_agent && val.parties.lender_agent == contactId){
+              data.push(val);
+          } else if(val.parties.lender_attorney && val.parties.lender_attorney == contactId){
+              data.push(val);
+          } else if(val.parties.past_inspector && val.parties.past_inspector == contactId){
+              data.push(val);
+          } else if(val.parties.surveyor && val.parties.surveyor == contactId){
+              data.push(val);
+          } else if(val.parties.title_company && val.parties.title_company == contactId){
+            data.push(val);
+          } else if(val.parties.title_search && val.parties.title_search == contactId){
+            data.push(val);
+          } else if(val.parties.under_writer && val.parties.under_writer == contactId){
+            data.push(val);
+          } else {
+            var inMatter = false;
+              angular.forEach(val.parties.buyers, function(v,j){
+                console.log(v , "dasda");
+                if(v && v._id && v._id==contactId || v == contactId) inMatter = true;
+              });
+              if(inMatter) data.push(val);
+              else {
+                angular.forEach(val.parties.sellers, function(v,j){
+                  console.log(v , "dasda");
+                  if(v && v._id && (v._id==contactId || v == contactId)) inMatter = true;
+                });
+              if(inMatter) data.push(val);
+              else {
+                angular.forEach(val.parties.buyers_agent, function(v,j){
+                  if(v && v._id && (v._id==contactId || v == contactId)) inMatter = true;
+                });
+                if(inMatter) data.push(val);
+                else {
+                  angular.forEach(val.parties.buyers_attorney, function(v,j){
+                    if(v && v._id && (v._id==contactId || v == contactId)) inMatter = true;
+                  });
+                  if(inMatter) data.push(val);
+                  else {
+                    angular.forEach(val.parties.sellers_agent, function(v,j){
+                      if(v && v._id && (v._id==contactId || v == contactId)) inMatter = true;
+                    });
+                    if(inMatter) data.push(val);
+                    else {
+                      angular.forEach(val.parties.sellers_attorney, function(v,j){
+                        if(v && v._id && (v._id==contactId || v == contactId)) inMatter = true;
+                      });
+                      if(inMatter) data.push(val);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        });
+      return data;
+    } else {
+      return matters;
+    } 
+  }
+})
 .filter('highlight', function () {
   return function (text, search, caseSensitive) {
     if ((search || angular.isNumber(search)) && text != null) {

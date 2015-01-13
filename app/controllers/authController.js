@@ -1,5 +1,6 @@
 var locomotive = require('locomotive'),
     Controller = locomotive.Controller,
+    adminUsers =require('../models/adminusers'),
     Categorie = require('../models/categories');
 
 var authController = new Controller();
@@ -13,15 +14,25 @@ authController.login = function(){
 	var password = req.body.password;
 	if(username){
 		if(password){
-			if(username == 'nimra@lawoffice.com' && password == 'admin123'){
-				req.user = {
-					username : 'nimra@lawoffice.com'
-				};
-				console.log(req.user);
-				res.json({success:true});
-			} else {
-				res.json({success:false,error:"Invalid username or password."});
-			}
+			// if(username == 'nimra@lawoffice.com' && password == 'admin123'){
+			// 	req.user = {
+			// 		username : 'nimra@lawoffice.com'
+			// 	};
+			// 	console.log(req.user);
+			// 	res.json({success:true});
+			// } else {
+			// 	res.json({success:false,error:"Invalid username or password."});
+			// }
+			adminUsers.findOne({email:username,password:password,is_active:"Active",is_deleted:false}, function(err, user){
+				 if(err){
+				 	console.log(err);
+				 	res.json({success:false,error:"Please try again."});
+				 } else if(user){
+				 	res.json({success:true,userId:user._id});
+				 } else {
+				 	res.json({success:false,error:"Invalid username or password."});
+				 }
+			});
 		} else {
 			res.json({success:false,error:"Password Required"});
 		}

@@ -1441,7 +1441,7 @@
 
   /**
    * Object for keycodes.
-   */
+  */
   var key = {
     isEdit: function (keyCode) {
       return [8, 9, 13, 32].indexOf(keyCode) !== -1;

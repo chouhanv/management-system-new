@@ -5,7 +5,7 @@ module.exports = (function () {
         , SchemaTypes = mongoose.Schema.Types
         , contacts = require('./contacts');
 
-    var connection = mongoose.createConnection("mongodb://localhost/managementsystem");
+    var connection = mongoose.createConnection("104.207.132.73:27017/managementsystem");
 
     var mattersSchema = new Schema({
         is_deleted:{
@@ -93,6 +93,10 @@ module.exports = (function () {
                 ref: 'contacts'
             },
             recording_office : {
+                type: Schema.Types.ObjectId, 
+                ref: 'contacts'
+            },
+            abstract_search : {
                 type: Schema.Types.ObjectId, 
                 ref: 'contacts'
             },

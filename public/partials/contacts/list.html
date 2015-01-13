@@ -1,6 +1,6 @@
                 <ul class="breadcrumb" data-ng-init="getContactes();getContactCategories();">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Contacts</a></li>
+                    <li><a href="javascript:;" ng-click="changePath('/dashboard')">Home</a></li>
+                    <li><a href="javascript:;" style="cursor:text">Contacts</a></li>
                     <li ng-if="filterBy" class="active">{{filterBy}}</li>
                 </ul>
                 <!-- END BREADCRUMB -->   
@@ -17,7 +17,8 @@
                         <li style="width:150px; padding-left:5px;" ng-repeat="tab in tabs track by $index" id="tab{{$index}}">
                             <a hovereffect style="width:auto;" ng-click="showtab($index);" role="tab" style="text-align:center;" href="#form-edit" data-toggle="tab">
                             <span on-click="$(this).parent.click();">{{tab.title}}</span>
-                            <i class="fa fa-times" style="cursor:pointer;float:right; display:none" ng-click="discardContact($index);$event.stopPropagation();"></i>
+                            <i class="fa fa-times" style="cursor:pointer;float:right;  visibility: hidden;
+                               " ng-click="discardContact($index);$event.stopPropagation();"></i>
                             </a>
                         </li>
                     </ul>
@@ -46,7 +47,7 @@
                                                         <div class="col-md-2">
                                                             <!-- <button class="btn btn-primary btn-block" ng-click="changePath('/contacts/create')"><span class="fa fa-plus"></span> Add Contact</button> -->
                                                             <div class="btn-group">
-                                                                <a href="javascript:;" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="fa fa-plus"></span>Add Contact <span class="caret"></span></a>
+                                                                <a href="javascript:;" data-toggle="dropdown" class="btn btn-success dropdown-toggle"><span class="fa fa-plus"></span>Add Contact <span class="caret"></span></a>
                                                                 <ul class="dropdown-menu" role="menu">
                                                                     <li role="presentation" class="dropdown-header">Select New Contact Type</li>
                                                                     <li ng-repeat="category in categories" ng-click="initContactContactCategory(category);newContact();"><a href="javascript:;">{{category.categorie}}</a></li>             
@@ -86,11 +87,11 @@
                                         <label class="check"><input type="checkbox" ng-model="isShowProspectiveClient.status" class="icheckbox"/> Prospective Client</label>
                                     </div>
                                 </div>
-                                <div class="row detl-lst">
+                                <div class="row detl-lst" customscroll style="max-height:500px;">
                                 <div class="col-md-3" style="min-height:360px;max-height:360;overflow:hidden" ng-click="createNewTab(contact)" ng-repeat="contact in allContactes | filter:contactSearch | filterByCategory:filterBy | filterProspectiveClient:isShowProspectiveClient.status:filterBy | orderBy:sortBy:reverse">
                                         <!-- CONTACT ITEM -->
-                                        <div class="panel panel-default contct-detl">
-                                            <div class="panel-body profile">
+                                        <div class="panel panel-default contct-detl" style="min-height:360px;max-height:360;overflow:hidden;cursor:pointer">
+                                            <div class="panel-body profile" >
                                                 <div class="profile-image">
                                                     <img src="{{contact.imageSrc?contact.imageSrc:'/assets/images/users/User_Avatar_Gray.png'}}" alt="{{contact.name.firstname}} {{contact.name.lastname}}"/>
                                                 </div>
@@ -116,23 +117,28 @@
                         <div ng-show="isEditForm" ng-class="{'active': isEditForm}" class="tab-pane" id="form-edit">
                              <div class="row" style="border-bottom:2px solid #e8e8e8;font-size:15px; padding-bottom:5px">
                                 <div class="col-sm-2">
-                                    <span>Contact Info</span>
+                                     <div class ="outset">
+                                       <a class="cntct-actv cntct" href="javascript:;" onclick="$('#matter-container').css('display','none');$('#contact-container').css('display','block');$('.cntct-actv').removeClass('cntct-actv');$(this).addClass('cntct-actv');">Contact Info</a>
+                                     </div>
                                 </div>
-                                <div class="col-sm-1">
-                                    <span>Matters</span>
+                                <div class="col-sm-1" ng-show="isEditContact || isMatterShowTab">
+                                    <div class ="outset-1">
+                                       <a class="cntct" href="javascript:;" onclick="$('#contact-container').css('display','none');$('#matter-container').css('display','block');$('.cntct-actv').removeClass('cntct-actv');$(this).addClass('cntct-actv');" >Matters</a>
+                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     
                                 </div>
                                 <div class="col-sm-3">
-                                    <button class="btn btn-default">Delete</button>
+                                    <button class="btn btn-default" ng-show="!isEditContact" ng-click="deleteContact(editFormIndex)">Delete</button>
                                     <button class="btn btn-default" ng-click="discardContact(editFormIndex)">Discart</button>
                                     <button class="btn btn-primary" ng-show="!isEditContact" ng-click="setEditMode(true)">Edit</button>
                                     <!-- <button class="btn btn-primary" ng-if="isEditContact">Save</button> -->
                                 </div>
                             </div>
-                            <form ng-if="!isEditContact" id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContact(contact_form, editFormIndex)" novalidate>   
-                                <div class="page-content-wrap">                
+                            <div id="contact-container">
+                                <form  ng-if="!isEditContact" id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContact(contact_form, editFormIndex)" novalidate>   
+                                <div class="page-content-wrap" customscroll style="max-height:500px;">                
                                    
                                     <div class="row">
 
@@ -152,13 +158,13 @@
                                                     </label>
                                                     <label>Prospective Client</label>
                                                 </div>
-                                                <div class="col-md-12" ng-show="category.categorie == 'Client' || prospective_client.status == true || prospective_client.status == false">
+                                                <!-- <div class="col-md-12" ng-show="category.categorie == 'Client' || prospective_client.status == true || prospective_client.status == false">
                                                     <label class="switch">
                                                         <input type="checkbox" ng-model="prospective_client.status"/>
                                                         <span></span>
                                                     </label>
-                                                    <label>Prospective Client</label>
-                                                </div>
+                                                    <label>Prospective Client  nn</label>
+                                                </div> -->
                                             </div>
 
                                             <div class="col-md-4">
@@ -617,7 +623,7 @@
                                                     <div ng-repeat="note in notes track by $index">
                                                         <div class="form-group">
                                                             <div class="col-md-12">
-                                                                <textarea class="form-control" readonly="readonly" data-ng-model="notes[$index]" placeholder="Note" rows="5"></textarea> 
+                                                                <textarea class="form-control" input ng-keyup="submitContactEdit(contact_form, editFormIndex)" data-ng-model="notes[$index]" placeholder="Note" rows="5"></textarea> 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -631,10 +637,10 @@
                                         
                                 </div>
                                 <!-- END PAGE CONTENT WRAPPER -->
-                            </form>
+                                </form>
 
-                            <form ng-if="isEditContact" id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContact(contact_form, editFormIndex)" novalidate>   
-                                <div class="page-content-wrap">                
+                                <form ng-if="isEditContact" id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContactEdit(contact_form, editFormIndex)" novalidate>   
+                                <div class="page-content-wrap" customscroll style="max-height:500px;">                
                                 
                                     <div class="row">
 
@@ -647,7 +653,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12" ng-show="category.categorie == 'Client' || prospective_client.status == true || prospective_client.status == false">
+                                        
+                                        <div class="col-md-12" ng-show="category.categorie == 'Client'">
                                             <label class="switch">
                                                 <input type="checkbox" ng-model="prospective_client.status"/>
                                                 <span></span>
@@ -662,7 +669,7 @@
                                             <div class="block">
                                                 <div style="padding-left:10px">
                                                     <a href="javascript:;" data-toggle="modal" data-target="#modal_basic">
-                                                        <label style="color:#434a54">Name</label>
+                                                        <label style="color:#434a54;cursor:pointer;">Name</label>
                                                     </a>
                                                 </div>
                                                 <div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
@@ -790,7 +797,7 @@
 
                                                 <div style="padding-left:10px">
                                                     <a href="javascript:;" data-toggle="modal" data-target="#modal_company">
-                                                        <label style="color:#434a54">Company</label>
+                                                        <label style="color:#434a54; cursor:pointer;">Company</label>
                                                     </a>
                                                 </div>
 
@@ -866,7 +873,7 @@
                                                     
                                                     <div style="padding-left:10px">
                                                         <a href="javascript:;" data-toggle="modal" data-target="#modal_address{{$index}}">
-                                                            <label style="color:#434a54">Address</label>
+                                                            <label style="color:#434a54;cursor:pointer;">Address</label>
                                                         </a>
                                                     </div>
                                                     <div class="modal" id="modal_address{{$index}}" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
@@ -1271,10 +1278,41 @@
                                                                       <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Manager Email');">Manager Email</label></li>
                                                                       <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Website');">Website</label></li>
                                                                     </ul>
-                                                                </div>   -->                         
-                                                            
+                                                                </div>   --> 
+
+                                                                
+                                                                 <div class ="form-group" ng-show="category.categorie == 'Client'">
+                                                                   <div style="padding-left:10px ; padding-top:10px;">  
+                                                                     <label style="color:#434a54">WebLogin</label>
+                                                                    </div>
+                                                                 
+                                                                   <div class="form-group">
+                                                                      <div class="col-sm-6" style="padding-top:5px;">
+                                                                       <input type="email" class="form-control" name="email"  placeholder="Email*" data-ng-model="weblogin.email" required>
+                                                                   </div>
+                                                               </div>
+                                                                <div ng-show="weblogin.password =='' " style="padding-left:10px ; padding-top:10px;">
+                                                                    <a href="javascript:;" style="color:#434a54" ng-model= "genPassword" ng-click="generatePass();" class="btn btn-default" >Generate New Password</a>
+                                                        
+                                                                    
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <input type="text" ng-model="weblogin.password" ng-show="weblogin.password !=''" class="form-control">
+                                                                </div>
+                                                                   
+                                                                <div class="form-group" ng-show="weblogin.password !='' ">
+                                                                   <label class="ui-checkbox">
+                                                                     <input type="checkbox" name="patriot" ng-model="weblogin.is_enabled">
+                                                                     <ng-show="is_enabled">{{is_enabled}}
+                                                                    <span><b>Enable Web Login</b></span>
+                                                                    </label>
+                                                                  </div>
+                                                                </div>
+                                                              </div>        
                                                 </div>
                                             </div>
+                                            <div class="form-group" style="text-align:right">{{message}}</div>
                                             <div class="btn-group pull-right">
                                                 <button class="btn btn-primary" type="submit">Save</button>
                                             </div> 
@@ -1283,12 +1321,55 @@
                                         
                                 </div>
                                 <!-- END PAGE CONTENT WRAPPER -->
-                            </form>
+                                </form>
+                            </div>
+                            <div id="matter-container" style="display:none" customscroll style="max-height:500px;">
+                                
+                                <div class="row detl-lst">
+                                    <div class="col-md-3" ng-repeat="m in matters | matterContactFilter:displayedContactId">
+                                        <!-- CONTACT ITEM -->
+                                        <div style="cursor:pointer;" class="panel panel-default contct-detl" ng-click="changePath('/matters/new');addMatterTab(m._id);">
+                                            <div class="panel-body profile" style="min-height:130px;">
+                                                
+                                                <div class="profile-data">
+                                                    <br>
+                                                    <div class="profile-data-name">{{m.matter.property.matter_name}}</div>
+                                                    <!-- <div class="profile-data-title">Singer-Songwriter</div> -->
+                                                    <br><br>
+                                                </div>
+                                                <div class="matter-sub-title-name">
+                                                    <p style="color:white; font-size:12px; color:#f1f1f1; text-align:center">
+                                                        {{m.matter.property.sales_type=="Purchase"? m.parties.buyers[0].name.firstname + " " + m.parties.buyers[0].name.lastname : m.parties.sallers[0].name.firstname + " " + m.parties.sallers[0].name.lastname}}
+                                                    </p>
+                                                </div>
+                                            </div>                                
+                                            <div class="panel-body" style="min-height:165px">                                   
+                                                <div class="contact-info">
+                                                    <p><small>Property</small><br/>{{m.matter.property.addreses[0].addressline1 + ", " + m.matter.property.addreses[0].city + ", " + m.matter.property.addreses[0].state + "" + m.matter.property.addreses[0].zip}}</p>
+                                                    <br>
+                                                    <p><small>Matter Type</small><br/>{{m.matter.type}}</p>
+                                                    <!-- <p><small>Residential/Commercial</small><br/>{{m.matter.property.property_type}}</p>
+                                                    <p><small>Sale Type</small><br/>{{m.matter.property.sales_type}}</p>
+                                                    <p><small>Address</small><br/>{{m.matter.property.addreses[0].addressline1 + ", " + m.matter.property.addreses[0].city + ", " + m.matter.property.addreses[0].state + "" + m.matter.property.addreses[0].zip}}</p>  -->
+                                                    <br>
+                                                </div>
+                                            </div>                                
+                                        </div>
+                                        <!-- END CONTACT ITEM -->
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>                     
                     </div>
 
                 </div>
                 <!-- PAGE TITLE -->
+
+
+
+
+
 
                 
                 

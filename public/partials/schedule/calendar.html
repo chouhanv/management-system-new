@@ -1,8 +1,8 @@
  <!-- START BREADCRUMB -->
                 <ul class="breadcrumb push-down-0">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Schedule</a></li>
-                    <li class="active">Calendar</li>
+                    <li><a href="javascript:;" ng-click="changePath('/dashboard')">Home</a></li>
+                    <li><a href="javascript:;" style="cursor:text">Schedule</a></li>
+                    <li class="active" style="cursor:text">Calendar</li>
                 </ul>
                 <!-- END BREADCRUMB -->                                                
                 
@@ -122,7 +122,7 @@
                                     <div class="col-sm-9">
                                         <span style="cursor:pointer" ng-show="!isEditSchedule" ng-click="editSchedule()">{{getDateAndTime(newSchedule.start)}}</span>
                                         <div class="input-group" ng-show="isEditSchedule">
-                                             <input datepicker type="text" class="form-control "data-date-format="MM-dd-yyyy" data-date-viewmode="months" ng-model="newSchedule.start"/>
+                                             <input datetimepicker type="text" class="form-control" ng-model="newSchedule.start"/>
                                             <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
                                     </div>

@@ -4,8 +4,6 @@ var locomotive = require('locomotive'),
     Matters = require('../models/matters'),
     Schedules = require('../models/schedules'),
     ClientWebLogin =require('../models/clientweblogin'),
-    adminUsers =require('../models/adminusers'),
-    Task =require('../models/task'),
     mongoose = require('mongoose');
     var path = require('path');
     var fs = require('fs');
@@ -30,9 +28,7 @@ dataController.createContact = function(req,res) {
  			ClientWebLogin.create(th.req.body.weblogin, function(err, data1){
  				if(err) console.log(err);
  				else {
- 					Contacts.update({_id:data._id}, {clientweblogin:data1._id}, function(err, status){
- 						if(err) console.log(error);
- 					});
+
                   	var smtpTransport = nodemailer.createTransport("SMTP",{
 					   service: "Gmail",  // sets automatically host, port and connection security settings
 					   auth: {
@@ -86,6 +82,7 @@ dataController.updateContact = function(){
 	var th = this;
 	var req = th.req;
 	var res = th.res;
+	console.log("contact_id",req.body.contactdata.contact_id);
 	Contacts.update({_id:req.body.contactdata.contact_id}, req.body.contactdata, function(err, status){
 		if(err){
 			res.json({success:false,message:"Error in processing."});
@@ -192,9 +189,7 @@ dataController.getNewMatterTitle = function(){
 
 dataController.uploadFile = function(){
 	var th = this;
-	console.log(th.req.files);
 	var file = th.req.files.file;
-
 	fs.readFile(file.path, function (err, data) {
 		if(err){
 			th.res.json({success:false, error:err});
@@ -266,15 +261,14 @@ dataController.getMatters = function(){
 																	.populate({path:"parties.under_writer", select:{name:1,_id:1}})
 																		.populate({path:"parties.closer", select:{name:1,_id:1}})
 																			.populate({path:"parties.recording_office", select:{name:1,_id:1}})
-																				.populate({path:"parties.abstract_search", select:{name:1,_id:1}})
-																					.sort({date:-1})
-																						.exec(function(error, matters){
-																							if(error){
-																								th.res.json({success:false, message:error});
-																							} else {
-																								th.res.json({success:true, matters:matters});
-																							}
-																						});
+																				.sort({date:-1})
+																					.exec(function(error, matters){
+																						if(error){
+																							th.res.json({success:false, message:error});
+																						} else {
+																							th.res.json({success:true, matters:matters});
+																						}
+																					});
 }
 
 dataController.updateMatter = function(){
@@ -341,6 +335,7 @@ dataController.deleteMatter = function(){
 	var th = this;
 	var id = th.req.body.id;
 	if(id){
+		console.log(id);
 		Matters.update({_id:id},{is_deleted:true}, function(error, status){
 			if(error){
 				th.res.json({success:false, message:"Error in processing."});
@@ -364,7 +359,7 @@ dataController.saveSchedule = function(){
 	var _id = th.req.param('_id');
 
 	if(start && title && _id){
-		Schedules.update({_id:_id},{end:end, start:start, title:title, is_ignored:false}, function(err, status){
+		Schedules.update({_id:id},{end:end, start:start, title:title}, function(err, status){
 			if(err){
 				th.res.json({success:false, message:"Error in processing."});
 			} else {
@@ -388,31 +383,13 @@ dataController.deleteSchedule = function(){
 	var th = this;
 	var req = th.req;
 	var res = th.res;
-	var _id = req.param('id');
+	var _id = req.param('_id');
 	if(_id){
 		Schedules.update({_id:_id}, {is_deleted:true}, function(err, status){
 			if(err){
 				th.res.json({success:false, message:"Error in processing."});
 			} else {
 				th.res.json({success:true, message:"Schedule deleted."});
-			}
-		});
-	} else {
-		th.res.json("Parameter missing");
-	}
-}
-
-dataController.ignoreScheudle = function(){
-	var th = this;
-	var req = th.req;
-	var res = th.res;
-	var _id = req.param('id');
-	if(_id){
-		Schedules.update({_id:_id}, {is_ignored:true}, function(err, status){
-			if(err){
-				th.res.json({success:false, message:"Error in processing."});
-			} else {
-				th.res.json({success:true, message:"Schedule ignored."});
 			}
 		});
 	} else {
@@ -433,7 +410,7 @@ dataController.getSchedules = function(){
 
 dataController.getContacts = function(){
 	var th = this;
-	Contacts.find({is_deleted:false})
+	Contacts.find({})
 	.populate('category_id', {_id:1,categorie:1})
 	.populate('clientweblogin',{contact:0,_v:0})
 	.sort({date:-1})
@@ -442,122 +419,6 @@ dataController.getContacts = function(){
 			th.res.json({success:false, message:"Error in processing."});
 		} else {
 			th.res.json({success:true, contactes:contactes});
-		}
-	});
-}
-
-dataController.deleteContact = function(){
-	var th = this;
-	var id = th.req.param('id');
-	if(id){
-		Contacts.update({_id:id},{is_deleted:true}, function(err, contact){
-			if(err){
-				console.log(err);
-				th.res.json({success:false, message:"Error in processing. Please try again."});
-			} else if(contact){
-				th.res.json({success:true, message:"Contact successfully deleted.", contact:contact});
-			} else {
-				th.res.json({success:false, message:"Error in processing. Please try again."});
-			}
-		});
-	} else {
-		th.res.json({success:false, message:"Parameter missing."});
-	}
-}
-
-dataController.saveAdminUsers = function(){
-	var th = this;
-	var req = th.req;
-	var res = th.res;
-
-	var id = th.req.param('_id');
-	if(id){
-		adminUsers.update({_id:id}, req.body, function(err, status){
-			if(err){
-				th.res.json({success:false, message:"Error in processing. Please try again."});
-			} else if(status){
-				th.res.json({success:true, message:"User successfully updated."});
-			} else {
-				th.res.json({success:false, message:"User id incorrect."});
-			}
-		});
-	} else {
-		adminUsers.create(req.body, function(err, user){
-			if(err){
-				th.res.json({success:false, message:"Error in processing. Please try again."});
-			} else {
-				th.res.json({success:true, message:"User created.", adminUser:user});
-			}
-		});
-	}
-}
-
-dataController.getAdminUsers = function(){
-	var th = this;
-	var req = th.req;
-	var res = th.res;
-
-	adminUsers.find({is_deleted:false}, function(err, users){
-		if(err){
-			res.json({success:false, message:"Error in processing. Please try again."});
-		} else {
-			th.res.json({success:true, adminUsers:users});
-		}
-	});
-}
-
-dataController.deleteAdminUser = function(){
-
-}
-
-dataController.getUserDetail = function(){
-	var th = this;
-	var id = th.req.param('id');
-
-	if(id){
-		adminUsers.findOne({_id:id}, function(err, user){
-			if(err){
-				console.log(err);
-				th.res.json({message:"try again", success:false});
-			} else {
-				th.res.json({user:user, success:true});
-			}
-		});
-	} else {
-		th.res.json({message:"Invalid id", success:false});
-	}
-}
-
-dataController.saveTask = function(){
-	var th = this;
-	if(th.req.param('_id')){
-		Task.update({_id:th.req._id},req.body, function(err, status){
-			if(err){
-				th.res.json({success:false, message:"Error in processing"});
-			} else if(status) {
-				th.res.json({message:"Task updated.", success:true});
-			} else {
-				th.res.json({message:"Invalid task id.", success:false});
-			}
-		});
-	} else {
-		Task.create(th.req.body, function(err, task){
-			if(err){
-				th.res.json({success:false, message:"Error in processing"});
-			} else {
-				th.res.json({message:"Task created.", success:true, task:task});
-			}
-		});
-	}
-}
-
-dataController.getTasks = function(){
-	var th = this;
-	Task.find({is_deleted:false}, function(err, tasks){
-		if(err){
-			th.res.json({success:false, message:"Error in processing"});
-		} else {
-			th.res.json({success:true, tasks:tasks});
 		}
 	});
 }

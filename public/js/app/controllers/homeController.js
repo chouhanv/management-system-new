@@ -19,16 +19,43 @@ angular.module('myApp.homeController', [])
     	console.log(error);
     });
 
+    $http.get('/getMatters/All')
+    .success(function(data){
+        if(data.success){
+            $rootScope.matters = data.matters;
+        } else {
+            console.log(data);
+        }
+    })
+    .error(function(error){
+        console.log(error);
+    });
+
     $rootScope.getContacts = function(){
     	$http.get('/getContacts')
 	    .success(function(data){
 	    	if (data.success) {
 				$rootScope.allContactes = data.contactes;
+                $rootScope.$apply();
 			}
 	    })
 	    .error(function(error){
 	    	console.log(error);
 	    });
+    }
+
+    $rootScope.getMatters = function(){
+        $http.get('/getMatters/All')
+        .success(function(data){
+            if(data.success){
+                $rootScope.matters = data.matters;
+            } else {
+                console.log(data);
+            }
+        })
+        .error(function(error){
+            console.log(error);
+        });
     }
 
     $rootScope.getContactCategories = function(){
@@ -131,7 +158,11 @@ angular.module('myApp.homeController', [])
         
     }
 
-        $rootScope.convertTime = function(date){
+    $rootScope.initUser = function(user){
+        $rootScope.logedInUser = user;
+    }
+
+    $rootScope.convertTime = function(date){
         var system_date  = Date.parse(date);;
         var user_date = new Date();
         var diff = Math.floor((user_date - system_date) / 1000);
@@ -147,7 +178,7 @@ angular.module('myApp.homeController', [])
         if (diff < 604800) {return Math.round(diff / 86400) + " days ago";}
         if (diff <= 777600) {return "1 week ago";}
         return "on " + date.split("T")[0];
-      };
+    };
 
      $rootScope.getTimeFromDate = function(date){
         var system_date  = new Date(date.toLocaleString());
@@ -158,8 +189,8 @@ angular.module('myApp.homeController', [])
 
      $rootScope.getDateAndTime = function(date){
         if(date){
-
-            var system_date  = new Date(date.toString());
+            var system_date  = new Date(date);
+            //system_date = new Date(system_date.getTime() + (new Date().getTimezoneOffset()*60*1000));
             var h = system_date.getHours();
             var m = system_date.getMinutes();
 

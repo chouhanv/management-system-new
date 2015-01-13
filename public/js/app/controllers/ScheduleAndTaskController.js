@@ -1,15 +1,59 @@
 angular.module('myApp.ScheduleAndTaskController', [])
 .controller('ScheduleAndTaskController', function( $rootScope, $scope, $window, $location,$http) {
 
-	console.log("schedule");
-
 	$rootScope.newSchedule = {};
 	$rootScope.isEditSchedule = false;
 	$rootScope.editedScheduleEvent = {};
 
+    
+    function notyConfirm(schedule){
+    	noty({
+            text: schedule.title,
+            layout: 'topRight',
+            buttons: [
+                    {addClass: 'btn btn-success btn-clean', text: 'Ok', onClick: function($noty) {
+                        $noty.close();
+                        $http.post('/ignoreScheudle', {id:schedule._id})
+                        .success(function(data){
+                            if(data.success){
+                            	angular.forEach($rootScope.schedules, function(data, i){
+                            	    if(data._id == schedule._id){
+                            	    }
+                                });
+                                 //noty({text: 'Schedule Has been ignored.', layout: 'topRight', type: 'success'});
+                            } else {
+                            	console.log(data);
+                            }
+                        })
+                        .error(function(error){
+                        	console.log(error);
+                        })
+                    }
+                    },
+                    {addClass: 'btn btn-info btn-clean', text: 'Remember Again', onClick: function($noty) {
+                        $noty.close();
+                        setTimeout(function(){notyConfirm(schedule);},300000);
+                        }
+                    }
+                ]
+        });                                                    
+    }  
+
+	function checkSchedule(){
+	  	for(var x = 0; x < $rootScope.schedules.length; x++){
+	  		if($rootScope.getDateAndTime($rootScope.schedules[x].start) <= $rootScope.getDateAndTime() && !$rootScope.schedules[x].is_ignored){
+	  			$rootScope.schedules[x].is_ignored = true;
+	  			notyConfirm($rootScope.schedules[x]);
+	  		}
+	  	}
+	  	setTimeout(function(){checkSchedule();},60000);
+	}
+
 	$rootScope.getSchedules = function(){
 		$http.get('/getSchedules')
         .success(function(data){
+        	$rootScope.schedules = data.schedules;
+        	checkSchedule();
             $('#calendar').fullCalendar({
                 header: {
                   left: 'prev,next today',
@@ -38,6 +82,7 @@ angular.module('myApp.ScheduleAndTaskController', [])
 
                 },
                 defaultDate: new Date(),
+                timezone : 'local',
                 selectable: true,
                 selectHelper: true,
                 select: function(start, end) {
@@ -52,12 +97,13 @@ angular.module('myApp.ScheduleAndTaskController', [])
                   $rootScope.newSchedule.start = start;
                   $rootScope.newSchedule.end = end;
                   $rootScope.newSchedule.title = "";
+                  $rootScope.newSchedule.is_ignored = false;
                   $rootScope.$apply();
                   $('#calendar').fullCalendar('unselect');
                 },
                 editable: true,
                 eventLimit: true, // allow "more" link when too many events
-                events: data.schedules
+                events: $rootScope.schedules
             });
         })
         .error(function(data){
@@ -70,18 +116,24 @@ angular.module('myApp.ScheduleAndTaskController', [])
 						_id:$rootScope.newSchedule._id,
 						end:$rootScope.newSchedule.end,
 						start:$rootScope.newSchedule.start,
-						title:$rootScope.newSchedule.title
+						title:$rootScope.newSchedule.title,
+						is_ignored:false
 					})
 		.success(function(data){
 			if(data.success){
 				if($rootScope.newSchedule._id){
+					angular.forEach($rootScope.schedules, function(val, i){
+						if(val._id == $rootScope.newSchedule._id){
+							$rootScope.schedules[i].is_ignored = false;
+						}
+					});
 					$('#calendar').fullCalendar('updateEvent', $rootScope.newSchedule);
 				}
 				else {
+					$rootScope.schedules.push(data.schedule);
 					$('#calendar').fullCalendar('renderEvent', data.schedule, true);
 				}
 				$('#calendar').fullCalendar('unselect');
-				console.log("from here");
 			} else {
 				alert("Please try again");
 			}
@@ -92,11 +144,10 @@ angular.module('myApp.ScheduleAndTaskController', [])
 	}
 
 	$rootScope.deleteSchedule = function(){
-		$http.post('/deleteSchedule', $rootScope.newSchedule)
+		$http.post('/deleteSchedule', {id:$rootScope.newSchedule._id})
 		.success(function(data){
 			if(data.success){
-				console.log($rootScope.editedScheduleEvent);
-				$('#calendar').fullCalendar( 'removeEvents', $rootScope.newSchedule);
+				$('#calendar').fullCalendar( 'removeEvents', $rootScope.newSchedule._id);
 			} else {
 				alert("Please try again");
 			}
@@ -112,6 +163,61 @@ angular.module('myApp.ScheduleAndTaskController', [])
 
 	$rootScope.editSchedule = function(){
 		$rootScope.isEditSchedule=true;
+	}
+
+	$rootScope.getSchedules();
+
+
+	/**
+	 * TAST 
+	 */
+
+	 $rootScope.task = {
+	 	title:"",
+	 	description:"",
+	 	priority:"",
+	 	assignedTo:"",
+	 	category:"todo",
+	 	createdBy:$rootScope.logedInUser._id
+	 }
+
+	 $rootScope.resetTask = function(){
+	 	$rootScope.task.title = "";
+	 	$rootScope.task.description = "";
+	 	$rootScope.task.priority = "";
+	 	$rootScope.task.assignedTo = "";
+	 	$rootScope.task.category = "todo";
+	 	$rootScope.task.createdBy = $rootScope.logedInUser._id;
+	 }
+
+	 $rootScope.getTasks = function(){
+	 	$http.get('/getTasks')
+	 	.success(function(data){
+			if(data.success){
+				$rootScope.allTasks = data.tasks;
+				console.log($rootScope.allTasks);
+			} else {
+				console.log(data);
+			}
+		})
+		.error(function(error){
+			console.log(error);
+		});
+	 }
+
+	$rootScope.saveTask = function(){
+		$http.post('/saveTask', $rootScope.task)
+		.success(function(data){
+			if(data.success){
+				$rootScope.resetTask();
+				$rootScope.getTasks();
+			} else {
+				console.log(data);
+			}
+		})
+		.error(function(error){
+			console.log(error);
+		});
 	}
 
 });

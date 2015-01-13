@@ -1,5 +1,6 @@
 var locomotive = require('locomotive')
-  , Controller = locomotive.Controller;
+  , Controller = locomotive.Controller
+  , adminUsers =require('../models/adminusers');
 
 var pagesController = new Controller();
 
@@ -15,7 +16,23 @@ pagesController.main = function() {
 }
 
 pagesController.home = function(){
-	this.render();
+	var th = this;
+	var id = th.req.param('id');
+	if(id){
+		adminUsers.findOne({_id:id}, function(err, user){
+			if(err){
+				console.log(err);
+				th.redirect('back');
+			} else if(user){
+				delete user.password;
+				th.render({user:user});
+			} else {
+				th.redirect('back');
+			}
+		});
+	} else {
+		th.redirect('back');
+	}
 }
 
 pagesController.isLoginedIn = function(){

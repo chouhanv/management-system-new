@@ -3,8 +3,9 @@ module.exports = (function () {
     var mongoose = require('mongoose')
         , Schema = mongoose.Schema
         , SchemaTypes = mongoose.Schema.Types
-        , categories = require('./categories');
-    var connection = mongoose.createConnection("mongodb://localhost/managementsystem");
+        , categories = require('./categories')
+        , clientweblogin = require('./clientweblogin');
+    var connection = mongoose.createConnection("104.207.132.73:27017/managementsystem");
 
     var contactsSchema = new Schema ({
 
@@ -12,6 +13,11 @@ module.exports = (function () {
             type: Schema.Types.ObjectId, 
             ref: 'categories'
         },
+        clientweblogin: {
+            type: Schema.Types.ObjectId, 
+            ref: 'clientweblogin'
+        },
+
         name :{},
         company :{},
         addreses :[],
@@ -34,6 +40,10 @@ module.exports = (function () {
         date : {
             type : String,
             default : new Date()
+        },
+        is_deleted:{
+            type:Boolean,
+            default:false
         }
     });
 

@@ -4,7 +4,7 @@ module.exports = (function () {
     , Schema = mongoose.Schema
     , SchemaTypes = mongoose.Schema.Types
     ;
-    var connection = mongoose.createConnection("mongodb://localhost/managementsystem");
+    var connection = mongoose.createConnection("104.207.132.73:27017/managementsystem");
 
     var adminUsersSchema = new Schema({
         first_name : {
@@ -14,19 +14,34 @@ module.exports = (function () {
             type:String
         },
         user_type : {
-            type:String
+            type:String,
+            default:"admin"
         },
         email : {
-            type:String
+            type:String,
             required:true
         },
         password : {
             type:String,
             required:true
         },
+        is_active:{
+            type : String,
+            default : "Inactive"
+        },
+        role : {
+            type:"String"
+        },
+        imageSrc:{
+            type:String
+        },
         is_deleted:{
-            type : Boolean,
-            default : false
+            type:Boolean,
+            default:false
+        },
+        date : {
+            type : String,
+            default: new Date()
         }
     }, {strict: false});
     return mongoose.model('adminusers', adminUsersSchema,'adminusers');
