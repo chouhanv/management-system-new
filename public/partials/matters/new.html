@@ -1021,8 +1021,8 @@
 		                    <div style="margin-bottom:0px;" class="form-group" ng-repeat="(i, seler) in partiesForm.sellers track by $index">
 		                      <ng-form name="innerForm">
 		                        <select ng-select data-live-search="true" class="form-control" name="sellers" ng-model="partiesForm.sellers[i]" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="client in totalContacts['Client']" ng-selected="partiesForm.sellers[i] == client._id" value="{{client._id}}">{{client.displayname}}</option>
+		                          <option value="">Select Seller</option>
+		                          <option   ng-repeat="client in totalContacts['Client']" ng-selected=" totalContacts['Client'].length-1 == $index" value="{{client._id}}">{{client.displayname}}</option>
 		                       </select>
 		                       <i class="fa  fa-close" ng-click="removeSeller(i)"></i>
 		                        <span class="help-block form-error" ng-if="innerForm.sellers.$error.required && parties_form_submiter">Required*.</span>
@@ -1034,8 +1034,8 @@
 		                    <div style="margin-bottom:0px;" class="form-group" ng-repeat="(i,seller_agent) in partiesForm.sellers_agent track by $index">
 		                      <ng-form name="innerForm">
 		                        <select ng-select data-live-search="true" class="form-control" name="agent" ng-model="partiesForm.sellers_agent[i]" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="agent in totalContacts['Real Estate Agent']" ng-selected="partiesForm.sellers_agent[i] == agent._id" value="{{agent._id}}">{{agent.displayname}}</option>
+		                          <option value="">Select Agent</option>
+		                          <option ng-repeat="agent in totalContacts['Real Estate Agent']" ng-selected="totalContacts['Real Estate Agent'].length-1 == $index" value="{{agent._id}}">{{agent.displayname}}</option>
 		                       </select>
 		                        <i class="fa  fa-close" ng-click="removeSellerAgent($index)"></i>
 		                        <span class="help-block form-error" ng-if="innerForm.agent.$error.required && parties_form_submiter">Required*.</span>
@@ -1047,8 +1047,8 @@
 		                    <div style="margin-bottom:0px;" class="form-group" ng-repeat="(i,seller_attorney) in partiesForm.sellers_attorney track by $index">
 		                      <ng-form name="innerForm">
 		                        <select ng-select data-live-search="true" class="form-control" name="seller_attorney" ng-model="partiesForm.sellers_attorney[$index]" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="attor in totalContacts['Attorney']" ng-selected="partiesForm.sellers_attorney[i] == attor._id" value="{{attor._id}}">{{attor.displayname}}</option>
+		                          <option value="">Select Attorney</option>
+		                          <option ng-repeat="attor in totalContacts['Attorney']" ng-selected="totalContacts['Attorney'].length-1 == $index" value="{{attor._id}}">{{attor.displayname}}</option>
 		                        </select>
 		                        <i class="fa  fa-close" ng-click="removeSellerAttorney($index)"></i>
 		                        <span class="help-block form-error" ng-if="innerForm.seller_attorney.$error.required && parties_form_submiter">Required*.</span>
@@ -1063,8 +1063,8 @@
 		                    <div style="margin-bottom:0px;" class="form-group" ng-repeat="(i,buyer) in partiesForm.buyers track by $index">
 		                      <ng-form name="innerForm">
 		                        <select ng-select data-live-search="true" data-live-search="true" class="form-control" name="buyers" ng-model="partiesForm.buyers[i]" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="client in totalContacts['Client']" ng-selected="partiesForm.buyers[i] == client._id" value="{{client._id}}">{{client.displayname}}</option>
+		                          <option value="">Select Buyer</option>
+		                          <option ng-repeat="client in totalContacts['Client']" ng-selected="totalContacts['Client'].length-1 == $index" value="{{client._id}}">{{client.displayname}}</option>
 		                       </select>
 		                        <i class="fa  fa-close" ng-click="removeBuyer($index)"></i>
 		                        <span class="help-block form-error" ng-if="innerForm.buyers.$error.required && parties_form_submiter">Required*.</span>
@@ -1076,8 +1076,8 @@
 		                    <div style="margin-bottom:0px;" class="form-group" ng-repeat="(i, buyer_agent) in partiesForm.buyers_agent track by $index">
 		                      <ng-form name="innerForm">
 		                        <select ng-select data-live-search="true" class="form-control" name="agent" ng-model="partiesForm.buyers_agent[i]" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="agent in totalContacts['Real Estate Agent']" ng-selected="partiesForm.buyers_agent[i] == agent._id" value="{{agent._id}}">{{agent.displayname}}</option>
+		                          <option value="">Select Agent</option>
+		                          <option ng-repeat="agent in totalContacts['Real Estate Agent']" ng-selected="totalContacts['Real Estate Agent'].length-1 ==$index" value="{{agent._id}}">{{agent.displayname}}</option>
 		                       </select>
 		                        <i class="fa  fa-close" ng-click="removeBuyersAgent($index)"></i>
 		                        <span class="help-block form-error" ng-if="innerForm.agent.$error.required && parties_form_submiter">Required*.</span>
@@ -1089,8 +1089,8 @@
 		                    <div style="margin-bottom:0px;" class="form-group" ng-repeat="buyers_attorney in partiesForm.buyers_attorney track by $index">
 		                      <ng-form>
 		                        <select ng-select data-live-search="true" class="form-control" name="buyers_attorney" ng-model="partiesForm.buyers_attorney[$index]" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="attor in totalContacts['Attorney']" ng-selected="partiesForm.buyers_attorney[i] == attor._id" value="{{attor._id}}">{{attor.displayname}}</option>
+		                          <option value="">Select Attorney</option>
+		                          <option ng-repeat="attor in totalContacts['Attorney']" ng-selected="totalContacts['Attorney'].length-1 == $index" value="{{attor._id}}">{{attor.displayname}}</option>
 		                        </select>
 		                        <i class="fa  fa-close" ng-click="removeBuyersAttorney($index)"></i>
 		                        <span class="help-block form-error" ng-if="innerForm.buyers_attorney.$error.required && parties_form_submiter">Required*.</span>
@@ -1105,8 +1105,8 @@
 		                    </div>
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="buyers_attorney" ng-model="partiesForm.lender" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="land in totalContacts['Lender']" ng-selected="partiesForm.lender[$index] == land._id" value="{{land._id}}">{{land.displayname}}</option>
+		                          <option value="">Select Lender</option>
+		                          <option ng-repeat="land in totalContacts['Lender']" ng-selected="totalContacts['Lender'].length-1 == $index" value="{{land._id}}">{{land.displayname}}</option>
 		                      </select>
 		                      <span class="help-block form-error" ng-if="parties_form.lender.$error.required && parties_form_submiter" required>Required*.</span>
 		                    </div>
@@ -1115,8 +1115,8 @@
 		                    </div>
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="lender_attorney" ng-model="partiesForm.lender_attorney" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="attor in totalContacts['Attorney']" ng-selected="partiesForm.lender_attorney == attor._id" value="{{attor._id}}">{{attor.displayname}}</option>
+		                          <option value="">Select Attorney</option>
+		                          <option ng-repeat="attor in totalContacts['Attorney']" ng-selected="totalContacts['Attorney'].length-1 == $index" value="{{attor._id}}">{{attor.displayname}}</option>
 		                      </select>
 		                      <span class="help-block form-error" ng-if="parties_form.lender_attorney.$error.required && parties_form_submiter" required>Required*.</span>
 		                    </div>
@@ -1125,8 +1125,8 @@
 		                    </div>
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="loan_officer" ng-model="partiesForm.loan_officer" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="agent in totalContacts['Loan Officer']" ng-selected="partiesForm.loan_officer == agent._id" value="{{agent._id}}">{{agent.displayname}}</option>
+		                          <option value="">Select Loan Officer</option>
+		                          <option ng-repeat="agent in totalContacts['Loan Officer']" ng-selected="totalContacts['Loan Officer'].length-1 == $index" value="{{agent._id}}">{{agent.displayname}}</option>
 		                       </select>
 		                      <span class="help-block form-error" ng-if="parties_form.loan_officer.$error.required && parties_form_submiter" required>Required*.</span>
 		                    </div>
@@ -1138,8 +1138,8 @@
 		                    </div>
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="surveyor" ng-model="partiesForm.surveyor" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="surv in totalContacts['Surveyor']" ng-selected="partiesForm.surveyor == surv._id" value="{{surv._id}}">{{surv.displayname}}</option>
+		                          <option value="">Select Surveyor</option>
+		                          <option ng-repeat="surv in totalContacts['Surveyor']" ng-selected="totalContacts['Surveyor'].length-1 == $index" value="{{surv._id}}">{{surv.displayname}}</option>
 		                       </select>
 		                      <span class="help-block form-error" ng-if="parties_form.surveyor.$error.required && parties_form_submiter" required>Required*.</span>
 		                    </div>
@@ -1149,8 +1149,8 @@
 		                    </div>
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="building_inspector" ng-model="partiesForm.building_inspector" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="b_ins in totalContacts['Building Inspector']" ng-selected="partiesForm.building_inspector == b_ins._id" value="{{b_ins._id}}">{{b_ins.displayname}}</option>
+		                          <option value="">Select Building Inspector</option>
+		                          <option ng-repeat="b_ins in totalContacts['Building Inspector']" ng-selected="totalContacts['Building Inspector'].length-1 == $index" value="{{b_ins._id}}">{{b_ins.displayname}}</option>
 		                       </select>
 		                      <span class="help-block form-error" ng-if="parties_form.building_inspector.$error.required && parties_form_submiter">Required*.</span>
 		                    </div>
@@ -1159,8 +1159,8 @@
 		                    </div>
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="past_inspector" ng-model="partiesForm.past_inspector" required>
-		                          <option value="">Select</option>
-		                          <option ng-repeat="p_ins in totalContacts['Pest Inspector']" ng-selected="partiesForm.past_inspector == p_ins._id" value="{{p_ins._id}}">{{p_ins.displayname}}</option>
+		                          <option value="">Select Past Inspector</option>
+		                          <option ng-repeat="p_ins in totalContacts['Pest Inspector']" ng-selected=" totalContacts['Pest Inspector'].length-1 == $index" value="{{p_ins._id}}">{{p_ins.displayname}}</option>
 		                       </select>
 		                      <span class="help-block form-error" ng-if="parties_form.past_inspector.$error.required && parties_form_submiter">Required*.</span>
 		                    </div>
@@ -1185,7 +1185,7 @@
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="title_company" ng-model="partiesForm.title_company" required>
 		                          <option value="">Title Company</option>
-		                          <option ng-repeat="t_c in totalContacts['Title Company']" ng-selected="partiesForm.title_company == t_c._id" value="{{t_c._id}}">{{t_c.displayname}}</option>
+		                          <option ng-repeat="t_c in totalContacts['Title Company']" ng-selected="totalContacts['Title Company'].length-1 ==$index" value="{{t_c._id}}">{{t_c.displayname}}</option>
 		                       </select>
 		                      <span class="help-block form-error" ng-if="parties_form.title_company.$error.required && parties_form_submiter">Required*.</span>
 		                    </div>
@@ -1195,7 +1195,7 @@
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="abstract_search" ng-model="partiesForm.abstract_search" required>
 		                          <option value="">Abstract Search</option>
-		                          <option ng-repeat="t_s in totalContacts['Abstract Search']" ng-selected="partiesForm.abstract_search == t_s._id" value="{{t_s._id}}">{{t_s.displayname}}</option>
+		                          <option ng-repeat="t_s in totalContacts['Abstract Search']" ng-selected="totalContacts['Abstract Search'].length-1 == $index" value="{{t_s._id}}">{{t_s.displayname}}</option>
 		                       </select>
 		                      <span class="help-block form-error" ng-if="parties_form.abstract_search.$error.required && parties_form_submiter">Required*.</span>
 		                    </div>
@@ -1205,7 +1205,7 @@
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="under_writer" ng-model="partiesForm.under_writer" required>
 		                          <option value="">Under Writer</option>
-		                          <option ng-repeat="u_w in totalContacts['Under Writer']" ng-selected="partiesForm.under_writer == u_w._id" value="{{u_w._id}}">{{u_w.displayname}}</option>
+		                          <option ng-repeat="u_w in totalContacts['Under Writer']" ng-selected="totalContacts['Under Writer'].length-1 == $index" value="{{u_w._id}}">{{u_w.displayname}}</option>
 		                       </select>
 		                      <span class="help-block form-error" ng-if="parties_form.under_writer.$error.required && parties_form_submiter">Required*.</span>
 		                    </div>
@@ -1215,17 +1215,17 @@
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="closer" ng-model="partiesForm.closer" required>
 		                          <option value="">Closer</option>
-		                          <option ng-repeat="c in totalContacts['Closer']" ng-selected="partiesForm.closer == c._id" value="{{c._id}}" >{{c.displayname}}</option>
+		                          <option ng-repeat="c in totalContacts['Closer']" ng-selected="totalContacts['Closer'].length-1 == $index" value="{{c._id}}" >{{c.displayname}}</option>
 		                       </select>
 		                      <span class="help-block form-error" ng-if="parties_form.closer.$error.required && parties_form_submiter">Required*.</span>
 		                    </div>
 		                    <div class="form-group">
-		                      <h3>Recording Office</h3>
+		                      <h3>Recording Officer</h3>
 		                    </div>
 		                    <div class="form-group">
 		                      <select ng-select data-live-search="true" class="form-control" name="recording_office" ng-model="partiesForm.recording_office" required>
 		                          <option value="">Recording Office</option>
-		                          <option ng-repeat="r_o in totalContacts['Recording Office']" ng-selected="partiesForm.recording_office == r_o._id" value="{{r_o._id}}">{{r_o.displayname}}</option>
+		                          <option ng-repeat="r_o in totalContacts['Recording Office']" ng-selected="totalContacts['Recording Office'].length-1 == $index" value="{{r_o._id}}">{{r_o.displayname}}</option>
 		                       </select>
 		                      <span class="help-block form-error" ng-if="parties_form.recording_office.$error.required && parties_form_submiter">Required*.</span>
 		                    </div>
@@ -1362,7 +1362,7 @@
 				        	<button type="button" class="btn btn-info" ng-if="!isEditMatter" ng-click="setIsEditMatter(true)">Edit</button>
 				        	<button type="button" class="btn btn-info" ng-if="isEditMatter" ng-click="setIsEditMatter(false);">Cancel</button>
 				        	<button type="button" class="btn btn-danger" ng-if="isEditMatter" ng-click="deleteMatter(editedMatterId)">Delete</button>
-				        	<button type="button" class="btn btn-success" ng-if="isEditMatter" onclick="$('#updatematterbutton').click(); $('.matterslist a').click();">Save</button>
+				        	<button type="button" class="btn btn-success" ng-if="isEditMatter" onclick="$('#updatematterbutton').click();">Save</button>
 				    </div>
 				</div>
 				

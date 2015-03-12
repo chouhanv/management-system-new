@@ -4,7 +4,6 @@ angular.module('myApp.matterController', [])
 	 $rootScope.setMatterType = function(matterType){
 	 	$rootScope.currentMatterType = matterType;
 	 }
-
 	 $rootScope.matterTabShow = 'listTab';
 	 $rootScope.matterTabs = [];
 	 $rootScope.openedMatters = [];
@@ -279,7 +278,7 @@ angular.module('myApp.matterController', [])
                 }
             }
         }
-
+	    $('.matterslist a').click();
 	 	$rootScope.matterUpdateMessage = "Saving Matter....";
 	 	$http.post('/updateMatter', {
 			matter:$rootScope.matterForm,

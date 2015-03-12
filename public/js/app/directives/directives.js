@@ -528,6 +528,9 @@ angular.module('myApp.directives', [])
         setTimeout(function(){
           var $el = $(element);
           $el.selectpicker();
+          ngModel.$setViewValue($el.val());
+          console.log($el.val());
+          rootScope.$apply();
           $el.on('change', function (ee, aa) {
             ngModel.$setViewValue($el.val());
             rootScope.$apply();
