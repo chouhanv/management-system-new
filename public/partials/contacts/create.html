@@ -11,7 +11,7 @@
                     <h2></span> New {{categorie.categorie}}</h2>
                 </div>
                 <!-- PAGE CONTENT WRAPPER -->
-                <form id="jvalidate" data-ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="saveContact(contact_form);" novalidate>   
+                <form id="jvalidate" ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="saveContact(contact_form);" novalidate>   
                 <div class="page-content-wrap">                
                 
                     <div class="row">
@@ -78,7 +78,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input type="text" class="form-control" placeholder="Last Name " data-ng-model="name.lastname">
+							                        		<input type="text" class="form-control" placeholder="Last Name " ng-model="name.lastname">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -156,7 +156,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Last Name:</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" name="lastname"   placeholder="Last*" data-ng-trim='false'data-ng-model="name.lastname" required>
+                                        <input type="text" class="form-control" name="lastname"   placeholder="Last*" ng-trim='false'ng-model="name.lastname" required>
                                         <span class="help-block">Required</span>
                                     </div>
                                 </div>
@@ -249,7 +249,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<select class="form-control" data-ng-model="address.addresstype">
+							                        		<select class="form-control" ng-model="address.addresstype">
 							                                  <option value="business">Business/Home</option>
 							                                  <option value="2">2</option>
 							                                </select>
@@ -265,13 +265,13 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<label class="ui-checkbox">
-					                                      <input name="checkbox1" type="checkbox" data-ng-model="address.mailing" value="Mailing">
+					                                      <input name="checkbox1" type="checkbox" ng-model="address.mailing" value="Mailing">
 					                                      <span>Mailing</span></label>
 					                                    <label class="ui-checkbox">
-					                                      <input name="checkbox1" type="checkbox" data-ng-model="address.billing" value="billing" checked>
+					                                      <input name="checkbox1" type="checkbox" ng-model="address.billing" value="billing" checked>
 					                                      <span>Billing</span></label>
 					                                    <label class="ui-checkbox">
-					                                      <input name="checkbox1" type="checkbox" data-ng-model="address.poboxno" value="pobox">
+					                                      <input name="checkbox1" type="checkbox" ng-model="address.poboxno" value="pobox">
 					                                      <span>P.O.Box</span></label>
 						                        	</div>
 						                        </div>
@@ -283,7 +283,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input  type="text" class="form-control" placeholder="Number" data-ng-model="address.streetnumber">
+							                        		<input  type="text" class="form-control" placeholder="Number" ng-model="address.streetnumber">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -295,7 +295,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input  type="text" class="form-control" placeholder="Name" data-ng-model="address.streetname">
+							                        		<input  type="text" class="form-control" placeholder="Name" ng-model="address.streetname">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -307,7 +307,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<select class="form-control" data-ng-model="address.streetsuffix">
+							                        		<select class="form-control" ng-model="address.streetsuffix">
 						                                      <option value="suffix">Suffix</option>
 						                                      <option value="2">2</option>
 						                                    </select>   
@@ -322,7 +322,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input  type="text" class="form-control" placeholder="Number" data-ng-model="address.unitnumber"> 
+							                        		<input  type="text" class="form-control" placeholder="Number" ng-model="address.unitnumber"> 
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -334,7 +334,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<select class="form-control" data-ng-model="address.unitdesignator">
+							                        		<select class="form-control" ng-model="address.unitdesignator">
 						                                      <option value="Designator">Designator</option>
 						                                      <option value="2" >2</option>
 						                                    </select>
@@ -349,7 +349,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input  type="text" class="form-control" placeholder="Name or Number" data-ng-model="address.buildingnumber">   
+							                        		<input  type="text" class="form-control" placeholder="Name or Number" ng-model="address.buildingnumber">   
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -361,7 +361,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input  type="text" class="form-control" placeholder="Door Code" data-ng-model="address.buildingdoorcode">
+							                        		<input  type="text" class="form-control" placeholder="Door Code" ng-model="address.buildingdoorcode">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -373,7 +373,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input  type="text" class="form-control" placeholder="Door Bell" data-ng-model="address.buildingdoorbell" >
+							                        		<input  type="text" class="form-control" placeholder="Door Bell" ng-model="address.buildingdoorbell" >
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -385,7 +385,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input type="text" class="form-control" data-ng-model="address.pobox"  placeholder="P.O. Box">
+							                        		<input type="text" class="form-control" ng-model="address.pobox"  placeholder="P.O. Box">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -397,7 +397,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input type="text" class="form-control" data-ng-model="address.streetnameaka"  placeholder="Street Name also knows as">
+							                        		<input type="text" class="form-control" ng-model="address.streetnameaka"  placeholder="Street Name also knows as">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -409,7 +409,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input type="text" class="form-control" data-ng-model="address.Intersectingstreet1"  placeholder="Intersecting Street1">
+							                        		<input type="text" class="form-control" ng-model="address.Intersectingstreet1"  placeholder="Intersecting Street1">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -421,7 +421,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input type="text" class="form-control" data-ng-model="address.Intersectingstreet2"  placeholder="Intersecting Street2">
+							                        		<input type="text" class="form-control" ng-model="address.Intersectingstreet2"  placeholder="Intersecting Street2">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -433,7 +433,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input type="text" class="form-control" data-ng-model="address.neighborhood"  placeholder="Neighborhood">
+							                        		<input type="text" class="form-control" ng-model="address.neighborhood"  placeholder="Neighborhood">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -450,7 +450,7 @@
                                 	<div class="form-group">
 		                                <label class="col-md-3 control-label">Address Line 1:</label>
 		                                <div class="col-md-9">
-		                                    <input type="text" class="form-control" name="addressline1"  placeholder="Address Line1*"data-ng-model="address.addressline1" required>
+		                                    <input type="text" class="form-control" name="addressline1"  placeholder="Address Line1*"ng-model="address.addressline1" required>
 		                                    <span class="help-block">Required</span>
 		                                </div>
 		                            </div>
@@ -458,7 +458,7 @@
 		                            <div class="form-group">
 		                                <label class="col-md-3 control-label">Address Line 2:</label>
 		                                <div class="col-md-9">
-		                                    <input type="text" class="form-control" name="addressline2" placeholder="Address Line2" data-ng-model="address.addressline2" required>
+		                                    <input type="text" class="form-control" name="addressline2" placeholder="Address Line2" ng-model="address.addressline2" required>
 		                                    <span class="help-block">Required</span>
 		                                </div>
 		                            </div>
@@ -466,7 +466,7 @@
 		                            <div class="form-group">
 		                                <label class="col-md-3 control-label">City:</label>
 		                                <div class="col-md-9">
-		                                    <input  type="text" class="form-control" name="city" placeholder="City*" data-ng-trim='false'data-ng-model="address.city" required>
+		                                    <input  type="text" class="form-control" name="city" placeholder="City*" ng-trim='false'ng-model="address.city" required>
 		                                    <span class="help-block">Required</span>
 		                                </div>
 		                            </div>
@@ -474,7 +474,7 @@
 		                            <div class="form-group">
 		                                <label class="col-md-3 control-label">State:</label>
 		                                <div class="col-md-9">
-		                                    <input  type="text" class="form-control" name="state" placeholder="State*" data-ng-trim='false' data-ng-model="address.state" required>
+		                                    <input  type="text" class="form-control" name="state" placeholder="State*" ng-trim='false' ng-model="address.state" required>
 		                                    <span class="help-block">Required</span>
 		                                </div>
 		                            </div>
@@ -482,7 +482,7 @@
 		                            <div class="form-group">
 		                                <label class="col-md-3 control-label">Zip:</label>
 		                                <div class="col-md-9">
-		                                    <input  type="text" class="form-control" name="zip" placeholder="Zip*" data-ng-model="address.zip" required>
+		                                    <input  type="text" class="form-control" name="zip" placeholder="Zip*" ng-model="address.zip" required>
 		                                    <span class="help-block">Required</span>
 		                                </div>
 		                            </div>
@@ -519,7 +519,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<select class="form-control" data-ng-model="phonepop.phonetype">
+							                        		<select class="form-control" ng-model="phonepop.phonetype">
 								                              <option value="Cell">Cell</option>
 								                              <option value="business">Business</option>
 								                              <option value="home">Home</option>
@@ -535,13 +535,13 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<label class="ui-checkbox">
-							                                <input name="checkbox1" type="checkbox" data-ng-model="phonepop.sms" value="sms"><span>SMS</span>
+							                                <input name="checkbox1" type="checkbox" ng-model="phonepop.sms" value="sms"><span>SMS</span>
 							                            </label>
 							                            <label class="ui-checkbox">
-							                                <input name="checkbox1" type="checkbox" data-ng-model="phonepop.mms" value="mms" checked><span>MMS</span>
+							                                <input name="checkbox1" type="checkbox" ng-model="phonepop.mms" value="mms" checked><span>MMS</span>
 							                            </label>
 							                            <label class="ui-checkbox">
-							                                <input name="checkbox1" type="checkbox" data-ng-model="phonepop.smartphone" value="smartphone"><span>Smart Phone</span>
+							                                <input name="checkbox1" type="checkbox" ng-model="phonepop.smartphone" value="smartphone"><span>Smart Phone</span>
 							                            </label>
 						                        	</div>
 						                        </div>
@@ -552,7 +552,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<select class="form-control selct-refer" data-ng-model="phonepop.country">
+							                        		<select class="form-control selct-refer" ng-model="phonepop.country">
 							                                  <option>State</option>
 							                                  <option value="India">India</option>
 							                                  <option value="USA">USA</option>
@@ -578,7 +578,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input type="text" class="form-control" data-ng-model="phonepop.number"  placeholder="Number">
+							                        		<input type="text" class="form-control" ng-model="phonepop.number"  placeholder="Number">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -589,7 +589,7 @@
 						                        	</div>
 						                        	<div class="col-sm-8">
 						                        		<div class="form-group">
-							                        		<input type="text" class="form-control" data-ng-model="phonepop.ext"  placeholder="Ext">
+							                        		<input type="text" class="form-control" ng-model="phonepop.ext"  placeholder="Ext">
 							                        	</div>
 						                        	</div>
 						                        </div>
@@ -606,14 +606,14 @@
 						        	<div class="form-group">
 		                                <label class="col-md-3 control-label">Cellphone:</label>
 		                                <div class="col-md-9">
-		                                    <input type="text" class="form-control" name="cellphone" placeholder="Cell Phone*" data-ng-model="phone.cellphone" required>
+		                                    <input type="text" class="form-control" name="cellphone" placeholder="Cell Phone*" ng-model="phone.cellphone" required>
 		                                    <span class="help-block">Required</span>
 		                                </div>
 		                            </div>
 		                            <div class="form-group">
 		                                <label class="col-md-3 control-label">Home Phone:</label>
 		                                <div class="col-md-9">
-		                                    <input type="text" class="form-control" name="homephone" placeholder="Home Phone*" data-ng-model="phone.homephone" required>
+		                                    <input type="text" class="form-control" name="homephone" placeholder="Home Phone*" ng-model="phone.homephone" required>
 		                                    <span class="help-block">Required</span>
 		                                </div>
 		                            </div>                                                                 
@@ -630,7 +630,7 @@
 	                                	<div class="form-group">
 			                                <label class="col-md-3 control-label">Email:</label>
 			                                <div class="col-md-9">
-			                                    <input type="email" class="form-control" name="email"  placeholder="Email*" data-ng-model="emails[$index]" required>
+			                                    <input type="email" class="form-control" name="email"  placeholder="Email*" ng-model="emails[$index]" required>
 			                                    <span class="help-block">Required</span>
 			                                </div>
 			                            </div>
@@ -648,7 +648,7 @@
 	                                	<div class="form-group">
 			                                <label class="col-md-3 control-label">Reffered By:</label>
 			                                <div class="col-md-9">
-			                                    <select class="form-control selct-refer" name="refferedby" data-ng-model="refferedbys[$index]">
+			                                    <select class="form-control selct-refer" name="refferedby" ng-model="refferedbys[$index]">
 					                                <option value="">--Select--</option>
 					                                <option ng-repeat="client in allContactes" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
 					                             </select>  
@@ -670,7 +670,7 @@
 	                                	<div class="form-group">
 			                                <label class="col-md-3 control-label">Notes:</label>
 			                                <div class="col-md-9">
-			                                    <textarea class="form-control" data-ng-model="notes[$index]" placeholder="Note" rows="5"></textarea> 
+			                                    <textarea class="form-control" ng-model="notes[$index]" placeholder="Note" rows="5"></textarea> 
 			                                    <span class="help-block">Required</span>
 			                                </div>
 			                            </div>
@@ -682,7 +682,7 @@
 	                                	<div class="form-group">
 			                                <label class="col-md-3 control-label">{{additionalfield.key}}:</label>
 			                                <div class="col-md-9">
-			                                    <input type="text" class="form-control" placeholder="{{additionalfield.key}}*" name="aditional_value" data-ng-model="additionalfield.value" required /><i class="fa  fa-close" ng-click="removeAdditionalField($index)"></i>    
+			                                    <input type="text" class="form-control" placeholder="{{additionalfield.key}}*" name="aditional_value" ng-model="additionalfield.value" required /><i class="fa  fa-close" ng-click="removeAdditionalField($index)"></i>    
 			                                    <span class="help-block">Required</span>
 			                                </div>
 			                            </div>

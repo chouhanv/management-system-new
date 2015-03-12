@@ -18,20 +18,7 @@
                         </div>                                                                                
                     </div>
                     <!-- END CONTENT FRAME TOP -->
-                    <!-- START CONTENT FRAME LEFT -->
-                    <div class="content-frame-left">
-                        <h4>New Event</h4>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="new-event-text" ng-model="event_text" placeholder="Event text..."/>
-                                <div class="input-group-btn">
-                                    <button class="btn btn-primary" ng-click="addEvent(event_text)" id="new-event">Add</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h4>External Events</h4>
-                        <div class="list-group border-bottom" id="external-events">                                    
+                    <!-- START CONTENT FRAME LEFT -->                        <div class="list-group border-bottom" id="external-events">                                    
                             <!-- <a class="list-group-item external-event">Lorem ipsum dolor</a>
                             <a class="list-group-item external-event">Nam a nisi et nisi</a>
                             <a class="list-group-item external-event">Donec tristique eu</a>
@@ -54,14 +41,13 @@
                     <div class="content-frame-body padding-bottom-0">
                         
                         <div class="row">
-                            <div class="col-md-12">
-                                <div id="alert_holder"></div>
-                                <div class="calendar">                                
-                                    <div id="calendar" data-ng-init="getSchedules()"></div>                            
+                            <div>
+                                <div id="alert_holder"></div><br/>
+                                <div class="calendar" style="background:#f5f5f5;padding:5px;">                                
+                                    <div id="calendar" data-ng-init="initSchedules();initSize()"></div>                            
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>                        
                     </div>                    
                     <!-- END CONTENT FRAME BODY -->
                 </div>               
@@ -73,7 +59,7 @@
                     <div class="modal-dialog modal-sm">
                         <div class="modal-content">
                             <div class="modal-header" style="background:white; border-bottom:none;">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <button type="button" class="close" data-dismiss="modal" ng-click="resetSchedule();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                 <h4 class="modal-title" id="smallModalHead">New Schedule</h4>
                             </div>
                             <div class="modal-body">
@@ -82,8 +68,7 @@
                                         When :
                                     </div>
                                     <div class="col-sm-9">
-                                        {{getDateAndTime(newSchedule.start)}}
-                                        
+                                         <input datetimepicker type="text" class="form-control" ng-model="newSchedule.start"/>
                                     </div>
                                 </div>
                                 <br>
@@ -94,6 +79,43 @@
                                     <div class="col-sm-9">
                                         <div class="form-group">
                                             <input type="text" class="form-control" ng-model="newSchedule.title">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                       Notification:
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" ng-model="newSchedule.before_time">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="form-group">
+                                            <select class="form-control" ng-model="newSchedule.before_schedule">
+                                                <option value="minutes">minutes</option>
+                                                <option value="hours">hours</option>
+                                                <option value ="days">days</option>
+                                                <option value="weeks">weeks</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                                                <br>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                       Snooze:
+                                    </div>                                    
+                                    <div class="col-sm-9">
+                                        <div class="form-group">
+                                            <select class="form-control" ng-model="newSchedule.snoozetime">
+                                                <option value="5">5 minutes</option>
+                                                <option value="10">10 minutes</option>
+                                                <option value ="15">15 minutes</option>
+                                                <option value="20">20 minutes</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -111,7 +133,8 @@
                     <div class="modal-dialog modal-sm">
                         <div class="modal-content">
                             <div class="modal-header" style="background:white; border-bottom:none;">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <button type="button" class="close" ng-click="resetSchedule();"
+                                 data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                 <h4 class="modal-title" id="smallModalHead">Schedule</h4>
                             </div>
                             <div class="modal-body">
@@ -139,7 +162,46 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                       Notification:
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <input type="text" ng-if="isEditSchedule" class="form-control" ng-model="newSchedule.before_time">
+                                            <span style="cursor:pointer; margin-left:8px" ng-click="editSchedule();" ng-if="!isEditSchedule">{{newSchedule.before_time}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="form-group">
+                                            <select class="form-control" ng-model="newSchedule.before_schedule" ng-if="isEditSchedule">
+                                                <option value="minutes">minutes</option>
+                                                <option value="hours">hours</option>
+                                                <option value ="days">days</option>
+                                                <option value="weeks">weeks</option>
+                                            </select>
+                                            <span style="cursor:pointer;margin-left:-44px" ng-click="editSchedule();" ng-if="!isEditSchedule">{{newSchedule.before_schedule}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                       Snooze:
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="form-group">
+                                            <select class="form-control" ng-model="newSchedule.snoozetime" ng-if="isEditSchedule">
+                                                <option value="5">5 minutes</option>
+                                                <option value="10">10 minutes</option>
+                                                <option value ="15">15 minutes</option>
+                                                <option value="20">20 minutes</option>
+                                            </select>
+                                            <span style="cursor:pointer;" ng-click="editSchedule();" ng-if="!isEditSchedule">{{newSchedule.snoozetime}}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             <div class="modal-footer" style="background:white; border-top:none; text-align:right">
                                 <a href="javascript:;" ng-if="!isEditSchedule" ng-click="editSchedule()">Edit</a> &nbsp
                                 <button type="button" ng-show="isEditSchedule" class="btn btn-danger" data-dismiss="modal" ng-click="deleteSchedule()">Delete</button>

@@ -1,5 +1,5 @@
 angular.module('myApp.matterController', [])
-.controller('matterController', function( $rootScope, $scope, $window, $location,$http, fileUpload) {
+.controller('matterController', function( $rootScope, $scope, $window, $location,$http, fileUpload, notificationMessage) {
 
 	 $rootScope.setMatterType = function(matterType){
 	 	$rootScope.currentMatterType = matterType;
@@ -14,7 +14,6 @@ angular.module('myApp.matterController', [])
 	 $rootScope.isEditMatter = false;
 
 	 $rootScope.setIsEditMatter = function(st){
-	 	console.log(st);
 	 	$rootScope.isEditMatter = st;
 	 }
 
@@ -25,9 +24,54 @@ angular.module('myApp.matterController', [])
 	 		}
 	 	});
 	 }
+	$rootScope.getFileExtension = function(filename)
+	{
+	    var ext = filename.split('.').pop();
+	    if(ext == filename) return "";
+	    return ext.toUpperCase();
+	}
+	// $rootScope.getContact = function(clientdata)
+	// {
+ //     	if (clientdata.name.firstname !='' && clientdata.name.lastname !='')
+ //     	{
+	//      	for(var i=0; i<3; i++)
+	//      	{
+	//      	 	if(clientdata.phones[i].number)
+	//      		{
+	//             	return clientdata.name.firstname + " " + clientdata.name.lastname +" "+clientdata.phones[i].number;
+	//         	}
+	//      	}
+ // 	 		return clientdata.name.firstname + " " + clientdata.name.lastname;
+	// 	}
+	// 	else if(clientdata.name.firstname)
+	// 	{
+	// 		for(var i=0; i<3; i++)
+	//      	{
+	//      		if(clientdata.phones[i].number){
+	//      			return clientdata.name.firstname +" " +clientdata.phones[i].number;
+	//      		}     		
+	//      	}
+	//      	return clientdata.name.firstname;
+	// 	}
+	// 	else
+	// 	{
+	// 		if (clientdata.company.companyname)
+	// 		{
+	// 	      	for(var i=0; i<3; i++)
+	// 	 		{
+	// 	 			if(clientdata.phones[i].number)
+	// 	 			{
+	// 	 				return clientdata.company.companyname+" "+clientdata.phones[i].number; 
+	// 	     		}		     		
+	// 			}
+	// 			return clientdata.company.companyname;
+	// 		}
+	// 	}	
+	// }
 
-	 $rootScope.addMatterTab = function(id){
+	$rootScope.addMatterTab = function(id){
 	 	var matter = {};
+	 	$rootScope.remarkShow = "";
 		angular.forEach($rootScope.matters, function(val, i){
 			if(val._id == id){
 				matter = angular.copy($rootScope.matters[i]);
@@ -68,7 +112,6 @@ angular.module('myApp.matterController', [])
 	 		$rootScope.matterTabs.push({name:matter.matter.property.matter_name, _id:matter._id, class:'active'});
 	 		$rootScope.openedMatters.push(matter);
 	 	}
-
 	 	$rootScope.matterForm = matter.matter;
  		$rootScope.partiesForm = matter.parties;
 		// for (var key in $rootScope.partiesForm) {
@@ -105,9 +148,10 @@ angular.module('myApp.matterController', [])
 	 $rootScope.setSelectedActivityToShowRemark = function(activity){
 		$rootScope.selectedActivityToShowRemark = activity;
 	}
-
 	 $rootScope.showMatterTab = function(index){
+	 	$rootScope.setIsEditMatter(false);
 	 	$rootScope.showTab='matter';
+	 	$rootScope.remarkShow = "";
 	 	$('#myTab .active').removeClass('active');
 	 	$("#newMatter").removeClass('active');
 	 	$("#matterslist").removeClass("active");
@@ -146,6 +190,10 @@ angular.module('myApp.matterController', [])
 	}
 
 	$rootScope.deleteMatter = function(id){
+		if (!window.confirm("Are you sure want to delete?") ) {
+            return false;
+        }
+
 	 	$http.post('/deleteMatter', {id:id})
 	 	.success(function(data){
 	 		if(data.success){
@@ -178,6 +226,60 @@ angular.module('myApp.matterController', [])
 	 }
 
 	 $rootScope.updateMatter = function(isShowList){
+	 	//finding  duplicated in sellers
+	 	for (var i = 0; i < $rootScope.partiesForm.sellers.length; i++) {
+            for (var j = 0; j < $rootScope.partiesForm.sellers.length; j++) {
+                if (i != j) {
+                    if ($rootScope.partiesForm.sellers[i] && $rootScope.partiesForm.sellers[i] && $rootScope.partiesForm.sellers[i] == $rootScope.partiesForm.sellers[j]) {
+                        alert("Sellers can not be duplicates.");
+						return false;
+                    }
+                }
+            }
+        }
+        
+        //finding  duplicated in buyers
+        for (var i = 0; i < $rootScope.partiesForm.buyers.length; i++) {
+            for (var j = 0; j < $rootScope.partiesForm.buyers.length; j++) {
+                if (i != j) {
+                    if ($rootScope.partiesForm.buyers[i] && $rootScope.partiesForm.buyers[j] && $rootScope.partiesForm.buyers[i] == $rootScope.partiesForm.buyers[j]) {
+                        alert("Buyers can not be duplicates.");
+						return false;
+                    }
+                }
+            }
+        }
+
+		//checking salers and buyers
+		for (var i = 0; i < $rootScope.partiesForm.sellers.length; i++) {
+            for (var j = 0; j < $rootScope.partiesForm.buyers.length; j++) {
+                if ($rootScope.partiesForm.sellers[i] && $rootScope.partiesForm.buyers[j] && $rootScope.partiesForm.sellers[i] == $rootScope.partiesForm.buyers[j]) {
+                    alert("Sellers and Buyers can not be same.");
+					return false;
+                }
+            }
+        }
+
+        //checking salers and buyers ajent
+		for (var i = 0; i < $rootScope.partiesForm.sellers_agent.length; i++) {
+            for (var j = 0; j < $rootScope.partiesForm.buyers_agent.length; j++) {
+                if ($rootScope.partiesForm.sellers_agent[i] && $rootScope.partiesForm.buyers_agent[j] && $rootScope.partiesForm.sellers_agent[i] == $rootScope.partiesForm.buyers_agent[j]) {
+                    alert("Sellers Agent and Buyers Agent can not be same.");
+					return false;
+                }
+            }
+        }
+
+        //checking salers and buyers attorney
+		for (var i = 0; i < $rootScope.partiesForm.sellers_attorney.length; i++) {
+            for (var j = 0; j < $rootScope.partiesForm.buyers_attorney.length; j++) {
+                if ($rootScope.partiesForm.sellers_attorney[i] && $rootScope.partiesForm.buyers_attorney[j] && $rootScope.partiesForm.sellers_attorney[i] == $rootScope.partiesForm.buyers_attorney[j]) {
+                    alert("Sellers Attorney and Buyers Attorney can not be same.");
+					return false;
+                }
+            }
+        }
+
 	 	$rootScope.matterUpdateMessage = "Saving Matter....";
 	 	$http.post('/updateMatter', {
 			matter:$rootScope.matterForm,
@@ -188,17 +290,10 @@ angular.module('myApp.matterController', [])
 		})
 		.success(function(data){
 			if(data.success){
-				$rootScope.matterUpdateMessage = "Matter Successfully Saved.";
+				notificationMessage.show(data.message);
 				$rootScope.getMatters();
-				setTimeout(function(){
-					$rootScope.matterUpdateMessage = "";
-					$rootScope.$apply();
-				}, 5000);
-				// setTimeout(function(){
-				// 	if(isShowList) $(".matterslist a").click();
-				// },1000);
 			} else {
-				$rootScope.matterUpdateMessage = "Please Try Again.";
+				notificationMessage.show(data.message);
 			}
 		})
 		.error(function(error){
@@ -254,9 +349,9 @@ angular.module('myApp.matterController', [])
 	$rootScope.downloadDocuments = function(){
 		var downloadedFiles = [];
 		angular.forEach($rootScope.documents, function(val, i){
-			if(val.is_checked){
+			//if(val.is_checked){
 				downloadedFiles.push(val.document);
-			}
+			//}
 		});
 		if(downloadedFiles.length == 0){
 			alert("Please select files to download.");
@@ -272,15 +367,76 @@ angular.module('myApp.matterController', [])
 		}
 	}
 
+	$rootScope.downloadFile = function(name,address){
 
-	$http.get("/getNewMatterTitle")
-	.success(function(data){
-		$rootScope.uniqueNumber = data.uniqueNumber;
-		$rootScope.matterForm.title.unique_number = data.uniqueNumber;
-	})
-	.error(function(error){
-		console.log(error);
-	});
+		$http.get(address)   
+		.success(function(data){
+			//$window.location = 'data:text/plain;charset=utf-8,' + encodeURIComponent(data);
+
+			if(window.navigator.msSaveOrOpenBlob) {
+	            var fileData = [data];
+	            blobObject = new Blob(fileData);
+	            $(anchorSelector).click(function(){
+	                window.navigator.msSaveOrOpenBlob(blobObject, name);
+	            });
+	        } else {
+	            var url = "data:application/octet-stream;charset=utf-8," + encodeURIComponent(data);
+	            //$(anchorSelector).attr("download", fileName);               
+	            //$(anchorSelector).attr("href", url);
+	            $window.location = url;
+	        }
+		})
+		.error(function(error){
+			console.log(error);
+		})
+
+		// console.log(name, address)
+		// if (confirm('you wanna save this file?')) {
+  //             window.win = open(address);
+  //         //    response.redirect("~/testpage.html");   
+
+
+
+  //             // setTimeout('win.document.execCommand("SaveAs")', 100);
+  //             setTimeout(function(){
+  //             	if (window.ActiveXObject) {
+		//             document.execCommand("SaveAs");
+		//             console.log("dadsadas");
+		//         } else if (window.netscape) {
+		//         	console.log("dadsadas1");
+		//             var r=document.createRange();
+		//             r.setStartBefore($("head")[0]);
+		//             var oscript=r.createContextualFragment('<script id="scriptid" type="application/x-javascript" src="chrome://global/content/contentAreaUtils.js"><\/script>');
+		//             $('body').append(oscript);
+		//             r=null;
+		//             try {
+		//                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		//                 saveDocument(document);
+		//             } catch (e) {
+		//                 //no further notice as user explicitly denied the privilege
+		//             } finally {
+		//                 //re-defined
+		//                //$("#scriptid").remove();
+		//             }
+		//         }
+  //             }, 1000);
+  //             // //setTimeout('win.close()', 500);
+  //         }
+	}
+
+
+	$rootScope.initMatterTitle = function(){
+		$http.get("/getNewMatterTitle")
+		.success(function(data){
+			$rootScope.uniqueNumber = data.uniqueNumber;
+			$rootScope.matterForm.title.unique_number = data.uniqueNumber;
+			$rootScope.uniqueMatterId = data.uniqueMatterId;
+			$rootScope.matterForm.title.matter_id = data.uniqueMatterId;
+		})
+		.error(function(error){
+			console.log(error);
+		});
+	}
 
 	$rootScope.showTab='matter';
 
@@ -302,28 +458,29 @@ angular.module('myApp.matterController', [])
 			has_tenants:false,
 
 			addreses:[{
-				addressline1 : "",
-				addressline2 : "",
-				city         : "",
-				state        : "",
-				zip          : "",
-				addresstype  : "",
-				mailing      : false,
-				billing      : false,
-				poboxno      : false,
-				streetnumber : "",
-				streetname   : "",
-				streetsuffix : "",
-				unitnumber   : "",
-				unitdesignator : "",
-				buildingnumber  : "",
-				buildingdoorcode : "",
-				buildingdoorbell : "",
-				pobox            : "",
-				streetnameaka    : "",
-				Intersectingstreet1 : "",
-				Intersectingstreet2 : "",
-				neighborhood        : ""
+				homenumber : "",
+				streetname : "",
+				streetsuffix:"",
+				city:"",
+				state:"",
+				zip:"",
+				lot:"",
+				block:"",
+				section:"",
+				building:"",
+				buildingclass:"",
+				buildingtype:"",
+				streetnameaka:"",
+				intersectionstreet1:"",
+				intersectionstreet2:"",
+				country:"",
+				district:"",
+				districtcode:"",
+				municipility:"",
+				town:"",
+				subdivision:"",
+				neighborhood:"",
+				schooldistrict:""
 			}]
 		},
 
@@ -342,7 +499,8 @@ angular.module('myApp.matterController', [])
 			mortgage_b_policy_amount:""
 		},
 		title:{
-			unique_number:$rootScope.uniqueNumber
+			unique_number:$rootScope.uniqueNumber,
+			matter_id:$rootScope.uniqueMatterId
 		},
 		fees_and_taxes:{
 			purchase_policy_fee:"",
@@ -352,7 +510,7 @@ angular.module('myApp.matterController', [])
 			maintenance_fees:""
 		},
 		notes:[{text:""}],
-		type:"Open"
+		type:"New"
 	}
 
 	$rootScope.partiesForm = {
@@ -383,8 +541,10 @@ angular.module('myApp.matterController', [])
 	$rootScope.new_activity = {
 		add_to_schedule:false,
 		activity:"",
-		remark:"",
-		user: $rootScope.logedInUser._id
+		remark:[{user:$rootScope.logedInUser._id, note:"", date:new Date()}],
+		user:$rootScope.logedInUser._id,
+		date : "",
+		time : ""
 	};
 
 	$rootScope.new_document = {
@@ -395,15 +555,37 @@ angular.module('myApp.matterController', [])
 	}
 
 	$rootScope.updateActivity = function(){
+		if(!$rootScope.new_activity.activity) {
+			alert("Please select activity.");
+			return false;
+		} else if(!$rootScope.new_activity.date){
+			alert("Please select activity date.");
+			return false;
+		} else if(!$rootScope.new_activity.time){
+			alert("Please select activity time.");
+			return false;
+		}
 		$rootScope.activity_form_submited = false;
 		$rootScope.activity.splice($rootScope.activityEditIndex, 1, $rootScope.new_activity);
 		$rootScope.resetActivity();
 		$rootScope.updateMatter(false);
+		setTimeout(function(){$(".close-activity-model-edit").click();},500);
 	}
 
 	$rootScope.updateDocument = function(){
-		
+		if($rootScope.new_document.name == "") {
+			alert("Please select document type.");
+			return false;
+		} else if($rootScope.new_document.notes == ""){
+			alert("Please enter document note.");
+			return false;
+		}
 		if($("#editdocumentfile")[0].files[0]) {
+			var ext = $("#editdocumentfile")[0].files[0].name.substring($("#editdocumentfile")[0].files[0].name.lastIndexOf('.'), $("#editdocumentfile")[0].files[0].name.length);
+			if(ext != '.pdf' && ext != '.doc' && ext != '.docx' && ext != '.txt'){
+				alert("Upload only pdf, doc or txt files");
+				return false;
+			}
 			var uploadUrl = "/uploadFile";
 			$rootScope.fileUploadMessage = "Uploading document....";
 			fileUpload.uploadFileToUrl($("#editdocumentfile")[0].files[0], uploadUrl, function(err, path){
@@ -431,23 +613,42 @@ angular.module('myApp.matterController', [])
 	}
 
 	$rootScope.saveActivity = function(isMatterExist){
+		if(!$rootScope.new_activity.activity) {
+			alert("Please select activity.");
+			return false;
+		} else if(!$rootScope.new_activity.date){
+			alert("Please select activity date.");
+			return false;
+		} else if(!$rootScope.new_activity.time){
+			alert("Please select activity time.");
+			return false;
+		}
 		$rootScope.activity.push($rootScope.new_activity);
 		$rootScope.remarkShow = $rootScope.new_activity.remark;
-		
-		setTimeout(function(){
-			if(isMatterExist)
-				$(".remark-editor .note-editable").html($rootScope.remarkShow);
-			else
-				$(".remark-editor-new .note-editable").html($rootScope.remarkShow);
-		},10);
-		
+		$rootScope.remarkShowIndex = $rootScope.activity.length-1;
 		$rootScope.resetActivity();
 		if(isMatterExist){
 			$rootScope.updateMatter(false);
 		}
+		setTimeout(function(){$(".close-activity-model").click();},500);
 	}
 
 	$rootScope.saveDocument = function(isMatterExist){
+		if($rootScope.new_document.name == "") {
+			alert("Please select document type.");
+			return false;
+		} else if($rootScope.new_document.notes == ""){
+			alert("Please enter document note.");
+			return false;
+		} else if(!$("#file")[0].files[0]){
+			alert("Please select document file.");
+			return false;
+		}
+		var ext = $("#file")[0].files[0].name.substring($("#file")[0].files[0].name.lastIndexOf('.'), $("#file")[0].files[0].name.length);
+		if(ext != '.pdf' && ext != '.doc' && ext != '.docx' && ext != '.txt' ){
+			alert("Upload only pdf, doc or txt files");
+			return false;
+		}
 		var uploadUrl = "/uploadFile";
 		$rootScope.fileUploadMessage = "Uploading document....";
 		if(!$("#file")[0].files[0]) {
@@ -478,8 +679,10 @@ angular.module('myApp.matterController', [])
 		$rootScope.new_activity = {
 			add_to_schedule:false,
 			activity:"",
-			remark:"",
-			user:$rootScope.logedInUser._id
+			remark:[{user:$rootScope.logedInUser._id, note:"", date:new Date()}],
+			user:$rootScope.logedInUser._id,
+			date : "",
+			time : ""
 		};
 
 		$("#activity_date").val(null);
@@ -512,12 +715,12 @@ angular.module('myApp.matterController', [])
 		$rootScope.new_activity.user = activity.user;
 		$rootScope.activityEditIndex = index;
 
-		$("#activity_date").val(activity.date);
-		$("#activity_time").val(activity.time);
-		$("#activity_schedule").val(activity.add_to_schedule);
-		$("#activity_type").val(activity.activity);
-		$("#activity_remark").val(activity.remark);
-		$(".note-editable").html(activity.remark);
+		// $("#activity_date").val(activity.date);
+		// $("#activity_time").val(activity.time);
+		// $("#activity_schedule").val(activity.add_to_schedule);
+		// $("#activity_type").val(activity.activity);
+		// $("#activity_remark").val(activity.remark);
+		// $(".note-editable").html(activity.remark);
 	}
 
 	$rootScope.deleteActivity = function(index){
@@ -547,6 +750,60 @@ angular.module('myApp.matterController', [])
 	}
 
 	$rootScope.saveMatter = function(){
+		//finding  duplicated in sellers
+	 	for (var i = 0; i < $rootScope.partiesForm.sellers.length; i++) {
+            for (var j = 0; j < $rootScope.partiesForm.sellers.length; j++) {
+                if (i != j) {
+                    if ($rootScope.partiesForm.sellers[i] && $rootScope.partiesForm.sellers[i] && $rootScope.partiesForm.sellers[i] == $rootScope.partiesForm.sellers[j]) {
+                        alert("Sellers can not be duplicates.");
+						return false;
+                    }
+                }
+            }
+        }
+        
+        //finding  duplicated in buyers
+        for (var i = 0; i < $rootScope.partiesForm.buyers.length; i++) {
+            for (var j = 0; j < $rootScope.partiesForm.buyers.length; j++) {
+                if (i != j) {
+                    if ($rootScope.partiesForm.buyers[i] && $rootScope.partiesForm.buyers[j] && $rootScope.partiesForm.buyers[i] == $rootScope.partiesForm.buyers[j]) {
+                        alert("Buyers can not be duplicates.");
+						return false;
+                    }
+                }
+            }
+        }
+
+		//checking salers and buyers
+		for (var i = 0; i < $rootScope.partiesForm.sellers.length; i++) {
+            for (var j = 0; j < $rootScope.partiesForm.buyers.length; j++) {
+                if ($rootScope.partiesForm.sellers[i] && $rootScope.partiesForm.buyers[j] && $rootScope.partiesForm.sellers[i] == $rootScope.partiesForm.buyers[j]) {
+                    alert("Sellers and Buyers can not be same.");
+					return false;
+                }
+            }
+        }
+
+        //checking salers and buyers ajent
+		for (var i = 0; i < $rootScope.partiesForm.sellers_agent.length; i++) {
+            for (var j = 0; j < $rootScope.partiesForm.buyers_agent.length; j++) {
+                if ($rootScope.partiesForm.sellers_agent[i] && $rootScope.partiesForm.buyers_agent[j] && $rootScope.partiesForm.sellers_agent[i] == $rootScope.partiesForm.buyers_agent[j]) {
+                    alert("Sellers Agent and Buyers Agent can not be same.");
+					return false;
+                }
+            }
+        }
+
+        //checking salers and buyers attorney
+		for (var i = 0; i < $rootScope.partiesForm.sellers_attorney.length; i++) {
+            for (var j = 0; j < $rootScope.partiesForm.buyers_attorney.length; j++) {
+                if ($rootScope.partiesForm.sellers_attorney[i] && $rootScope.partiesForm.buyers_attorney[j] && $rootScope.partiesForm.sellers_attorney[i] == $rootScope.partiesForm.buyers_attorney[j]) {
+                    alert("Sellers Attorney and Buyers Attorney can not be same.");
+					return false;
+                }
+            }
+        }
+
 		$http.post('/saveMatter', {
 			matter:$rootScope.matterForm,
 			parties:$rootScope.partiesForm,
@@ -554,37 +811,19 @@ angular.module('myApp.matterController', [])
 			documents:$rootScope.documents
 		})
 		.success(function(data){
-			
 			if(data.success){
-				$rootScope.matterUpdateMessage = "Matter Successfully Saved.";
+				notificationMessage.show(data.message);
 				$rootScope.matter_form_submited = false;
 				$rootScope.parties_form_submiter = false;
-
-				setTimeout(function(){
-					$(".matterslist a").click();
-					$rootScope.isNewMatter = false;
-					$rootScope.$apply();
-				},1000);
+				$rootScope.discardNewMatter();
+				$rootScope.getMatters();
 			} else {
-				$rootScope.matterUpdateMessage = "Please Try Again.";
+				notificationMessage.show(data.message);
 			}
-			$rootScope.getMatters();
 		})
 		.error(function(error){
 			console.log(error);
 		});
-	}
-
-	$rootScope.getContacts = function(){
-	    $http.get('/getContacts')
-	    .success(function(data){
-	    	if (data.success) {
-    			$rootScope.contactes = data.contactes;
-    		}
-	    })
-	    .error(function(error){
-	    	console.log(error);
-	    });
 	}
 
 
@@ -640,7 +879,11 @@ angular.module('myApp.matterController', [])
 	$rootScope.matterFormSubmit = function(form){
 		//$rootScope.matter_form_submited = true;
 		//if(form.$valid){
-			$rootScope.openTab('parties');
+			if($rootScope.matterForm.property.matter_name)
+				$rootScope.openTab('parties');
+			else setTimeout(function(){
+				$('#newmatter').animate({scrollTop: 0}, 1000);
+			},100);
 		//}
 	}
 
@@ -761,28 +1004,29 @@ angular.module('myApp.matterController', [])
 				has_tenants:false,
 
 				addreses:[{
-					addressline1 : "",
-					addressline2 : "",
-					city         : "",
-					state        : "",
-					zip          : "",
-					addresstype  : "",
-					mailing      : false,
-					billing      : false,
-					poboxno      : false,
-					streetnumber : "",
-					streetname   : "",
-					streetsuffix : "",
-					unitnumber   : "",
-					unitdesignator : "",
-					buildingnumber  : "",
-					buildingdoorcode : "",
-					buildingdoorbell : "",
-					pobox            : "",
-					streetnameaka    : "",
-					Intersectingstreet1 : "",
-					Intersectingstreet2 : "",
-					neighborhood        : ""
+					homenumber : "",
+					streetname : "",
+					streetsuffix:"",
+					city:"",
+					state:"",
+					zip:"",
+					lot:"",
+					block:"",
+					section:"",
+					building:"",
+					buildingclass:"",
+					buildingtype:"",
+					streetnameaka:"",
+					intersectionstreet1:"",
+					intersectionstreet2:"",
+					country:"",
+					district:"",
+					districtcode:"",
+					municipility:"",
+					town:"",
+					subdivision:"",
+					neighborhood:"",
+					schooldistrict:""
 				}]
 			},
 
@@ -801,7 +1045,8 @@ angular.module('myApp.matterController', [])
 				mortgage_b_policy_amount:""
 			},
 			title:{
-				unique_number:$rootScope.uniqueNumber
+				unique_number:$rootScope.uniqueNumber,
+				matter_id:$rootScope.uniqueMatterId
 			},
 			fees_and_taxes:{
 				purchase_policy_fee:"",
@@ -811,7 +1056,7 @@ angular.module('myApp.matterController', [])
 				maintenance_fees:""
 			},
 			notes:[{text:""}],
-			type:"Open"
+			type:"New"
 		}
 
 		$rootScope.partiesForm = {
@@ -843,24 +1088,34 @@ angular.module('myApp.matterController', [])
 		$rootScope.new_activity = {
 			add_to_schedule:false,
 			activity:"",
-			remark:"",
-			user:$rootScope.logedInUser._id
+			remark:[{user:$rootScope.logedInUser._id, note:"", date:new Date()}],
+			user:$rootScope.logedInUser._id,
+			date : "",
+			time : ""
 		};
-
 
 		$rootScope.new_document = {
 			name : "",
 			document:$rootScope.myFile,
 			notes:"",
-			user : $rootScope.logedInUser._id
+			user : $rootScope.logedInUser._id,
+			date : new Date()
 		}
-
 	}
 
-	$rootScope.setRemarkShow = function(remark, type){
-		$rootScope.remarkShow = remark;
-		if(type) $(".remark-editor .note-editable").html($rootScope.remarkShow);
-		else $(".remark-editor-new .note-editable").html($rootScope.remarkShow);
+	$rootScope.setRemarkShow = function(index, type){
+		$rootScope.remarkShow = $rootScope.activity[index].remark;
+		$rootScope.remarkShowIndex = index;
+	}
+	$rootScope.new_note_for_activity = {note:""};
+	$scope.addNoteForActivity = function(){
+		$rootScope.activity[$rootScope.remarkShowIndex].remark.push({
+			user:$rootScope.logedInUser._id, 
+			note:$rootScope.new_note_for_activity.note, 
+			date:new Date()});
+		$rootScope.new_note_for_activity.note = '';
+		$('#close-note-model-add').click();
+		console.log($rootScope.activity);
 	}
 
 	$rootScope.getUserDetail = function(userId){
@@ -906,28 +1161,29 @@ angular.module('myApp.matterController', [])
 				has_tenants:false,
 
 				addreses:[{
-					addressline1 : "",
-					addressline2 : "",
-					city         : "",
-					state        : "",
-					zip          : "",
-					addresstype  : "",
-					mailing      : false,
-					billing      : false,
-					poboxno      : false,
-					streetnumber : "",
-					streetname   : "",
-					streetsuffix : "",
-					unitnumber   : "",
-					unitdesignator : "",
-					buildingnumber  : "",
-					buildingdoorcode : "",
-					buildingdoorbell : "",
-					pobox            : "",
-					streetnameaka    : "",
-					Intersectingstreet1 : "",
-					Intersectingstreet2 : "",
-					neighborhood        : ""
+					homenumber:"",
+					streetname : "",
+					streetsuffix:"",
+					city:"",
+					state:"",
+					zip:"",
+					lot:"",
+					block:"",
+					section:"",
+					building:"",
+					buildingclass:"",
+					buildingtype:"",
+					streetnameaka:"",
+					intersectionstreet1:"",
+					intersectionstreet2:"",
+					country:"",
+					district:"",
+					districtcode:"",
+					municipility:"",
+					town:"",
+					subdivision:"",
+					neighborhood:"",
+					schooldistrict:""
 				}]
 			},
 
@@ -946,7 +1202,8 @@ angular.module('myApp.matterController', [])
 				mortgage_b_policy_amount:""
 			},
 			title:{
-				unique_number:$rootScope.uniqueNumber
+				unique_number:$rootScope.uniqueNumber,
+				matter_id:$rootScope.uniqueMatterId
 			},
 			fees_and_taxes:{
 				purchase_policy_fee:"",
@@ -956,7 +1213,7 @@ angular.module('myApp.matterController', [])
 				maintenance_fees:""
 			},
 			notes:[{text:""}],
-			type:"Open"
+			type : "New"
 		}
 
 		$rootScope.partiesForm = {
@@ -987,8 +1244,10 @@ angular.module('myApp.matterController', [])
 		$rootScope.new_activity = {
 			add_to_schedule:false,
 			activity:"",
-			remark:"",
-			user:$rootScope.logedInUser._id
+			remark:[{user:$rootScope.logedInUser._id, note:"", date:new Date()}],
+			user:$rootScope.logedInUser._id,
+			date : "",
+			time : ""
 		};
 
 		$rootScope.new_document = {
@@ -996,6 +1255,27 @@ angular.module('myApp.matterController', [])
 			document:$rootScope.myFile,
 			notes:"",
 			user : $rootScope.logedInUser._id
+		}
+	}
+
+	$rootScope.initPartiesForm = function(){
+		$rootScope.partiesForm = $rootScope.matters[0].parties;
+		for (var key in $rootScope.partiesForm) {
+			if($.isArray($rootScope.partiesForm[key])){
+				var arr = [];
+				angular.forEach($rootScope.partiesForm[key], function(val,i){
+					if(val && val._id)
+						arr.push(val._id);
+					else
+						arr.push(null);
+				});
+				$rootScope.partiesForm[key] = arr;
+			} else {
+				if($rootScope.partiesForm[key] && $rootScope.partiesForm[key]._id)
+					$rootScope.partiesForm[key] = $rootScope.partiesForm[key]._id;
+				else
+					$rootScope.partiesForm[key] = null;
+			}
 		}
 	}
 });

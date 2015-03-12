@@ -11,6 +11,7 @@ module.exports = function routes() {
   //this.post('/login','auth#create');
   //this.get('/home', 'pages#main');
   this.get('/home/:id', 'pages#home');
+  this.get('/lockscreen', 'pages#lockscreen');
   this.post('/getCategorie','auth#getCategorie');
   this.post('/login', 'auth#login');
   /**
@@ -34,6 +35,7 @@ module.exports = function routes() {
 
   this.get('/getContacts', 'data#getContacts');
   this.post('/deleteContact', 'data#deleteContact');
+  this.get('/getTotalContacts', 'data#getTotalContacts');
 
   this.get('/isLoginedIn', 'pages#isLoginedIn');
 
@@ -44,4 +46,6 @@ module.exports = function routes() {
 
   this.post('/saveTask', 'data#saveTask');
   this.get('/getTasks','data#getTasks');
+  this.get('/uploadXlsx','data#uploadXlsx');
+  this.post('/uploadxlsfile','data#uploadxlsfile');
 }

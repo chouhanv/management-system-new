@@ -4,7 +4,7 @@ module.exports = (function () {
         , Schema = mongoose.Schema
         , SchemaTypes = mongoose.Schema.Types
         ;
-    var connection = mongoose.createConnection("104.207.132.73:27017/managementsystem");
+    var connection = mongoose.createConnection("localhost:27017/reamm");
 
     var documentsSchema = new Schema({}, {strict: false});
 

@@ -1,0 +1,1205 @@
+<div id="contact-container">
+                                <form  ng-if="!isEditContact" id="jvalidate" ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContact(contact_form, editFormIndex)" novalidate>   
+                                <div class="page-content-wrap page-scroll-contant-contact-category-page" customscroll>                
+                                   
+                                    <div class="row">
+
+                                            <div class="col-sm-2">
+                                                <div class="col-md-12">
+                                                    <div class="panel-body">
+                                                        <div class="profile-image">
+                                                            <img class="prfl-pic" style="width:80px; height:80px; border-radius:50%" src="{{imageSrc?imageSrc:'/img/Avatar.jpg'}}" alt="">
+                                                            <input type="file" ng-show="false" ng-file-select id="selectImage">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+
+                                            <div class="col-md-4">
+
+                                            <!-- START VALIDATIONENGINE PLUGIN -->
+                                            <div class="block">
+
+                                                <div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="defModalHead">Name</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Prefix</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.prefix}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>First Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.firstname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Middle</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.middlename}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Last</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.lastname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Suffix</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.suffix}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Initials</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.initial}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Short Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.sortname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Additinal Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                           {{name.additinalname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Letter Salutation</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{name.lettersalutation}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>    
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <h3>{{name.firstname}} {{name.lastname}}</h3>
+                                                    </div>
+                                                </div>
+
+                                                 <div class="modal" id="modal_company" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="defModalHead">Company</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{company.companyname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>DBA</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{company.dbaname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Company Name Phonetic</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{company.namephonetic}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Tax Id</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{company.taxid}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div> 
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <h4>{{company.companyname}}</h4>
+                                                    </div>
+                                                </div>
+
+                                                <div ng-repeat = "address in addreses track by $index">
+
+                                                    <div class="modal" id="modal_address{{$index}}" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="defModalHead">Addresses</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Type</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.addresstype}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                
+                                                   
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label></label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <label class="ui-checkbox">
+                                                                          {{address.mailing}}
+                                                                          <span>Mailing</span></label>
+                                                                        <label class="ui-checkbox">
+                                                                          {{address.billing}}
+                                                                          <span>Billing</span></label>
+                                                                        <label class="ui-checkbox">
+                                                                          {{address.poboxno}}
+                                                                          <span>P.O.Box</span></label>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Number</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.streetnumber}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.streetname}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Suffix</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.streetsuffix}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Unit Number</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.unitnumber}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Unit Designator</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.unitdesignator}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Building</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.buildingnumber}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Door Code</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.buildingdoorcode}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Door Bell</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.buildingdoorbell}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>P.O.Box</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.pobox}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Name AKA</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.streetnameaka}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Intersecting Street1</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.Intersectingstreet1}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Intersecting Street2</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.Intersectingstreet2}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Neighborhood</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            {{address.neighborhood}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            {{address.addressline1}}
+                                                            <br>
+                                                            {{address.addressline2}}
+                                                           <br>
+                                                           {{address.city}} , {{address.state}} {{address.zip}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div ng-repeat= "phone in phones track by $index">
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Business Phone : {{phone.business_phone}}</label>
+                                                                </a>
+                                                            </div>
+                                                        </div> 
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Home Phone : {{phone.homephone}}</label>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Cell : {{phone.cellphone}}</label>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                                                                                                                                          
+                                                </div>
+
+                                                <div ng-repeat= "email in emails track by $index">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12" style="padding-top:5px;">
+                                                            <label style="color:#434a54">Emails : {{emails[$index]}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>                                               
+                                            <!-- END VALIDATIONENGINE PLUGIN -->
+
+                                            </div>
+                                            <div class="col-md-4">                        
+
+                                            <!-- START JQUERY VALIDATION PLUGIN -->
+                                            <div class="block">
+
+                                                <div>
+                                                    <div style="padding-left:10px">  
+                                                        <label style="color:#434a54">Notes</label>
+                                                    </div>
+                                                    <div ng-repeat="note in notes track by $index">
+                                                        <div class="form-group">
+                                                            <div class="col-md-12">
+                                                                <textarea class="form-control" input ng-keyup="submitContactEdit(contact_form, editFormIndex)" ng-model="notes[$index]" placeholder="Note" rows="5"></textarea> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                            
+                                            </div>
+                                    </div>
+                                        
+                                </div>
+                                <!-- END PAGE CONTENT WRAPPER -->
+                                </form>
+
+                                <form ng-if="isEditContact" id="jvalidate" ng-init="formValidater()" role="form" class="form-horizontal" name="contact_form" ng-submit="submitContactEdit(contact_form, editFormIndex)" novalidate>   
+                                <div class="page-content-wrap page-scroll-contant-contact-category-page" customscroll>                
+                                
+                                    <div class="row">
+
+                                    <div class="col-sm-2">
+                                        <div class="col-md-12">
+                                            <div class="panel-body">
+                                                <div class="profile-image">
+                                                    <img class="prfl-pic" style="width:80px; height:80px; border-radius:50%" src="{{imageSrc?imageSrc:'/img/Avatar.jpg'}}" onclick="$('#selectImage').click();" alt="">
+                                                    <input type="file" ng-show="false" ng-file-select id="selectImage">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                       
+                                    </div>
+
+                                        <div class="col-md-4">
+
+                                            <!-- START VALIDATIONENGINE PLUGIN -->
+                                            <div class="block">
+                                                <div style="padding-left:10px">
+                                                    <a href="javascript:;" data-toggle="modal" data-target="#modal_basic">
+                                                        <label style="color:#434a54;cursor:pointer;">Name</label>
+                                                    </a>
+                                                </div>
+                                                <div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="defModalHead">Name</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Prefix</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="name.prefix"  placeholder="Name Prefix">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>First Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="name.firstname"  placeholder="First Name">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Middle</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="name.middlename"placeholder="Middle Name">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Last</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" placeholder="Last Name " ng-model="name.lastname">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Suffix</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control"  ng-model="name.suffix"  placeholder="Name Suffix ">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Initials</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control"  ng-model="name.initial"  placeholder="Name Initials ">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Short Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control"  ng-model="name.sortname" placeholder="Short Name">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Additinal Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="name.additinalname"  placeholder="Additinal Name  ">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Letter Salutation</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control"  ng-model="name.lettersalutation" placeholder="Letter Salutation ">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" ng-click="saveNameForm()" data-dismiss="modal">Save</button>
+                                                                <button type="button" class="btn btn-default" ng-click="cancelNameForm()" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>    
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control" ng-model="name.firstname" name="firstname" placeholder="First Name">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control" name="lastname"   placeholder="Last*" ng-trim='false'ng-model="name.lastname" required>
+                                                    </div>
+                                                </div>
+
+                                                <div style="padding-left:10px">
+                                                    <a href="javascript:;" data-toggle="modal" data-target="#modal_company">
+                                                        <label style="color:#434a54; cursor:pointer;">Company</label>
+                                                    </a>
+                                                </div>
+
+                                                 <div class="modal" id="modal_company" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="defModalHead">Company</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="company.companyname"  placeholder="Company Name">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>DBA</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="company.dbaname"  placeholder="DBA Name">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Company Name Phonetic</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="company.namephonetic"  placeholder="Company NamePhonetic">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Tax Id</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" placeholder="Tax Id " ng-model="company.taxid">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" ng-click="saveCompanyForm()" data-dismiss="modal">Save</button>
+                                                                <button type="button" class="btn btn-default" ng-click="cancleCompanyForm()" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <input type="text" class="form-control" name="companyname" ng-model="company.companyname" placeholder="Company*" required>
+                                                    </div>
+                                                </div>
+
+                                                <div ng-repeat = "address in addreses track by $index">
+                                                    
+                                                    <div style="padding-left:10px">
+                                                        <a href="javascript:;" data-toggle="modal" data-target="#modal_address{{$index}}">
+                                                            <label style="color:#434a54;cursor:pointer;">Address</label>
+                                                        </a>
+                                                    </div>
+                                                    <div class="modal" id="modal_address{{$index}}" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="defModalHead">Addresses</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Type</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <select ng-select class="form-control select" ng-model="address.addresstype">
+                                                                              <option value="Business">Business</option>
+                                                                              <option value="Home">Home</option>
+                                                                              <option value="Other">Other</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                
+                                                   
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label></label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <label class="ui-checkbox">
+                                                                          <input name="checkbox1" type="checkbox" ng-model="address.mailing" value="Mailing">
+                                                                          <span>Mailing</span></label>
+                                                                        <label class="ui-checkbox">
+                                                                          <input name="checkbox1" type="checkbox" ng-model="address.billing" value="billing" checked>
+                                                                          <span>Billing</span></label>
+                                                                        <label class="ui-checkbox">
+                                                                          <input name="checkbox1" type="checkbox" ng-model="address.poboxno" value="pobox">
+                                                                          <span>P.O.Box</span></label>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Number</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input  type="text" class="form-control" placeholder="Street Number" ng-model="address.streetnumber">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Name</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input  type="text" class="form-control" placeholder="Street Name" ng-model="address.streetname">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Suffix</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input  type="text" class="form-control" placeholder="Street Suffix" dmodel="address.streetsuffix">
+                                                                            <!-- <select ng-select class="form-control select" ng-model="address.streetsuffix">
+                                                                              <option value="suffix">Suffix</option>
+                                                                              <option value="2">2</option>
+                                                                            </select>    -->
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Unit Number</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input  type="text" class="form-control" placeholder="Number" ng-model="address.unitnumber"> 
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Unit Designator</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <select ng-select class="form-control select" ng-model="address.unitdesignator">
+                                                                              <option value="Designator">Designator</option>
+                                                                              <option value="2" >2</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Building</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input  type="text" class="form-control" placeholder="Name or Number" ng-model="address.buildingnumber">   
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Door Code</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input  type="text" class="form-control" placeholder="Door Code" ng-model="address.buildingdoorcode">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Door Bell</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input  type="text" class="form-control" placeholder="Door Bell" ng-model="address.buildingdoorbell" >
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>P.O.Box</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="address.pobox"  placeholder="P.O. Box">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Street Name AKA</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="address.streetnameaka"  placeholder="Street Name also knows as">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Intersecting Street1</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="address.Intersectingstreet1"  placeholder="Intersecting Street1">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Intersecting Street2</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="address.Intersectingstreet2"  placeholder="Intersecting Street2">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <label>Neighborhood</label>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" ng-model="address.neighborhood"  placeholder="Neighborhood">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" ng-click="saveCompanyForm()" data-dismiss="modal">Save</button>
+                                                                <button type="button" class="btn btn-default" ng-click="cancleCompanyForm()" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <input type="text" class="form-control" name="addressline1"  placeholder="Address Line1*"ng-model="address.addressline1" required>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <input type="text" class="form-control" name="addressline2" placeholder="Address Line2" ng-model="address.addressline2" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-6">
+                                                            <input  type="text" class="form-control" name="city" placeholder="City*" ng-trim='false'ng-model="address.city" required>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <input  type="text" class="form-control" name="state" placeholder="State*" ng-trim='false' ng-model="address.state" required>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <input  type="text" class="form-control" name="zip" placeholder="Zip*" ng-model="address.zip" required>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-group" style="padding-left:10px;padding-top:5px;">                              
+                                                    <a href="javascript:;" class="btn btn-condensed" ng-click="expandAddress()">
+                                                    <i class="fa fa-plus" style="color:#434a54"></i></a>
+                                                </div>
+
+
+                                                <div ng-repeat= "phone in phones track by $index">
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="col-sm-6">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Business Phone</label>
+                                                                </a>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="business_phone" placeholder="Cell Phone*" ng-model="phone.business_phone" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Home Phone</label>
+                                                                </a>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="homephone" placeholder="Home Phone*" ng-model="phone.homephone" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-6">
+                                                            <div>
+                                                               <a href="javascript:;" data-toggle="modal" data-target="#modal_phone{{$index}}}">
+                                                                    <label style="color:#434a54">Cell Phone</label>
+                                                                </a>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="cellphone" placeholder="Cell Phone*" ng-model="phone.cellphone" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                                                                                                                                          
+                                                </div>
+                                                <div class="form-group" style="padding-left:10px;padding-top:5px;">                                      
+                                                    <a href="javascript:;" class="btn btn-condensed" ng-click="expandPhone()"><i class="fa fa-plus" style="color:#434a54"></i></a>
+                                                </div>
+
+                                                <div style="padding-left:10px">  
+                                                    <label style="color:#434a54">Emails</label>
+                                                </div>
+                                                <div ng-repeat= "email in emails track by $index">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-6" style="padding-top:5px;">
+                                                            <input type="email" class="form-control" name="email"  placeholder="Email*" ng-model="emails[$index]" required>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style="padding-left:10px;padding-top:5px;">
+                                                    <a href="javascript:;" class="btn btn-condensed" ng-click="expandEmail()"><i class="fa fa-plus" style="color:#434a54"></i></a>
+                                                </div>
+
+                                            </div>                                               
+                                            <!-- END VALIDATIONENGINE PLUGIN -->
+
+                                        </div>
+                                        <div class="col-md-4">                        
+
+                                            <!-- START JQUERY VALIDATION PLUGIN -->
+                                            <div class="block">
+
+                                                <div>
+                                                    <div style="padding-left:10px">  
+                                                        <label style="color:#434a54">Notes</label>
+                                                    </div>
+                                                    <div ng-repeat="note in notes track by $index">
+                                                        <div class="form-group">
+                                                            <div class="col-md-12">
+                                                                <textarea class="form-control" ng-model="notes[$index]" placeholder="Note" rows="5"></textarea> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div>
+                                                    <div style="padding-left:10px ; padding-top:10px;">  
+                                                        <label style="color:#434a54">Reffered By</label>
+                                                    </div>
+                                                    <div ng-repeat="refer in refferedbys track by $index" style="padding-bottom:5px;">
+                                                        <div class="form-group">
+                                                            <div class="col-md-12">
+                                                                <select class="form-control select" ng-model="refferedbys[$index]" name="refferedby" ng-select data-live-search="true">
+                                                                    <option ng-repeat="client in allContactes" value="{{client._id}}" ng-if="client.category_id.categorie=='Referrers'">{{client.name.firstname + " " + client.name.lastname}}</option>
+                                                                </select>
+                                                                <!-- <select class="form-control selct-refer" ng-model="refferedbys[$index]" name="refferedby">
+                                                                    <option value="">--Select--</option>
+                                                                    <option ng-repeat="client in allContactes" value="{{client._id}}" ng-if="client.category_id.categorie=='Clients'">{{client.name.firstname + " " + client.name.lastname}}</option>
+                                                                 </select>  --> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" style="padding-left:10px;">
+                                                        <a href="javascript:;" class="btn btn-condensed" ng-click="expandrefferedby()"><i class="fa fa-plus" style="color:#434a54"></i></a>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <div ng-repeat="additionalfield in additionalfields track by $index" class="form-group">
+                                                        <div style="padding-left:11px">  
+                                                            <label style="color:#434a54">{{additionalfield.key}}</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-md-10">
+                                                                <input type="text" class="form-control" placeholder="{{additionalfield.key}}*" name="aditional_value" ng-model="additionalfield.value" required />   
+                                                            </div>
+                                                            <div class="col-sm-1">
+                                                                <i class="fa fa-times" ng-click="removeAdditionalField($index)"></i> 
+                                                            </div>
+                                                        </div>
+                                                                    
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    
+                                                    <div class="form-group" style="padding-top:5px;">
+                                                    
+                                                        <div class="btn-group">
+                                                            <a href="javascript:;" data-toggle="dropdown" class="btn dropdown-toggle" ng-click="isAdditionalFields=true" style="color:#434a54"><span class="fa fa-plus" style="color:#434a54"></span>Add Fields <span class="caret"></span></a>
+                                                           
+                                                            <ul class="dropdown-menu" role="menu">  
+                                                                <li role="presentation" class="dropdown-header">Select New Field Type</li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('Keywords/Tags');">Keywords/Tags</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('FedEx Account Number');">FedEx Account Number</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('Assistant Name');">Assistant Name</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('Assistant Phone');">Assistant's Phone</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('Assistant Email');">Assistant s Email</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('Tax ID');">Tax ID</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('Web Login Enabled');">Web Login Enabled</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('Manager Name');">Manager Name</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('Manager Phone');">Manager Phone</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('Manager Email');">Manager Email</a></li>
+                                                                  <li><a href="javascript:;" ng-click="isAdditionalFields=false;addContactAitionalFields('Website');">Website</a></li>
+                                                                </ul>
+                                                            </div>
+                                                                
+                                                               <!--  <button class="btn-condensed btn" ng-click="isAdditionalFields=true"><i class="fa fa-plus"></i></button>
+                                                                  <div ng-show="isAdditionalFields">
+                                                                    <ul>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Keywords/Tags');">Keywords/Tags</label></li>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('FedEx Account Number');">FedEx Account Number</label></li>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Assistant Name');">Assistant Name</label></li>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Assistant Phone');">Assistant's Phone</label></li>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Assistant Email');">Assistant s Email</label></li>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Tax ID');">Tax ID</label></li>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Web Login Enabled');">Web Login Enabled</label></li>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Manager Name');">Manager Name</label></li>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Manager Phone');">Manager Phone</label></li>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Manager Email');">Manager Email</label></li>
+                                                                      <li><label ng-click="isAdditionalFields=false;addContactAitionalFields('Website');">Website</label></li>
+                                                                    </ul>
+                                                                </div>   --> 
+
+                                                                
+                                                                 <div class ="form-group" ng-show="category.categorie == 'Client'">
+                                                                   <div style="padding-left:10px ; padding-top:10px;">  
+                                                                     <label style="color:#434a54">WebLogin</label>
+                                                                    </div>
+                                                                 
+                                                                   <div class="form-group">
+                                                                      <div class="col-sm-6" style="padding-top:5px;">
+                                                                       <input type="email" class="form-control" name="email"  placeholder="Email*" ng-model="weblogin.email" required>
+                                                                   </div>
+                                                               </div>
+                                                                <div ng-show="weblogin.password =='' " style="padding-left:10px ; padding-top:10px;">
+                                                                    <a href="javascript:;" style="color:#434a54" ng-model= "genPassword" ng-click="generatePass();" class="btn btn-default" >Generate New Password</a>
+                                                        
+                                                                    
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <input type="text" ng-model="weblogin.password" ng-show="weblogin.password !=''" class="form-control">
+                                                                </div>
+                                                                   
+                                                                <div class="form-group" ng-show="weblogin.password !='' ">
+                                                                   <label class="ui-checkbox">
+                                                                     <input type="checkbox" name="patriot" ng-model="weblogin.is_enabled">
+                                                                     <ng-show="is_enabled">{{is_enabled}}
+                                                                    <span><b>Enable Web Login</b></span>
+                                                                    </label>
+                                                                  </div>
+                                                                </div>
+                                                              </div>        
+                                                </div>
+                                            </div>
+                                            <div class="form-group" style="text-align:right">{{message}}</div>
+                                            <div class="btn-group pull-right">
+                                                <button class="btn btn-primary" type="submit" id="savecontactform" style="display:none">Save</button>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                        
+                                </div>
+                                <!-- END PAGE CONTENT WRAPPER -->
+                                </form>
+                            </div>
+                            <div id="matter-container" class="page-scroll-contant-contact-category-page" style="display:none" customscroll>
+                                
+                                <div class="row detl-lst">
+                                    <div class="col-md-3" ng-repeat="m in matters | matterContactFilter:displayedContactId">
+                                        <!-- CONTACT ITEM -->
+                                        <div style="cursor:pointer;" class="panel panel-default contct-detl" ng-click="changePath('/matters/new');addMatterTab(m._id);">
+                                            <div class="panel-body profile" style="min-height:130px;">
+                                                
+                                                <div class="profile-data">
+                                                    <br>
+                                                    <div class="profile-data-name">{{m.matter.property.matter_name}}</div>
+                                                    <!-- <div class="profile-data-title">Singer-Songwriter</div> -->
+                                                    <br><br>
+                                                </div>
+                                                <div class="matter-sub-title-name">
+                                                    <p style="color:white; font-size:12px; color:#f1f1f1; text-align:center">
+                                                        {{m.matter.property.sales_type=="Purchase"? m.parties.buyers[0].name.firstname + " " + m.parties.buyers[0].name.lastname : m.parties.sallers[0].name.firstname + " " + m.parties.sallers[0].name.lastname}}
+                                                    </p>
+                                                </div>
+                                            </div>                                
+                                            <div class="panel-body" style="min-height:165px">                                   
+                                                <div class="contact-info">
+                                                    <p><small>Property</small><br/>{{m.matter.property.addreses[0].addressline1 + ", " + m.matter.property.addreses[0].city + ", " + m.matter.property.addreses[0].state + "" + m.matter.property.addreses[0].zip}}</p>
+                                                    <br>
+                                                    <p><small>Matter Type</small><br/>{{m.matter.type}}</p>
+                                                    <!-- <p><small>Residential/Commercial</small><br/>{{m.matter.property.property_type}}</p>
+                                                    <p><small>Sale Type</small><br/>{{m.matter.property.sales_type}}</p>
+                                                    <p><small>Address</small><br/>{{m.matter.property.addreses[0].addressline1 + ", " + m.matter.property.addreses[0].city + ", " + m.matter.property.addreses[0].state + "" + m.matter.property.addreses[0].zip}}</p>  -->
+                                                    <br>
+                                                </div>
+                                            </div>                                
+                                        </div>
+                                        <!-- END CONTACT ITEM -->
+                                    </div>
+                                </div>
+
+                            </div>

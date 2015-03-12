@@ -5,7 +5,7 @@ module.exports = (function () {
         , SchemaTypes = mongoose.Schema.Types
         ;
         ;
-    var connection = mongoose.createConnection("104.207.132.73:27017/managementsystem");
+    var connection = mongoose.createConnection("localhost:27017/reamm");
 
     var schedulesSchema = new Schema({
         is_deleted:{

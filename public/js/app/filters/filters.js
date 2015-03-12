@@ -8,6 +8,17 @@ angular.module('myApp.filters', [])
     return String(htmlText).replace(/<[^>]+>/gm, '');
   }
 })
+.filter('filterPhoneType', function(){
+  return function(phones, type){
+    var res = new Array();
+    angular.forEach(phones, function(val, i){
+      if(val.phonetype == type){
+        res.push(val);
+      }
+    });
+    return res;
+  }
+})
 .filter('range', function() {
   return function(input, total) {
     total = parseInt(total);
@@ -46,7 +57,7 @@ angular.module('myApp.filters', [])
 })
 .filter('filterProspectiveClient',function(){
     return function(contacts,isProspective, category){
-      if(category == "Clients" && isProspective){
+      if(category == "Client" && isProspective){
         var con = new Array();
         angular.forEach(contacts, function(val , i){
           if(typeof val.prospective_client !='undefined' && val.prospective_client)
@@ -86,13 +97,11 @@ angular.module('myApp.filters', [])
           } else {
             var inMatter = false;
               angular.forEach(val.parties.buyers, function(v,j){
-                console.log(v , "dasda");
                 if(v && v._id && v._id==contactId || v == contactId) inMatter = true;
               });
               if(inMatter) data.push(val);
               else {
                 angular.forEach(val.parties.sellers, function(v,j){
-                  console.log(v , "dasda");
                   if(v && v._id && (v._id==contactId || v == contactId)) inMatter = true;
                 });
               if(inMatter) data.push(val);

@@ -3,21 +3,90 @@
 /* Controllers */
 
 angular.module('myApp.homeController', [])
-.controller('homeController', function( $rootScope, $scope, $window, $location,$http) {
+.controller('homeController', function($state, $rootScope, $scope, $window, $location,$http) {
 
 	$rootScope.changePath = function(path){
 		$location.path(path);
 	}
 
-	$http.get('/getContacts')
+    $rootScope.getContactPath = function(){
+        if($rootScope.category && $rootScope.category.categorie)
+            $rootScope.changePath('/contacts/'+$rootScope.category.categorie.toLowerCase().replace(/\s/g, ''));
+        else 
+            $rootScope.changePath('/contacts');
+    }
+
+    $state.transitionTo('contacts.client');
+    $state.transitionTo('contacts.referrer');
+    $state.transitionTo('contacts.attorney');
+    $state.transitionTo('contacts.mortgagebroker');
+    $state.transitionTo('contacts.lender');
+    $state.transitionTo('contacts.loanofficer');
+    $state.transitionTo('contacts.titlecompany');
+    $state.transitionTo('contacts.pestinspector');
+    $state.transitionTo('contacts.surveyor');
+    $state.transitionTo('contacts.realestateagent');
+    $state.transitionTo('contacts.underwriter');
+    $state.transitionTo('contacts.buildinginspector');
+    $state.transitionTo('contacts.appraiser');
+    $state.transitionTo('contacts.recordingoffice');
+    $state.transitionTo('contacts.abstractsearch');
+    $state.transitionTo('contacts.closer');
+    $state.transitionTo('contacts.investor');
+    $state.transitionTo('contacts.other');
+
+    $rootScope.screenlock = false;
+
+    $rootScope.setScreenLock = function(val){
+        $rootScope.screenlock = val;
+    }
+
+    $rootScope.clim = 100;
+    $rootScope.categorie = "";
+    $rootScope.start = 0;
+    $rootScope.allContactes = [];
+    $rootScope.isShowProspectiveClient = {status:false};
+    $rootScope.currentPage = 0;
+
+    $rootScope.moreContact = function(page,term){
+        $rootScope.currentPage = page;
+        if(term == undefined)term == '';
+        setTimeout(function(){
+            $rootScope.startIndex = $rootScope.clim*page;
+            $rootScope.term = term;
+            $rootScope.getContacts();
+        },10);
+    }
+    $rootScope.sortContactdata = function(sortdata){
+     $rootScope.currentPage = 0;
+     $rootScope.sort = sortdata;
+     $rootScope.getContacts();
+    }
+
+	$http.get('/getContacts?startIndex='+$rootScope.startIndex+'&clim='+$rootScope.clim+"&category="+$rootScope.filterByCatId+"&isProspectiveClient="+$rootScope.isShowProspectiveClient.status+"&term="+$rootScope.term)
     .success(function(data){
-    	if (data.success) {
-			$rootScope.allContactes = data.contactes;
+    	if(data.success) {
+			$rootScope.contactPages = data.totalContact%$rootScope.clim == 0 ? data.totalContact/$rootScope.clim:(1+parseInt(data.totalContact/$rootScope.clim));
+            $rootScope.allContactes = data.contactes;
 		}
     })
     .error(function(error){
     	console.log(error);
     });
+
+    $rootScope.getTotalContacts = function(){
+        $http.get('/getTotalContacts')
+        .success(function(data){
+            if (data.success) {
+                $rootScope.totalContacts = data.contactes;
+            }
+        })
+        .error(function(error){
+            console.log(error);
+        });
+   }
+
+    $rootScope.getTotalContacts();
 
     $http.get('/getMatters/All')
     .success(function(data){
@@ -31,16 +100,28 @@ angular.module('myApp.homeController', [])
         console.log(error);
     });
 
+    //$rootScope.resetCategory = 
+    $rootScope.getNumber = function(num) {
+
+        if(num) return new Array(parseInt(num));   
+        return [];
+    }
+
     $rootScope.getContacts = function(){
-    	$http.get('/getContacts')
+        $rootScope.allContactes = [];
+        $rootScope.isLoading = true;
+    	$http.get('/getContacts?startIndex='+$rootScope.startIndex+'&clim='+$rootScope.clim+"&categorie="+$rootScope.filterByCatId+"&isShowProspectiveClient="+$rootScope.isShowProspectiveClient.status+"&term="+$rootScope.term+"&sort="+$rootScope.sort)
 	    .success(function(data){
 	    	if (data.success) {
-				$rootScope.allContactes = data.contactes;
-                $rootScope.$apply();
+				//$rootScope.allContactes = data.contactes;
+                $rootScope.contactPages = data.totalContact%$rootScope.clim == 0 ? data.totalContact/$rootScope.clim:(1+parseInt(data.totalContact/$rootScope.clim));
+                $rootScope.allContactes = data.contactes;
+                $rootScope.isLoading = false;
 			}
 	    })
 	    .error(function(error){
 	    	console.log(error);
+            $rootScope.isLoading = false;
 	    });
     }
 
@@ -180,7 +261,7 @@ angular.module('myApp.homeController', [])
         return "on " + date.split("T")[0];
     };
 
-     $rootScope.getTimeFromDate = function(date){
+    $rootScope.getTimeFromDate = function(date){
         var system_date  = new Date(date.toLocaleString());
         var h = system_date.getHours();
         var m = system_date.getMinutes();
@@ -225,8 +306,17 @@ angular.module('myApp.homeController', [])
         var curr_year = system_date.getFullYear();
 
         return (curr_date+"-"+m_names[curr_month]+"-"+curr_year);
-
      }
+
+    $rootScope.getFormatedDate1 = function(date){
+
+        var system_date  = new Date(date);
+        var curr_date = system_date.getDate();
+        var curr_month = system_date.getMonth();
+        var curr_year = system_date.getFullYear();
+
+        return (((curr_month+1)>9?curr_month+1:"0"+curr_month)+"/"+((curr_date+1)>9?curr_date+1:"0"+curr_date)+"/"+curr_year);
+    }
 	
 });
 

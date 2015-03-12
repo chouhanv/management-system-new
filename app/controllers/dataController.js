@@ -6,14 +6,17 @@ var locomotive = require('locomotive'),
     ClientWebLogin =require('../models/clientweblogin'),
     adminUsers =require('../models/adminusers'),
     Task =require('../models/task'),
+    category =require('../models/categories'),
+    Category = require('../models/categories'),
     mongoose = require('mongoose');
-    var path = require('path');
-    var fs = require('fs');
-    var nodemailer = require("nodemailer");
+var path = require('path');
+var fs = require('fs');
+var nodemailer = require("nodemailer");
 
-    var DOCUMENT_UPLOAD_PATH = '../../../public/documents';
-    var JSZip = require("jszip");
+var DOCUMENT_UPLOAD_PATH = '../../../public/documents';
+var JSZip = require("jszip");
 var dataController = new Controller();
+var nxlsx = require('node-xlsx');
 
 dataController.createContact = function(req,res) {
  var th = this;
@@ -36,12 +39,12 @@ dataController.createContact = function(req,res) {
                   	var smtpTransport = nodemailer.createTransport("SMTP",{
 					   service: "Gmail",  // sets automatically host, port and connection security settings
 					   auth: {
-					       user: "sachinj.linkites@gmail.com",
-					       pass: "9424045320"
+					       user: "durgesh.kumar@linkites.com",
+					       pass: "*******"
 					   }
 					});
                 	smtpTransport.sendMail({  //email options
-			 		   from: "REAMM <sachinj.linkites@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
+			 		   from: "REAMM <durgesh.kumar@linkites.com>", // sender address.  Must be the same as authenticated user if using Gmail.
 					   to: "Receiver Name <" + th.req.body.weblogin.email + ">", // receiver
 					   subject: "REAMM Client Account", // subject
 					   html: "<h3>Hello " + data.name.firstname + " " + data.name.lastname +"</h3>"
@@ -54,7 +57,6 @@ dataController.createContact = function(req,res) {
 					   if(error){
 					       console.log(error);
 					   }else{
-					   	console.log("saaaaaaaaaaaa");
 					       console.log("Message sent: " + response.message);
 					   }
 					   
@@ -93,42 +95,77 @@ dataController.updateContact = function(){
 
 			if(th.req.body.weblogin && th.req.body.weblogin.email && th.req.body.weblogin.password){
 	 			th.req.body.weblogin.contact = req.body.contactdata._id;
-	 			ClientWebLogin.update({_id:th.req.body.weblogin._id},{
-	 				email:th.req.body.weblogin.email,
-	 				password:th.req.body.weblogin.password,
-	 				is_enabled:th.req.body.weblogin.is_enabled
-	 			}, function(err, data1){
-	 				if(err) console.log(err);
-	 				else {
-	                  	var smtpTransport = nodemailer.createTransport("SMTP",{
-						   service: "Gmail",  // sets automatically host, port and connection security settings
-						   auth: {
-						       user: "sachinj.linkites@gmail.com",
-						       pass: "9424045320"
-						   }
-						});
-	                	smtpTransport.sendMail({  //email options
-				 		   from: "REAMM <sachinj.linkites@gmail.com>", // sender address.  Must be the same as authenticated user if using Gmail.
-						   to: "Receiver Name <" + th.req.body.weblogin.email + ">", // receiver
-						   subject: "REAMM Client Account Update", // subject
-						   html: "<h3>Hello " + req.body.contactdata.name.firstname + " " + req.body.contactdata.name.lastname +"</h3>"
-						   			+ " Your REAMM account has been updated as client. <br> Please find your login detail below <br>" 
-						   			+ "Email :"  + th.req.body.weblogin.email + "</b><br>Password : <b>" 
-						   			+ th.req.body.weblogin.password + "</b>"
-						   			+ "<h4>Thanks<h4><br><i>REAMM(http://www.reamm.com)"
+	 			if(!th.req.body.weblogin._id){
+	 				ClientWebLogin.create(th.req.body.weblogin, function(err, data1){
+		 				if(err) console.log(err);
+		 				else {
+		 					Contacts.update({_id:req.body.contactdata.contact_id}, {clientweblogin:data1._id}, function(err, status){
+		 						if(err) console.log(error);
+		 					});
+		                  	var smtpTransport = nodemailer.createTransport("SMTP",{
+							   service: "Gmail",  // sets automatically host, port and connection security settings
+							   auth: {
+							       user: "durgesh.kumar@linkites.com",
+							       pass: "*******"
+							   }
+							});
+		                	smtpTransport.sendMail({  //email options
+					 		   from: "REAMM <durgesh.kumar@linkites.com>", // sender address.  Must be the same as authenticated user if using Gmail.
+							   to: "Receiver Name <" + th.req.body.weblogin.email + ">", // receiver
+							   subject: "REAMM Client Account", // subject
+							   html: "<h3>Hello " + req.body.contactdata.name.firstname + " " + req.body.contactdata.name.lastname +"</h3>"
+							   			+ " Your REAMM account has been created as clieng. <br> Please find your login detail below <br>" 
+							   			+ "Email :"  + th.req.body.weblogin.email + "</b><br>Password : <b>" 
+							   			+ th.req.body.weblogin.password + "</b>"
+							   			+ "<h4>Thanks<h4><br><i>REAMM(http://www.reamm.com)"
 
-						}, function(error, response){  //callback
-						   if(error){
-						       console.log(error);
-						   }else{
-						   	console.log("saaaaaaaaaaaa");
-						    
-						   }
-						   
-						   smtpTransport.close(); 
-						});
-	 				}
-	 			});
+							}, function(error, response){  //callback
+							   if(error){
+							       console.log(error);
+							   }else{
+							       console.log("Message sent: " + response.message);
+							   }
+							   
+							   smtpTransport.close(); 
+							});
+		 				}
+		 			});
+	 			} else {
+	 				ClientWebLogin.update({_id:th.req.body.weblogin._id},{
+		 				email:th.req.body.weblogin.email,
+		 				password:th.req.body.weblogin.password,
+		 				is_enabled:th.req.body.weblogin.is_enabled
+		 			}, function(err, data1){
+		 				if(err) console.log(err);
+		 				else {
+		                  	var smtpTransport = nodemailer.createTransport("SMTP",{
+							   service: "Gmail",  // sets automatically host, port and connection security settings
+							   auth: {
+							       user: "durgesh.kumar@linkites.com",
+							       pass: "********"
+							   }
+							});
+		                	smtpTransport.sendMail({  //email options
+					 		   from: "REAMM <durgesh.kumar@linkites.com>", // sender address.  Must be the same as authenticated user if using Gmail.
+							   to: "Receiver Name <" + th.req.body.weblogin.email + ">", // receiver
+							   subject: "REAMM Client Account Update", // subject
+							   html: "<h3>Hello " + req.body.contactdata.name.firstname + " " + req.body.contactdata.name.lastname +"</h3>"
+							   			+ " Your REAMM account has been updated as client. <br> Please find your login detail below <br>" 
+							   			+ "Email :"  + th.req.body.weblogin.email + "</b><br>Password : <b>" 
+							   			+ th.req.body.weblogin.password + "</b>"
+							   			+ "<h4>Thanks<h4><br><i>REAMM(http://www.reamm.com)"
+
+							}, function(error, response){  //callback
+							   if(error){
+							       console.log(error);
+							   } else {
+							   }
+							   
+							   smtpTransport.close(); 
+							});
+		 				}
+		 			});
+	 			}
 	 		}
 
 			res.json({success:true,message:"Contact updated successfully."});
@@ -184,7 +221,20 @@ dataController.getNewMatterTitle = function(){
 	 	var title = randString();
 	 	Matters.findOne({"matter.title.unique_number":title}, function(err, data){
 	 		if(err || data) getTitle();
-	 		else th.res.json({success:true,uniqueNumber:"REAMM-"+title});
+	 		else {
+	 			Matters.find().sort({date:"-1"}).limit(1).exec(function(err, matter){
+	 				if(matter.length > 0){
+	 					var matter = matter[0].toJSON();
+	 					if(matter.matter && matter.matter.title && matter.matter.title.matter_id){
+	 						th.res.json({success:true,uniqueNumber:"REAMM-"+title, uniqueMatterId:(parseInt(matter.matter.title.matter_id)+1)});
+	 					} else {
+	 						th.res.json({success:true,uniqueNumber:"REAMM-"+title, uniqueMatterId:10000000});
+	 					}
+	 				} else {
+	 					th.res.json({success:true,uniqueNumber:"REAMM-"+title, uniqueMatterId:10000000});
+	 				}
+	 			});
+	 		}
 	 	});
 	}
 	getTitle();
@@ -222,7 +272,9 @@ dataController.saveMatter = function(){
 			} else if(!matter){
 				th.res.json({success:false, message:"Error in processing request"});
 			} else {
+				console.log(th.req.body.activity);
 				th.res.json({success:true, message:"matter created", matter:matter});
+
 			}
 		});
 	} else {
@@ -247,26 +299,28 @@ dataController.getMatters = function(){
 		}
 	}
 	Matters.find(options)
-	 .populate({path:"parties.sellers", select:{name:1,_id:1}})
-		 .populate({path:"partiebuyers_attorney", select:{name:1,_id:1}})
-			.populate({path:"parties.sellers_attorney", select:{name:1,_id:1}})
-				.populate({path:"parties.sellers_agent", select:{name:1,_id:1}})
-					.populate({path:"parties.buyers", select:{name:1,_id:1}})
-						.populate({path:"parties.buyers_attorney", select:{name:1,_id:1}})
-							.populate({path:"parties.buyers_agent", select:{name:1,_id:1}})
-								.populate({path:"parties.lender_attorney", select:{name:1,_id:1}})
-									.populate({path:"parties.lender_agent", select:{name:1,_id:1}})
-										.populate({path:"parties.surveyor", select:{name:1,_id:1}})
-											.populate({path:"parties.past_inspector", select:{name:1,_id:1}})
-												.populate({path:"parties.building_inspector", select:{name:1,_id:1}})
-													.populate({path:"parties.additionalfields", select:{name:1,_id:1}})
-														.populate({path:"parties.lender_agent", select:{name:1,_id:1}})
-															.populate({path:"parties.title_company", select:{name:1,_id:1}})
-																.populate({path:"parties.title_search", select:{name:1,_id:1}})
-																	.populate({path:"parties.under_writer", select:{name:1,_id:1}})
-																		.populate({path:"parties.closer", select:{name:1,_id:1}})
-																			.populate({path:"parties.recording_office", select:{name:1,_id:1}})
-																				.populate({path:"parties.abstract_search", select:{name:1,_id:1}})
+	 .populate({path:"parties.sellers", select:{name:1,_id:1,company:1}})
+		 .populate({path:"partiebuyers_attorney", select:{name:1,_id:1,company:1}})
+			.populate({path:"parties.sellers_attorney", select:{name:1,_id:1,company:1}})
+				.populate({path:"parties.sellers_agent", select:{name:1,_id:1,company:1}})
+					.populate({path:"parties.buyers", select:{name:1,_id:1,company:1}})
+						.populate({path:"parties.buyers_attorney", select:{name:1,_id:1,company:1}})
+							.populate({path:"parties.buyers_agent", select:{name:1,_id:1,company:1}})
+								.populate({path:"parties.lender_attorney", select:{name:1,_id:1,company:1}})
+									.populate({path:"parties.lender_agent", select:{name:1,_id:1,company:1}})
+										.populate({path:"parties.surveyor", select:{name:1,_id:1,company:1}})
+											.populate({path:"parties.past_inspector", select:{name:1,_id:1,company:1}})
+												.populate({path:"parties.building_inspector", select:{name:1,_id:1,company:1}})
+													.populate({path:"parties.additionalfields", select:{name:1,_id:1,company:1}})
+														.populate({path:"parties.lender_agent", select:{name:1,_id:1,company:1}})
+															.populate({path:"parties.title_company", select:{name:1,_id:1,company:1}})
+																.populate({path:"parties.title_search", select:{name:1,_id:1,company:1}})
+																	.populate({path:"parties.under_writer", select:{name:1,_id:1,company:1}})
+																		.populate({path:"parties.closer", select:{name:1,_id:1,company:1}})
+																			.populate({path:"parties.recording_office", select:{name:1,_id:1,company:1}})
+																				.populate({path:"parties.abstract_search", select:{name:1,_id:1,company:1}})
+																					.populate({path:"parties.lender", select:{name:1,_id:1,company:1}})
+																						.populate({path:"parties.loan_officer", select:{name:1,_id:1,company:1}})
 																					.sort({date:-1})
 																						.exec(function(error, matters){
 																							if(error){
@@ -362,17 +416,25 @@ dataController.saveSchedule = function(){
 	var start = th.req.param('start');
 	var title = th.req.param('title');
 	var _id = th.req.param('_id');
-
+	var before_time = th.req.param('before_time');
+	var before_schedule = th.req.param('before_schedule');
+	var snoozetime = th.req.param('snoozetime');
 	if(start && title && _id){
-		Schedules.update({_id:_id},{end:end, start:start, title:title, is_ignored:false}, function(err, status){
+		Schedules.update({_id:_id},{end:start, start:start, title:title,before_time : before_time,before_schedule : before_schedule, snoozetime: snoozetime, is_ignored:false}, function(err, status){
 			if(err){
 				th.res.json({success:false, message:"Error in processing."});
 			} else {
-				th.res.json({success:true, message:"Schedule updated."});
+				Schedules.findOne({_id:_id}, function(error, schedule){
+					if(error){
+						th.res.json({success:false, message:"Error in processing."});
+					} else {
+						th.res.json({success:true, message:"Schedule updated.", schedule:schedule});
+					}
+				});
 			}
 		});
 	} else if(start && title){
-		Schedules.create({end:end, start:start, title:title, created_date:new Date()}, function(err, schedule){
+		Schedules.create({end:end, start:start, title:title,before_time : before_time,before_schedule : before_schedule, snoozetime:snoozetime, created_date:new Date()}, function(err, schedule){
 			if(err){
 				th.res.json({success:false, message:"Error in processing."});
 			} else {
@@ -419,7 +481,6 @@ dataController.ignoreScheudle = function(){
 		th.res.json("Parameter missing");
 	}
 }
-
 dataController.getSchedules = function(){
 	var th = this;
 	Schedules.find({is_deleted:false}, function(error, schedules){
@@ -431,17 +492,123 @@ dataController.getSchedules = function(){
 	})
 }
 
+dataController.getTotalContacts = function(){
+	var th = this;
+	// Contacts.find({is_deleted:false},{name:1, _id:1, company:1, category_id:1})
+	// .populate('category_id', {_id:1,categorie:1})
+	// .sort({date:-1})
+	// .exec(function(err, contactes){
+	// 	if(err){
+	// 		th.res.json({success:false, message:"Error in processing."});
+	// 	} else {
+	// 		th.res.json({success:true, contactes:contactes});
+	// 	}
+	// });
+
+	Contacts.aggregate(
+           { $match: { is_deleted:false } },
+           { $group: { _id: "$category_id", contactes: { $push: {name:"$name", phones:"$phones", company:"$company", _id:"$_id"} } } }
+       )
+    .sort({date:-1})
+    .exec(function(err, contactes){
+        Category.populate(contactes,"_id",function(err,contacts){
+            if(err)th.res.json({success:false, message:"Error in processing."});
+            else{
+            	var results = new Object();
+            	for(var x = 0; x< contactes.length; x++){
+            		if(contactes[x] && contactes[x].contactes){
+            			for(var y = 0; y < contactes[x].contactes.length; y++){
+	            			var con = contactes[x].contactes[y];
+	            			var displayname;
+	            			var phone;
+	            			var isEmpty = false;
+	            			if(con.phones)
+	            			for(var m = 0; m<con.phones.length; m++) 
+	            				if(con.phones[m].number) {
+	            					phone = con.phones[m].number; break;
+	            				}
+	            			if(con.name && con.name.firstname && con.name.lastname)
+	            				displayname = con.name.firstname + " " + con.name.lastname + " " +phone;
+	            			else if(con.name && con.name.firstname)
+	            				displayname = con.name.firstname + " " + phone;
+	            			else if(con.company && con.company.companyname)
+	            				displayname = con.company.companyname + " " + phone;
+	            			else {
+	            				isEmpty = true;
+	            			}
+	            			if(!isEmpty){
+	            				if(contactes[x].contactes[y].name) delete contactes[x].contactes[y].name;
+	            				if(contactes[x].contactes[y].phones) delete contactes[x].contactes[y].phones;
+	            				if(contactes[x].contactes[y].company) delete contactes[x].contactes[y].company;
+	            				contactes[x].contactes[y].displayname = displayname;
+	            			}
+	            			else {
+	            				contactes[x].contactes.splice(y,1); y--;
+	            			}
+	            		}
+	            		results[contactes[x]._id.categorie] = contactes[x].contactes;
+            		} else {
+            			contactes.splice(x,1); x--;
+            		}
+            	}
+                th.res.json({success:true, contactes:results});
+            }
+        });
+    });
+}
+
 dataController.getContacts = function(){
 	var th = this;
-	Contacts.find({is_deleted:false})
-	.populate('category_id', {_id:1,categorie:1})
-	.populate('clientweblogin',{contact:0,_v:0})
-	.sort({date:-1})
-	.exec(function(err, contactes){
+	var category = th.req.param('categorie');
+	var isProspective = th.req.param('isProspectiveClient');
+	var clim = th.req.param('clim');
+	var startIndex = th.req.param('startIndex');
+	var term = th.req.param('term');
+	var sort = th.req.param('sort');
+	var options = {is_deleted:false};
+	//var options = new Object();
+	//options = {is_deleted:false};
+	if(category && category != undefined && category != 'undefined' && typeof category != 'undefined') options.category_id = category;
+	if(isProspective == "true" && isProspective != undefined && isProspective != 'undefined' && typeof isProspective != 'undefined') options.prospective_client = isProspective;
+	if(!clim || clim == undefined || clim == 'undefined' || typeof clim == 'undefined') clim = 20;
+	if(!startIndex || startIndex == undefined || startIndex == 'undefined' && typeof startIndex == 'undefined') startIndex = 0;
+	//if(term != 'undefined' && term != '')options.term;
+	
+	if(term != 'undefined' && term != '' && category && category != undefined && category != 'undefined' && typeof category != 'undefined'){
+      options ={$or:[
+      	{"name.firstname":{ '$regex' : term, $options: 'i' }} ,
+      	{"name.lastname":{ '$regex' : term, $options: 'i' }},
+      	{"company.companyname":{ '$regex' : term, $options: 'i' }},
+      	{phones:{$elemMatch:{number:{ '$regex' : term, $options: 'i' }}}}
+      	 ], category_id : category, is_deleted:false}; 
+    } else if(category && category != undefined && category != 'undefined' && typeof category != 'undefined'){
+    	 options.category_id = category;
+    } else if(term != 'undefined' && term != ''){
+      options ={$or:[
+      	{"name.firstname":{ '$regex' : term, $options: 'i' }} ,
+      	{"name.lastname":{ '$regex' : term, $options: 'i' }},
+      	{"company.companyname":{ '$regex' : term, $options: 'i' }},
+      	{phones:{$elemMatch:{number:{ '$regex' : term, $options: 'i' }}}}
+      	 ]}; 
+				}
+	Contacts.count(options, function(err, count){
 		if(err){
+			console.log(err);
 			th.res.json({success:false, message:"Error in processing."});
 		} else {
-			th.res.json({success:true, contactes:contactes});
+			Contacts.find(options)
+			.populate('category_id', {_id:1,categorie:1})
+			.populate('clientweblogin',{contact:0,_v:0})
+			.sort({sort:-1})
+			.skip(startIndex)
+			.limit(clim)
+			.exec(function(err, contactes){
+				if(err){
+					th.res.json({success:false, message:"Error in processing."});
+				} else {
+					th.res.json({success:true, totalContact:count, contactes:contactes});
+				}
+			});
 		}
 	});
 }
@@ -531,7 +698,7 @@ dataController.getUserDetail = function(){
 dataController.saveTask = function(){
 	var th = this;
 	if(th.req.param('_id')){
-		Task.update({_id:th.req._id},req.body, function(err, status){
+		Task.update({_id:th.req.param('_id')},{description:th.req.param('description'), status:th.req.param('status')}, function(err, status){
 			if(err){
 				th.res.json({success:false, message:"Error in processing"});
 			} else if(status) {
@@ -553,7 +720,8 @@ dataController.saveTask = function(){
 
 dataController.getTasks = function(){
 	var th = this;
-	Task.find({is_deleted:false}, function(err, tasks){
+	Task.find({status:{$ne:3}})
+	.sort({date:'-1'}).exec(function(err, tasks){
 		if(err){
 			th.res.json({success:false, message:"Error in processing"});
 		} else {
@@ -561,5 +729,291 @@ dataController.getTasks = function(){
 		}
 	});
 }
+
+dataController.uploadXlsx = function(){
+	var th = this;
+	// xlsxj({
+ //    input: "master.xlsx", 
+ //    output: null
+ //  }, function(err, result) {
+ //    if(err) {
+ //      console.error(err);
+ //    }else {
+ //      console.log(result);
+ //    }
+ //  });
+
+	// console.log("faaaaaa");
+	// var obj = XLSX.readFile('master.xlsx'); // parses a file 
+	// console.log(obj);
+	// th.res({data:obj});
+
+	
+	// excelParser.worksheets({
+	//   inFile: "master.xlsx",
+	//   worksheet: 1,
+	// }, function(err, worksheets){
+	//   if(err) console.error(err);
+	//   console.log(worksheets);
+	//   th.res.json({data:worksheets});
+	// });
+
+	// var obj = nxlsx.parse();
+	// console.log(obj);
+
+	this.render("pages/upload");
+
+
+} 
+
+dataController.uploadxlsfile = function(){
+	var th = this;
+	// xlsxj({
+ //    input: "master.xlsx", 
+ //    output: null
+ //  }, function(err, result) {
+ //    if(err) {
+ //      console.error(err);
+ //    }else {
+ //      console.log(result);
+ //    }
+ //  });
+
+	// console.log("faaaaaa");
+	// var obj = XLSX.readFile('master.xlsx'); // parses a file 
+	// console.log(obj);
+	// th.res({data:obj});
+
+	
+	// excelParser.worksheets({
+	//   inFile: "master.xlsx",
+	//   worksheet: 1,
+	// }, function(err, worksheets){
+	//   if(err) console.error(err);
+	//   console.log(worksheets);
+	//   th.res.json({data:worksheets});
+	// });
+
+	var filePath = th.req.files.file.path;
+	console.log(filePath);
+	var d = nxlsx.parse(filePath);
+	//console.log(obj);
+	//th.res.json(obj);
+
+	// this.render("pages/upload");
+
+   var row = 0;
+
+   var errCount = 0;
+   var successCount = 0;
+   var row = -1;
+   function next(){
+   	row++;
+   	if(row < d[0].data.length) {
+   		if(row >= 1 && d[0].data[row] && d[0].data[row]!='undefined')
+			{
+			 	var category = d[0].data[row][0];
+			 	var company = d[0].data[row][1];
+			 	var prefix = d[0].data[row][2];
+			 	var first = d[0].data[row][3];
+			 	var middle_initial = d[0].data[row][4];
+			 	var middle = d[0].data[row][5];
+			 	var last = d[0].data[row][6];
+			 	var suffix = d[0].data[row][7];
+			 	var office = d[0].data[row][8];
+			 	var extension = d[0].data[row][9];
+			 	var cell = d[0].data[row][10];
+			 	var home = d[0].data[row][11];
+			 	var fax = d[0].data[row][12];
+			 	var address1 = d[0].data[row][13];
+			 	var address2 = d[0].data[row][14];
+			 	var city = d[0].data[row][15];
+			 	var state = d[0].data[row][16];
+			 	var zip = d[0].data[row][17];
+			 	var email = d[0].data[row][18];
+			 	var ssn = d[0].data[row][19];
+
+			 	if(category == "Agent") category = "Real Estate Agent";
+			 	if(category == "client") category = "Client";
+
+
+			 	Categories.findOne({categorie:category}, function(err, cat){
+			 		if(cat){
+
+			 			var contact = {
+						    "category_id" : cat._id,
+						    "company" : {
+						        "taxid" : "",
+						        "namephonetic" : "",
+						        "dbaname" : "",
+						        "companyname" : company
+						    },
+						    "name" : {
+						        "lastname" : last,
+						        "firmname" : "",
+						        "lettersalutation" : "",
+						        "additinalname" : "",
+						        "sortname" : "",
+						        "initial" : middle_initial,
+						        "suffix" : suffix,
+						        "middlename" : middle,
+						        "firstname" : first,
+						        "prefix" : prefix,
+						        "ssn" :ssn
+						    },
+						    "imageSrc" : "",
+						    "assistantname" : {
+						        "email" : "",
+						        "workphon" : "",
+						        "emails" : "",
+						        "cellphone" : "",
+						        "extension" : "",
+						        "workphone" : "",
+						        "lastname" : "",
+						        "firstname" : ""
+						    },
+						    "accountname" : {
+						        "lastname" : "",
+						        "firstname" : ""
+						    },
+						    "is_deleted" : false,
+						    "date" : new Date(),
+						    "status" : "10",
+						    "prospective_client" : false,
+						    "additionalfields" : [],
+						    "notes" : [ ],
+						    "refferedbys" : [   ],
+						    "emails" : [ email ],
+						    "phones" : [ 
+						        {
+						            "extension" : extension,
+						            "number" : office,
+						            "phonetype" : "workphone"
+						        }, 
+						        {
+						            "extension" : extension,
+						            "number" : home,
+						            "phonetype" : "homephone"
+						        }, 
+						        {
+						            "extension" : extension,
+						            "number" : cell,
+						            "phonetype" : "cellphone"
+						        }, 
+						        {
+						            "extension" : "",
+						            "number" : fax,
+						            "phonetype" : "homefax"
+						        }
+						    ],
+						    "addreses" : [ 
+						        {
+						            "addresstype" : "officeaddress",
+						            "housenumber" : "",
+						            "delivertinstructor" : "",
+						            "streetnameaka" : "",
+						            "buildingnumber" : "",
+						            "unitnumber" : "",
+						            "unittype" : "",
+						            "streetsuffix" : "",
+						            "streetname" : "",
+						            "zipcodelast4" : "",
+						            "zip" : zip,
+						            "state" : state,
+						            "city" : city,
+						            "addressline1" : address1,
+						            "addressline2":address2
+						        }
+						    ],
+						};
+
+						Contacts.create(contact, function(err, data){
+							if(err) {
+								errCount++;
+							} else {
+								successCount++;
+							}
+							next();
+						});
+
+			 		} else {
+			 			console.log('category not found', category);
+			 			next();
+			 		}
+			 	});
+			} else {
+				next();
+			}
+   	} else {
+   		th.res.json({successCount:successCount, errCount:errCount});
+   	}
+   }
+
+   next();
+
+	// while(d[0].data.length > row){
+	// 		if(row > 1)
+	// 		{
+	// 		 	var category = d[0].data[row][0].value;
+	// 		 	var company = d[0].data[row][1].value;
+	// 		 	var prefix = d[0].data[row][2].value;
+	// 		 	var first = d[0].data[row][3].value;
+	// 		 	var middle_initial = d[0].data[row][4].value;
+	// 		 	var middle = d[0].data[row][5].value;
+	// 		 	var last = d[0].data[row][6].value;
+	// 		 	var suffix = d[0].data[row][7].value;
+	// 		 	var office = d[0].data[row][8].value;
+	// 		 	var extension = d[0].data[row][9].value;
+	// 		 	var cell = d[0].data[row][10].value;
+	// 		 	var home = d[0].data[row][11].value;
+	// 		 	var fax = d[0].data[row][12].value;
+	// 		 	var address1 = d[0].data[row][13].value;
+	// 		 	var address2 = d[0].data[row][14].value;
+	// 		 	var city = d[0].data[row][15].value;
+	// 		 	var state = d[0].data[row][16].value;
+	// 		 	var zip = d[0].data[row][17].value;
+	// 		 	var email = d[0].data[row][18].value;
+	// 		 	var ssn = d[0].data[row][19].value;
+
+
+
+
+	// 		}
+	// 		row++;
+            
+           
+
+
+ //            // var saveParents = new Parents(
+ //            //     {
+ //            //         "schoolid" : _id,
+ //            //         "childname" : d.worksheets[0].data[row][0].value,
+ //            //         "regno" : d.worksheets[0].data[row][1].value,
+ //            //         "dob" : new Date(d.worksheets[0].data[row][2].value),
+ //            //         "grade" : d.worksheets[0].data[row][3].value,
+ //            //         "section" : d.worksheets[0].data[row][4].value,
+ //            //         "subjects" : subjects,
+ //            //         "mothername" : d.worksheets[0].data[row][6].value,
+ //            //         "motherphoneno" : d.worksheets[0].data[row][7].value,
+ //            //         "motherdob" : d.worksheets[0].data[row][8].value,
+ //            //         "motheremail" : d.worksheets[0].data[row][9].value,
+ //            //         "fathername" : d.worksheets[0].data[row][10].value,
+ //            //         "fatherphoneno" : d.worksheets[0].data[row][11].value,
+ //            //         "fatherdob" : d.worksheets[0].data[row][12].value,
+ //            //         "fatheremail" : d.worksheets[0].data[row][13].value
+ //            //     }
+ //            // );
+ //            // saveParents.save(function(err, savedTeacher){
+ //            //     if(err){
+ //            //         console.log(err);
+ //            //     } else {
+ //            //         console.log(savedTeacher + "\n");
+ //            //     }
+ //            // });
+ //            // row++;
+ //        }
+
+
+} 
 
 module.exports = dataController;

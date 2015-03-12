@@ -1,0 +1,122 @@
+<ul class="breadcrumb" data-ng-init="getContactes();getContactCategories();">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Matters</a></li>
+    <li ng-show="isNewMatter"><a href="#">New</li>
+    <li ng-if="filterBy" class="active">New</li>
+</ul>
+
+<div class="page-title">                    
+    <h2><span class="fa fa-th-large"></span> Matter <!-- <small>{{categoryWiseContact.length}} contacts</small> --></h2>
+</div>
+
+
+<!-- <div class="row">
+	<div class="">
+		
+	</div>
+</div> -->
+	<div class="panel panel-default tabs" style="background:white" data-ng-init="getMatters()">                            
+        <ul class="nav nav-tabs" role="tablist" id="myTab">
+            <li class="active matterslist"><a onclick="$('#newmatter').removeClass('active');$('#viewmatter').removeClass('active');$('#matterslist').addClass('active');" href="#matterslist" role="tab" data-toggle="tab" data-ng-init="removeExtrasTag()">Matters</a></li>
+            <li id="matterTab{{tab._id}}" class="matter{{tab._id}}" ng-repeat="tab in matterTabs track by $index">
+		    	<a ng-click="showMatterTab($index)" hovereffect href="#viewmatter" data-toggle="tab" role="tab">{{tab.name}} <i class="fa  fa-times" style="cursor:pointer" ng-click="discardMatter($index)"></i></a>
+		    </li>
+		    <li ng-if="isNewMatter" class="newmatter"><a hovereffect href="#newmatter" style="width:120px;" role="tab" data-toggle="tab">New Matter <i class="fa fa-times" style="cursor:pointer;float:right; visibility: hidden;" ng-click="discardNewMatter()"></i></a></li>
+        </ul>                            
+        <div class="panel-body tab-content">
+            <div class="tab-pane active" id="matterslist">
+            	<div class="row">
+            		<div class="col-sm-3">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="fa fa-search"></span>
+                            </div>
+                            <input type="text" class="form-control" ng-model="matterSearch" placeholder="Search..."/>  
+                        </div>
+                    </div>
+	                <div class="col-sm-2">
+	                    <div class="form-group">
+	                        <select ng-select class="form-control select" ng-model="sortBy" data-style="btn btn-default">
+	                            <option value="">Sort by</option>
+	                            <option value="matter.property.matter_name">Matter Name</option>
+	                            <option value="matter.type">Matter Type</option>
+	                            <option value="matter.property.property_type">Residential/Commercial</option>
+	                            <option value="matter.property.sales_type">Sales Type</option>
+	                            <option value="date">Newest</option>
+	                            <option value="-date">Oldest</option>
+	                        </select>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="btn-group">
+                            <button class="btn btn-default" ng-click="filterMatterType=''">All</button>
+                            <button class="btn btn-default" ng-click="filterMatterType='Open'">Open</button>                   
+                            <button class="btn btn-default" ng-click="filterMatterType='Closed'">Closed</button>
+                        </div>
+	                </div>
+	                <div class="col-sm-2">
+	                	
+	                </div>
+	                <div class="col-sm-2" style="text-align:right">
+	                	<div class="form-group">
+	                		<button type="button" class="btn btn-success" ng-click="newMatter()">
+	                			<i class="fa fa-plus"></i>
+	                			Matter
+	                		</button>
+	                	</div>
+	                </div>
+	            </div>
+	            <br>
+                <div class="row detl-lst">
+                	<div class="col-md-3" ng-repeat="m in matters | filterMatter:filterMatterType | filter:matterSearch | orderBy:sortBy:reverse">
+                        <!-- CONTACT ITEM -->
+                        <div class="panel panel-default contct-detl" ng-click="addMatterTab(m._id);">
+                            <div class="panel-body profile" style="min-height:130px;">
+                                
+                                <div class="profile-data">
+                                	<br>
+                                    <div class="profile-data-name">{{m.matter.property.matter_name}}</div>
+                                    <!-- <div class="profile-data-title">Singer-Songwriter</div> -->
+                                    <br><br>
+                                </div>
+                                <div class="matter-sub-title-name">
+                                	<p style="color:white; font-size:12px; color:#f1f1f1; text-align:center">
+                                		{{m.matter.property.sales_type=="Purchase"? m.parties.buyers[0].name.firstname + " " + m.parties.buyers[0].name.lastname : m.parties.sallers[0].name.firstname + " " + m.parties.sallers[0].name.lastname}}
+                                	</p>
+                                </div>
+                            </div>                                
+                            <div class="panel-body" style="min-height:165px">                                   
+                                <div class="contact-info">
+                                	<p><small>Property</small><br/>{{m.matter.property.addreses[0].addressline1 + ", " + m.matter.property.addreses[0].city + ", " + m.matter.property.addreses[0].state + "" + m.matter.property.addreses[0].zip}}</p>
+                                	<br>
+                                    <p><small>Matter Type</small><br/>{{m.matter.type}}</p>
+                                    <!-- <p><small>Residential/Commercial</small><br/>{{m.matter.property.property_type}}</p>
+                                    <p><small>Sale Type</small><br/>{{m.matter.property.sales_type}}</p>
+                                    <p><small>Address</small><br/>{{m.matter.property.addreses[0].addressline1 + ", " + m.matter.property.addreses[0].city + ", " + m.matter.property.addreses[0].state + "" + m.matter.property.addreses[0].zip}}</p>  -->
+                                    <br>
+                                </div>
+                            </div>                                
+                        </div>
+                        <!-- END CONTACT ITEM -->
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="newmatter">
+                
+            	<div class="panel-default tabs usr-contacts">
+					<div class="row">
+				      <div class="col-sm-10">
+				          <ul class="nav nav-tabs">
+				            <li ng-click="openTab('matter')" class="{{showTab=='matter'?'active':''}}"><a href="javascript:;" role="tab" data-toggle="tab">Matter</a></li>
+				            <li ng-click="openTab('parties')" class="{{showTab=='parties'?'active':''}}"><a href="javascript:;" role="tab" data-toggle="tab">Parties</a></li>
+				            <li ng-click="openTab('activity')" class="{{showTab=='activity'?'active':''}}"><a href="javascript:;" role="tab" data-toggle="tab">Activity</a></li>
+				            <li ng-click="openTab('documents')" class="{{showTab=='documents'?'active':''}}"><a href="javascript:;" role="tab" data-toggle="tab">Documents</a></li>
+				          </ul>
+				       </div>
+				    </div>
+				    <div class="col-sm-2" style="margin-top:-33px; float:right;">
+				        <div class="btn-group">
+				            <a type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"> {{matterForm.type}} <span class="caret"></span></a>
+				            <ul class="dropdown-menu" role="menu">
+				            	<li role="presentation" class="dropdown-header">Select Matter Type</li>
+				                <li><a href="javascript:;" ng-click=

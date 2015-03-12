@@ -5,7 +5,7 @@ module.exports = (function () {
         , SchemaTypes = mongoose.Schema.Types
         , contacts = require('./contacts');
 
-    var connection = mongoose.createConnection("104.207.132.73:27017/managementsystem");
+    var connection = mongoose.createConnection("localhost:27017/reamm");
 
     var mattersSchema = new Schema({
         is_deleted:{
@@ -50,6 +50,14 @@ module.exports = (function () {
                     ref: 'contacts'
                 }
             ],
+            lender:{
+                type: Schema.Types.ObjectId, 
+                ref: 'contacts'
+            },
+            loan_officer:{
+                type: Schema.Types.ObjectId, 
+                ref: 'contacts'
+            },
             lender_attorney : {
                 type: Schema.Types.ObjectId, 
                 ref: 'contacts'
@@ -99,11 +107,15 @@ module.exports = (function () {
             abstract_search : {
                 type: Schema.Types.ObjectId, 
                 ref: 'contacts'
-            },
+            }
             // additionalfields : [{
             //     type: Schema.Types.ObjectId, 
             //     ref: 'contacts'
             // }]
+        },
+        date:{
+            type : Date,
+            default:new Date()
         }
 
     }, {strict: false});

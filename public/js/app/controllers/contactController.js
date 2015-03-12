@@ -3,11 +3,15 @@
 /* Controllers */
 
 angular.module('myApp.contactController', [])
-.controller('contactController', function( $scope, $rootScope, $window, $location,$http, fileReader) {
+.controller('contactController', function( $scope, $rootScope, $window, $location,$http, fileReader, notificationMessage) {
 
 	$rootScope.filterBy = "";
-	$rootScope.setFilterBy = function(filterBy){
+	$rootScope.setFilterBy = function(filterBy, id){
 		$rootScope.filterBy = filterBy;
+		$rootScope.filterByCatId = id;
+		$rootScope.allContactes = [];
+		$rootScope.startIndex = 0;
+		$rootScope.currentPage = 0;
 	}
 
     
@@ -50,26 +54,29 @@ angular.module('myApp.contactController', [])
 		$rootScope.name = {
 			prefix:"",
 			firstname:"",
-			lastName:"",
 			middlename:"",
+			lastname:"",
 			suffix:"",
 			initial:"",
+			maiden:"",
+			lettersalutation:"",
+			letterclosing:"",
 			sortname:"",
-			additinalname:"",
-			lettersalutation:""
-
+			phoneticfirstname:"",
+			phoneticlastname:"",
 		};
 		$rootScope.phones = [{
-			         phonetype : "",
-			         sms : false,
-			         mms : false,
-			         smartphone : false,
-			         country : "",
-			         area    : "",
-			         Number  : "",
-			         ext      : "",
-			         homephone : "",
-			         cellphone : ""
+			         phonetype : "workphone",
+			         number  : "",
+			         extension: "",
+		}, {
+			         phonetype : "homephone",
+			         number  : "",
+			         extension: "",
+		}, {
+			         phonetype : "cellphone",
+			         number  : "",
+			         extension: "",
 		}];
 		$rootScope.company = {
 			companyname:"",
@@ -116,12 +123,17 @@ angular.module('myApp.contactController', [])
 			   		notes:$rootScope.notes,
 			   		additionalfields:$rootScope.additionalfields,
 			   		imageSrc : $rootScope.imageSrc,
-			   		prospective_client : $rootScope.prospective_client.status
+			   		prospective_client : $rootScope.prospective_client.status,
+			   		assistantname : $rootScope.assistantname,
+			   		accountname : $rootScope.accountname
 			   	};
 			   	$http.post('/createContact',{contactdata : $rootScope.contactdata})
 			   	.success(function(data){
 			   		if (data){
-			   			$rootScope.message = data.message;
+			   			//$rootScope.message = data.message;
+			   			$rootScope.getContacts();
+			   			$rootScope.getTotalContacts();
+			   			notificationMessage.show(data.message);
 		   			}
 		   			else {
 		   				$rootScope.message = "Try Again";
@@ -165,11 +177,12 @@ angular.module('myApp.contactController', [])
 		$rootScope.initContactContactCategory = function(category){
 			$rootScope.category_id = category._id;
 			$rootScope.category = category;
+			$rootScope.filterBy = category.categorie;
 		}
 
 		$rootScope.submitContact = function(form, index){
-			// $rootScope.contact_form_submited = true;
-		 //   	if(form.$valid){
+			$rootScope.contact_form_submited = true;
+		    	if(form.$valid){
 		   		var contact_id;
 		   		for(var x=0; x<$rootScope.openedTabs.length; x++){
 					if(x == index){
@@ -188,14 +201,16 @@ angular.module('myApp.contactController', [])
 			   		notes:$rootScope.notes,
 			   		additionalfields:$rootScope.additionalfields,
 			   		imageSrc : $rootScope.imageSrc,
-			   		prospective_client:$rootScope.prospective_client.status
+			   		prospective_client:$rootScope.prospective_client.status,
+			   		assistantname : $rootScope.assistantname,
+			   		accountname : $rootScope.accountname
 			   	};
 			   	if(contact_id == 'new'){
 			   		$http.post('/createContact',{contactdata : $rootScope.contactdata})
 				   	.success(function(data){
 				   		if (data){
-				   			$rootScope.message = data.message;
-				   			$rootScope.getContacts();
+				   			//$rootScope.message = data.message;
+				   			notificationMessage.show(data.message);
 				   			$rootScope.showList();
 			   			}
 			   			else {
@@ -209,7 +224,7 @@ angular.module('myApp.contactController', [])
 			   		$http.post('/updateContact',{contactdata : $rootScope.contactdata})
 				   	.success(function(data){
 				   		if (data){
-			   				$rootScope.message = data.message;
+			   				notificationMessage.show(data.message);
 			   				$rootScope.showList();
 		   				}
 			   			else {
@@ -220,14 +235,15 @@ angular.module('myApp.contactController', [])
 				   		console.log(error)
 				   	});
 			   	}
-			//}
-			
-			
+			} else {
+				console.log(from);
+			}
 		}
 
 		$rootScope.submitContactEdit = function(form, index){
-			//$rootScope.contact_form_submited = false;
-		   	//if(form.$valid){
+			console.log("fsdfdsf");
+			$rootScope.contact_form_submited = false;
+		   	if(form.$valid){
 		   		var contact_id;
 		   		for(var x=0; x<$rootScope.openedTabs.length; x++){
 					if(x == index){
@@ -246,19 +262,19 @@ angular.module('myApp.contactController', [])
 			   		notes:$rootScope.notes,
 			   		additionalfields:$rootScope.additionalfields,
 			   		imageSrc : $rootScope.imageSrc,
-			   		prospective_client:$rootScope.prospective_client.status
+			   		prospective_client:$rootScope.prospective_client.status,
+			   		assistantname : $rootScope.assistantname,
+			   		accountname : $rootScope.accountname
 			   	};
 			   	if(contact_id == 'new'){
 			   		$http.post('/createContact',{contactdata : $rootScope.contactdata, weblogin:$rootScope.weblogin})
 				   	.success(function(data){
 				   		if (data){
-				   			$rootScope.message = data.message;
+				   			//$rootScope.message = data.message;
 				   			$rootScope.getContacts();
 				   			$rootScope.showList();
-				   			setTimeout(function(){
-				   				$rootScope.message = "";
-				   				$rootScope.$apply();
-				   			},5000);
+				   			notificationMessage.show(data.message);
+				   			$rootScope.discardContact($rootScope.editFormIndex);
 			   			}
 			   			else {
 			   				$rootScope.message = "Try Again";
@@ -271,11 +287,7 @@ angular.module('myApp.contactController', [])
 			   		$http.post('/updateContact',{contactdata : $rootScope.contactdata,weblogin:$rootScope.weblogin})
 				   	.success(function(data){
 				   		if (data){
-			   				$rootScope.message = data.message;
-			   				setTimeout(function(){
-				   				$rootScope.message = "";
-				   				$rootScope.$apply();
-				   			},5000);
+			   				notificationMessage.show(data.message);
 		   				}
 			   			else {
 			   				$rootScope.message = "Try Again";
@@ -285,7 +297,9 @@ angular.module('myApp.contactController', [])
 				   		console.log(error)
 				   	});
 			   	}
-			//}
+			} else {
+				console.log(form);
+			}
 		}
 
 
@@ -304,10 +318,30 @@ angular.module('myApp.contactController', [])
 			});
 	   	}
 
-	   $rootScope.expandAddress = function() {
+	   $rootScope.expandAddress = function(type) {
 	   	$rootScope.addreses.push({
-	   		
-	   	});
+					      addressline1 : "",
+					      city         : "",
+					      state        : "",
+					      zip          : "",
+					      mailing      : false,
+					      billing      : false,
+					      poboxno      : false,
+					      streetnumber : "",
+					      streetname   : "",
+					      streetsuffix : "",
+					      unitnumber   : "",
+					      unitdesignator : "",
+					      buildingnumber  : "",
+					      buildingdoorcode : "",
+					      buildingdoorbell : "",
+					      pobox            : "",
+					      streetnameaka    : "",
+					      Intersectingstreet1 : "",
+					      Intersectingstreet2 : "",
+					      neighborhood        : "",
+					      addresstype : type
+					    });
 	   }
 
 	   $rootScope.expandEmail = function() {
@@ -323,7 +357,139 @@ angular.module('myApp.contactController', [])
 	   }
 
 	   $rootScope.addContactAitionalFields = function(key){
-	   	$rootScope.additionalfields.push({key:key,value:""});
+	   	//$rootScope.additionalfields.push({key:key,value:""});
+	   	//console.log($rootScope.additionalfields);
+	   	if(
+	   		key == "Social Security Number"
+	   		||
+	   		key == "Children"
+	   		||
+	   		key == "Mother Name"
+	   		||
+	   		key == "Languages"
+	   		||
+	   		key == "Keywords/Tags"
+	   		){
+
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields : [
+	   				{label:key, value:"", type:"text", name:key.toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+
+	   	} else if(
+	   		key == "FedEx Account Number"
+	   		) {
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields : [
+	   				{label:key, value:"", type:"number", name:key.toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+	   	} else if(
+	   		key == "Skype"
+	   		||
+	   		key == "Google+"
+	   		||
+	   		key == "Facebook"
+	   		||
+	   		key == "Twitter"
+	   		||
+	   		key == "LinkedIn"
+	   		||
+	   		key == "Website"
+	   		) {
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields : [
+	   				{label:key, value:"", type:"url", name:key.toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+	   	} else if(key == "Date of Birth"){
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields : [
+	   				{label:key, value:"", name:key.toLowerCase().replace(/\s/g, ''), type:"date", regexp:""}
+	   			]
+	   		});
+	   	} else if(key == "Gender") {
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields : [
+	   				{label:"Male", type:"radio", value : "Male", name:key.toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Femal", type:"radio", value:"Femal", name:key.toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+	   	} else if(key == "Marital Status"){
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields : [
+	   				{label:"Married", type:"radio", value : "Married", name:key.toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Unmarried", type:"radio", value:"Unmarried", name:key.toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+	   	} else if(key == "Spouse Name"){
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields:[
+	   				{label:"Spouse First Name", value:"", type:"text", name:("Spouse First Name").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Spouse Last Name", value:"", type:"text", name:("Spouse First Name").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Spouse Middle Name", value:"", type:"text", name:("Spouse Middle Name").toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+	   	} else if(key == "Bank"){
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields:[
+	   				{label:"Bank Name", value:"", type:"text", name:("Bank Name").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Bank Account Number", value:"", type:"text", name:("Bank Account Number").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Bank Routing Number", value:"", type:"text", name:("Bank Routing Number").toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+	   	} else if(key == "Contact Person"){
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields:[
+	   				{label:"Contact Name", value:"", type:"text", name:("Contact Name").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Contact Cell", value:"", type:"text", name:("Contact Cell").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Contact Work Phone", value:"", type:"text", name:("Contact Work Phone").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Contact Work Phone Extension", value:"", type:"text", name:("Contact Work Phone Extension").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Contact Email", value:"", type:"email", name:("Contact Work Phone").toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+	   	} else if(key == "IOLA Escrow Account"){
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields:[
+	   				{label:"IOLA Bank Name", value:"", type:"text", name:("IOLA Bank Name").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"IOLA Bank Account Number", value:"", type:"text", name:("IOLA Bank Account Number").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"IOLA Bank Routing Number", value:"", type:"text", name:("IOLA Bank Routing Number").toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+	   	} else if("Assistant 2"){
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields:[
+	   				{label:"Assistant Name", value:"", type:"text", name:("Assistant Name").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Assistant Cell", value:"", type:"text", name:("Assistant Cell").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Assistant Work Phone", value:"", type:"text", name:("Assistant Work Phone").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Assistant Work Phone Extension", value:"", type:"text", name:("Assistant Work Phone Extension").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Assistant Email", value:"", type:"text", name:("Assistant Email").toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+	   	} else if("Contact Person"){
+	   		$rootScope.additionalfields.push({
+	   			key:key,
+	   			fields:[
+	   				{label:"Contact Person Name", value:"", type:"text", name:("Assistant Name").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Contact Person Cell", value:"", type:"text", name:("Assistant Cell").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Contact Person Work Phone", value:"", type:"text", name:("Assistant Work Phone").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Contact Person Work Phone Extension", value:"", type:"text", name:("Assistant Work Phone Extension").toLowerCase().replace(/\s/g, ''), regexp:""},
+	   				{label:"Contact Person Email", value:"", type:"text", name:("Assistant Email").toLowerCase().replace(/\s/g, ''), regexp:""}
+	   			]
+	   		});
+	   	}
 	   }
 
 	   $rootScope.setEditMode = function(mode){
@@ -333,6 +499,7 @@ angular.module('myApp.contactController', [])
 		$rootScope.showtab = function(index, isNew){
 			$rootScope.formEditMode = true;
 			$rootScope.createMode = false;
+			$scope.contactIndex = index;
 
 			$(".active").removeClass("active");
 			setTimeout(function(){
@@ -358,8 +525,9 @@ angular.module('myApp.contactController', [])
 	   		$rootScope.phones = $rootScope.tabs[index].contact.phones;
 	   		$rootScope.name = $rootScope.tabs[index].contact.name;
 	   		$rootScope.emails = $rootScope.tabs[index].contact.emails;
-	   		$rootScope.refferedbys = $rootScope.tabs[index].contact.refferedbys;
-	   		$rootScope.notes = $rootScope.tabs[index].contact.notes;
+	   		$rootScope.refferedbys = $rootScope.tabs[index].contact.refferedbys && $rootScope.tabs[index].contact.refferedbys.length>0?$rootScope.tabs[index].contact.refferedbys:[""];
+	   		$rootScope.notes = $rootScope.tabs[index].contact.notes && $rootScope.tabs[index].contact.notes.length>0?$rootScope.tabs[index].contact.notes:[""];
+	   		console.log($rootScope.notes,$rootScope.refferedbys);
 	   		$rootScope.additionalfields = $rootScope.tabs[index].contact.additionalfields;
 	   		$rootScope.imageSrc = $rootScope.tabs[index].contact.imageSrc;
 	   		$rootScope.prospective_client.status = $rootScope.tabs[index].contact.prospective_client;
@@ -369,12 +537,15 @@ angular.module('myApp.contactController', [])
 		       	$rootScope.weblogin.password = $rootScope.tabs[index].contact.clientweblogin.password;
 		        $rootScope.weblogin.is_enabled = $rootScope.tabs[index].contact.clientweblogin.is_enabled;
 	   		}
-
+	   		$rootScope.assistantname = $rootScope.tabs[index].contact.assistantname;
+	   		$rootScope.accountname = $rootScope.tabs[index].contact.accountname;
 	   		angular.forEach($scope.categories, function(val, i){
 	   			if(val._id == $rootScope.category_id){
 	   				$rootScope.initContactContactCategory(val);
 	   			}
 	   		});
+	   		$rootScope.changePath('/contacts/'+$rootScope.category.categorie.toLowerCase().replace(/\s/g, ''));
+	   		$(".nav-tabs li")[index].click();
 		}
 
 		$rootScope.newContact = function(){
@@ -403,52 +574,50 @@ angular.module('myApp.contactController', [])
 					category_id:$rootScope.category,
 					addreses : [{
 					      addressline1 : "",
-					      addressline2 : "",
 					      city         : "",
 					      state        : "",
 					      zip          : "",
-					      addresstype  : "",
-					      mailing      : false,
-					      billing      : false,
-					      poboxno      : false,
-					      streetnumber : "",
+					      zipcodelast4  : "",
 					      streetname   : "",
 					      streetsuffix : "",
+					      unittype : "",
 					      unitnumber   : "",
-					      unitdesignator : "",
 					      buildingnumber  : "",
-					      buildingdoorcode : "",
-					      buildingdoorbell : "",
-					      pobox            : "",
 					      streetnameaka    : "",
-					      Intersectingstreet1 : "",
-					      Intersectingstreet2 : "",
-					      neighborhood        : ""
+					      delivertinstructor : "",
+					      housenumber : "",
+					      addresstype : "homeaddress"
 					    }],
 				    name : {
 				      prefix:"",
 				      firstname:"",
-				      lastName:"",
 				      middlename:"",
 				      suffix:"",
 				      initial:"",
 				      sortname:"",
 				      additinalname:"",
-				      lettersalutation:""
+				      lettersalutation:"",
+				      firmname:"",
+				      lastname:""
 
 				    },
 				    phones : [{
-		               phonetype : "",
-		               sms : false,
-		               mms : false,
-		               smartphone : false,
-		               country : "",
-		               area    : "",
-		               Number  : "",
-		               ext      : "",
-		               homephone : "",
-		               cellphone : ""
-				    }],
+						         phonetype : "workphone",
+						         number  : "",
+						         extension: "",
+					}, {
+						         phonetype : "homephone",
+						         number  : "",
+						         extension: "",
+					}, {
+						         phonetype : "cellphone",
+						         number  : "",
+						         extension: "",
+					}, {
+						         phonetype : "homefax",
+						         number  : "",
+						         extension: "",
+					}],
 				    company : {
 				      companyname:"",
 				      dbaname:"",
@@ -462,7 +631,19 @@ angular.module('myApp.contactController', [])
 				    additionalfields : [],
 				    isAdditionalFields : false,
 				    prospective_client:false,
-				    imageSrc:""
+				    imageSrc:"",
+				    assistantname : {
+				    	firstname : "",
+				    	lastname:"",
+				    	workphone:"",
+				    	extension:"",
+				    	cellphone:"",
+				    	emails:""
+				    },
+				    accountname:{
+				    	firstname:"",
+				    	lastname:""
+				    }
 				}
 			}
 			$rootScope.tabs.push(tab);
@@ -471,6 +652,39 @@ angular.module('myApp.contactController', [])
 			index = $rootScope.openedTabs.length - 1;
 			
 			$rootScope.showtab(index, true);
+
+			//console.log($rootScope.category);
+			//$rootScope.changePath('/contacts/'+$rootScope.category.category.toLowerCase()+".html")
+			//$rootScope.changePath('/contacts/'+$rootScope.category.categorie.toLowerCase().replace(/\s/g, ''));
+
+			// if( newName == "client"){
+			// 	$rootScope.changePath('/contacts/client');
+			// 	console.log("from here");
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "real estate agent"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// } else if(newName == "attorney"){
+			// 	$rootScope.changePath('/contacts/attorney');
+			// }
 		}
 		
 		$rootScope.createNewTab = function(contact){
@@ -484,8 +698,10 @@ angular.module('myApp.contactController', [])
 			}
 
 			if(!isOpened){
+				var title="";
+				title = contact.name.firstname || contact.name.lastname || contact.company.companyname.substring(0,30);
 				var tab = {
-					title : contact.name.firstname+" "+contact.name.middlename + " " + contact.name.lastName,
+					title : title,
 					contact : contact
 				}
 				$rootScope.tabs.push(tab);
@@ -522,7 +738,7 @@ angular.module('myApp.contactController', [])
 			      city         : "",
 			      state        : "",
 			      zip          : "",
-			      addresstype  : "",
+			      addresstype  : "homeaddress",
 			      mailing      : false,
 			      billing      : false,
 			      poboxno      : false,
@@ -543,27 +759,28 @@ angular.module('myApp.contactController', [])
 			    $rootScope.name = {
 			      prefix:"",
 			      firstname:"",
-			      lastName:"",
 			      middlename:"",
 			      suffix:"",
 			      initial:"",
 			      sortname:"",
 			      additinalname:"",
-			      lettersalutation:""
+			      lettersalutation:"",
+			      lastname:""
 
 			    };
 			    $rootScope.phones = [{
-			               phonetype : "",
-			               sms : false,
-			               mms : false,
-			               smartphone : false,
-			               country : "",
-			               area    : "",
-			               Number  : "",
-			               ext      : "",
-			               homephone : "",
-			               cellphone : ""
-			    }];
+					         phonetype : "workphone",
+					         number  : "",
+					         extension: "",
+				}, {
+					         phonetype : "homephone",
+					         number  : "",
+					         extension: "",
+				}, {
+					         phonetype : "cellphone",
+					         number  : "",
+					         extension: "",
+				}];
 			    $rootScope.company = {
 			      companyname:"",
 			      dbaname:"",
@@ -591,27 +808,48 @@ angular.module('myApp.contactController', [])
 
 		$rootScope.deleteContact = function(index){
 
-	  		var id = $rootScope.openedTabs[index];
-	  		if($rootScope.openedTabs[index])
-	  			$http.post('/deleteContact',{id:id})
-	  			.success(function(data){
-	  				if(data.success){
-				   		$rootScope.showList();
-				   		angular.forEach($rootScope.allContactes, function(val,i){
-				   			if(val._id == id){
-				   				$rootScope.allContactes.splice(i,1);
-				   			}
-				   		});
-				   		$rootScope.tabs.splice(index, 1);
-						$rootScope.tabContent.splice(index, 1);
-						$rootScope.openedTabs.splice(index, 1);
-	  				} else {
-	  					console.log(data);
-	  				}
-	  			})
-	  			.error(function(error){
-	  				console.log(error);
-	  			});
+			bootbox.dialog({
+				message: "Confirm if you like to delete this contact",
+				title: "Custom title",
+				buttons: {
+					success: {
+						label: "Do not delete",
+						className: "btn-success",
+						callback: function() {
+							notificationMessage.show("Delete cancled");
+						}
+					},
+					danger: {
+						label: "Delete",
+						className: "btn-danger",
+						callback: function() {
+
+							var id = $rootScope.openedTabs[index];
+					  		if($rootScope.openedTabs[index])
+					  			$http.post('/deleteContact',{id:id})
+					  			.success(function(data){
+					  				if(data.success){
+								   		$rootScope.showList();
+								   		angular.forEach($rootScope.allContactes, function(val,i){
+								   			if(val._id == id){
+								   				$rootScope.allContactes.splice(i,1);
+								   			}
+								   		});
+								   		$rootScope.tabs.splice(index, 1);
+										$rootScope.tabContent.splice(index, 1);
+										$rootScope.openedTabs.splice(index, 1);
+										notificationMessage.show(data.message);
+					  				} else {
+					  					console.log(data);
+					  				}
+					  			})
+					  			.error(function(error){
+					  				console.log(error);
+					  			});
+						}
+					},
+				}
+			}); 
 	    }
 
 		$rootScope.removeAdditionalField = function(index){
@@ -646,6 +884,18 @@ angular.module('myApp.contactController', [])
 			});
 		}
 
+		$rootScope.removePhone = function(index, type){
+			var phoneInd = -1;
+			angular.forEach(angular.copy($rootScope.phones), function(val, i){
+				if(val.phonetype == type){
+					phoneInd++;
+					if(phoneInd == index){
+						$rootScope.phones.splice(i,1);
+					}
+				}
+			});
+		}
+
 		$rootScope.removeAddress = function(index){
 			angular.forEach($rootScope.addreses, function(val, i){
 				if(i==index){
@@ -654,17 +904,17 @@ angular.module('myApp.contactController', [])
 			});
 		}
 
-		$rootScope.getContact = function(){
-		    $http.post('/getContact',{category_id : $rootScope.category_id})
-		    .success(function(data){
-		    	if (data) {
-		    			$rootScope.getcontactdata = data;
-		    		}
-		    })
-		    .error(function(error){
-		    	console.log(error);
-		    });
-		}
+		// $rootScope.getContact = function(){
+		//     $http.post('/getContact',{category_id : $rootScope.category_id})
+		//     .success(function(data){
+		//     	if (data) {
+		//     			$rootScope.getcontactdata = data;
+		//     		}
+		//     })
+		//     .error(function(error){
+		//     	console.log(error);
+		//     });
+		// }
 
 		$rootScope.addMatterTabFromContact = function(id){
 			setTimeout(function(){
@@ -674,6 +924,15 @@ angular.module('myApp.contactController', [])
 
 
 		$rootScope.formValidater = function(){
+			$.validator.addMethod(
+			        "regex",
+			        function(value, element, regexp) {
+			            var re = new RegExp(regexp);
+			            return this.optional(element) || re.test(value);
+			        },
+			        "Please enter valid email."
+			);
+
 			var jvalidate = $("#jvalidate").validate({
                 ignore: [],
                 rules: {                                            
@@ -713,6 +972,15 @@ angular.module('myApp.contactController', [])
                     site: {
                             required: true,
                             url: true
+                    },
+                    city:{
+                    	required:true,
+                    },
+                    state:{
+                    	required:true,
+                    },
+                    zip:{
+                    	required:true,
                     }
                 }                                        
             });  

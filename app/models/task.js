@@ -1,30 +1,18 @@
 module.exports = (function () {
-
    var mongoose = require('mongoose')
     , Schema = mongoose.Schema
-    , SchemaTypes = mongoose.Schema.Types
-    ;
-    var connection = mongoose.createConnection("104.207.132.73:27017/managementsystem");
+    , SchemaTypes = mongoose.Schema.Types;    
 
     var taskSchema = new Schema({
-        title:{
-            type:String
-        },
-        description:{
-            type:String
-        },
-        priority:{
-            type:String
-        },
-        assignedTo:{
+        task:{
             type:String
         },
         createdBy:{
             type:String
         },
-        is_deleted:{
-            type:Boolean,
-            default:false
+        status:{
+            type:Number,
+            default:0
         },
         date:{
             type : String,

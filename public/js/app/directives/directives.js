@@ -16,6 +16,223 @@ angular.module('myApp.directives', [])
       }
     };
   })
+  .directive('focusout', function(){
+    return {
+      link : function(rootScope, ele, attr){
+        $(ele).bind("focusout", function(){
+          $(ele).parent().find('.editordiv').css('display','none').focus();
+          $(ele).parent().find('.textdiv').css('display','block');
+          rootScope.updateMatter();
+        });
+        $(ele).bind("keyup", function(){
+          rootScope.updateMatter();
+        });
+      }
+    }
+  })
+  .directive('tinymce', function(){
+    return {
+      require: 'ngModel',
+      link:function(rootScope, ele, attrs, ngModel){
+        tinymce.init({
+            selector: ".editablenote",
+            inline: true,
+            plugins: "save",
+            toolbar: "save | insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            ave_enablewhendirty: true,
+            save_onsavecallback: function() {
+              ngModel.$setViewValue($(ele).html());
+              rootScope.$apply();
+              rootScope.updateMatter();
+            },
+            blur:function(){
+              ngModel.$setViewValue($(ele).html());
+              rootScope.$apply();
+              rootScope.updateMatter();
+            }
+        });
+      }
+    }
+  })
+  .directive('whenScrolled', function() {
+    return function(scope, elm, attr) {
+        var raw = elm[0];
+        elm.bind('scroll', function() {
+            if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
+                //scope.$apply(attr.whenScrolled);
+            }
+        });
+    };
+  })
+  .directive('showmorecontact', function(){
+    return {
+      link:function(rootScope, elm, attrs){
+        $(elm).scroll(function(){
+          if($(window).scrollTop() >= $(document).height() - $(window).height() - 100){
+            // run our call for pagination
+            // var pId = $('#showMore').attr('rel');
+            // currPageNo = parseInt(pId);
+            // setPageNumbers();
+          }
+        });
+      }
+    }
+  })
+  .directive('lockscreenbox', function(){
+    return {
+      link:function(rootScope, ele, attrs){
+        $(".lockscreen-box .lsb-access").on("click",function(){
+            $(this).parent(".lockscreen-box").addClass("active").find("input").focus(); 
+            return false;
+        });
+        $(".lockscreen-box .user_signin").on("click",function(){        
+            $(".sign-in").show();
+            $(this).remove();
+            $(".user").hide().find("img").attr("src","assets/images/users/no-image.jpg");
+            $(".user").show();
+            return false;
+        });
+      }
+    }
+  })
+  .directive('hoverremovephone', function(){
+    return {
+      link:function(rootScope, ele, attrs){
+        var $ele = $(ele);
+        $ele.bind('mouseover', function(evt){
+          $(this).find('i').css('display','inline-block');
+        });
+        $ele.bind('mouseout', function(evt){
+          $(this).find('i').css('display','none');
+        })
+      }
+    }
+  })
+  .directive('maskcell', function(){
+    return {
+      require: 'ngModel',
+      link:function(rootScope, ele, attrs,ngModel){
+        $(ele).mask('(999) 999-9999');
+        setTimeout(function(){
+          var $el = $(ele);
+          $el.bind('keyup', function (ee, aa) {
+            ngModel.$setViewValue($el.val());
+            rootScope.$apply();
+          });
+        },100);
+      }
+    }
+  })
+  .directive('maskhome', function(){
+    return {
+      require: 'ngModel',
+      link:function(rootScope, ele, attrs,ngModel){
+        $(ele).mask('(999) 999-9999');
+        setTimeout(function(){
+          var $el = $(ele);
+          $el.bind('keyup', function (ee, aa) {
+            ngModel.$setViewValue($el.val());
+            rootScope.$apply();
+          });
+        },100);
+      }
+    }
+  })
+  .directive('maskwork', function(){
+    return {
+      require: 'ngModel',
+      link:function(rootScope, ele, attrs,ngModel){
+        $(ele).mask('(999) 999-9999');
+        setTimeout(function(){
+          var $el = $(ele);
+          $el.bind('keyup', function (ee, aa) {
+            ngModel.$setViewValue($el.val());
+            rootScope.$apply();
+          });
+        },100);
+      }
+    }
+  })
+  .directive('maskfax', function(){
+    return {
+      require: 'ngModel',
+      link:function(rootScope, ele, attrs,ngModel){
+        $(ele).mask('(999) 999-9999');
+        setTimeout(function(){
+          var $el = $(ele);
+          $el.bind('keyup', function (ee, aa) {
+            ngModel.$setViewValue($el.val());
+            rootScope.$apply();
+          });
+        },100);
+      }
+    }
+  })
+  .directive('maskphone', function(){
+    return {
+      require: 'ngModel',
+      link:function(rootScope, ele, attrs,ngModel){
+        $(ele).mask('(999) 999-9999');
+        setTimeout(function(){
+          var $el = $(ele);
+          $el.bind('keyup', function (ee, aa) {
+            ngModel.$setViewValue($el.val());
+            rootScope.$apply();
+          });
+        },100);
+      }
+    }
+  })
+  .directive('maskip', function(){
+    return {
+      require: 'ngModel',
+      link:function(rootScope, ele, attrs,ngModel){
+        $(ele).mask('(999) 999-9999');
+        setTimeout(function(){
+          var $el = $(ele);
+          $el.bind('keyup', function (ee, aa) {
+            ngModel.$setViewValue($el.val());
+            rootScope.$apply();
+          });
+        },100);
+      }
+    }
+  })
+  .directive('maskextension', function(){
+    return {
+      require: 'ngModel',
+      link:function(rootScope, ele, attrs,ngModel){
+        $(ele).mask('x99999');
+        setTimeout(function(){
+          var $el = $(ele);
+          $el.bind('keyup', function (ee, aa) {
+            ngModel.$setViewValue($el.val());
+            rootScope.$apply();
+          });
+        },100);
+      }
+    }
+  })
+  .directive("activecontacttab", function(){
+    return {
+      link:function(rootScope, ele, attrs){
+        var $ele = $(ele);
+        $('.contact-dtl').click();
+      }
+    }
+  })
+  .directive("savecontactform", function(){
+    return {
+      link:function(rootScope, ele, attrs){
+        var $ele = $(ele);
+        $ele.bind('click', function(e){
+          $("#savecontactform").click();
+          rootScope.discardContact(rootScope.editFormIndex);
+          rootScope.getTotalContacts();
+        });
+      }
+    }
+  })
   .directive('getcontactname', function($compile){
     return {
       restrict: 'A',
@@ -23,10 +240,19 @@ angular.module('myApp.directives', [])
       link: function (rootScope, ele, attrs) {
         rootScope.$watch(attrs.getcontactname, function(id) {
           if(id && id != null && id != undefined){
-            angular.forEach(rootScope.allContactes, function(val,i){
-              if(val._id == id){
-                $(ele).html("<b>"+val.name.firstname + " " + val.name.lastname+"</b>");
-              }
+            angular.forEach(rootScope.totalContacts, function(val,i){
+              // if(val._id == id){
+              //   if(val.category_id.categorie == "Lender" || val.category_id.categorie == "Recording Office"){
+              //     $(ele).html("<b>"+val.company.companyname+"</b>");
+              //   } else {
+              //     $(ele).html("<b>"+val.name.firstname + " " + val.name.lastname+"</b>");
+              //   }
+              // }
+
+              angular.forEach(val, function(v,j){
+                if(v._id == id) $(ele).html(v.displayname);
+              })
+
             });
           } else {
             $(ele).html("<b>Not Selected</b>");
@@ -53,10 +279,26 @@ angular.module('myApp.directives', [])
       }
     };
   })
+  .directive('username', function($compile){
+    return {
+      replace: true,
+      link: function (rootScope, ele, attrs) {
+        rootScope.$watch(attrs.username, function(id) {
+          angular.forEach(rootScope.adminUsers, function(val,i){
+            if(val._id == id){
+              if(val.first_name)
+                $(ele).html(val.first_name);
+              else
+                $(ele).html("");
+            }
+          });
+        });
+      }
+    };
+  })
   .directive('customscroll', function($compile){
     return {
       link:function(scope, element, attrs){
-        console.log("scroll......");
         var $el = $(element);
         $el.mCustomScrollbar(
           {axis:"y", autoHideScrollbar: true, scrollInertia: 20, advanced: {autoScrollOnFocus: false}}
@@ -232,7 +474,6 @@ angular.module('myApp.directives', [])
                 rootScope.$apply();
             }); 
           $el.bind('keypress', function (ee, aa) {
-            console.log("fasdf");
             ngModel.$setViewValue($el.val());
             rootScope.$apply();
           });
@@ -291,7 +532,9 @@ angular.module('myApp.directives', [])
             ngModel.$setViewValue($el.val());
             rootScope.$apply();
           });
-        }, 10);
+          $el.parent().find('.dropdown-menu').attr("style","max-height:200px");
+          $el.parent().find('.dropdown-menu').attr("customscroll","");
+        }, 1000);
       }
     }
     
@@ -374,7 +617,7 @@ angular.module('myApp.directives', [])
       require: 'ngModel',
       link: function(rootScope, elm, attr, ngModel){
         var elm = $(elm);
-        elm.datepicker({useCurrent: true});
+        elm.datetimepicker({useCurrent: true, pickTime:false});
        //elm.data("DateTimePicker").setMinDate(new Date());
         // elm.data("DateTimePicker").setMaxDate(new Date("+6d"));
         elm.on('change', function (ee, aa) {
@@ -405,7 +648,7 @@ angular.module('myApp.directives', [])
       require: 'ngModel',
       link : function(rootScope, elm, attr, ngModel){
         var elm = $(elm);
-        elm.datetimepicker({pickDate : false,useCurrent: true});
+        elm.datetimepicker({useCurrent: true, pickDate : false});
         $(".bootstrap-datetimepicker-widget").attr("style","z-index:9999");
        //elm.data("DateTimePicker").setMinDate(new Date());
         // elm.data("DateTimePicker").setMaxDate(new Date("+6d"));
@@ -424,7 +667,6 @@ angular.module('myApp.directives', [])
           var elm = $(elm);
           elm.iCheck({checkboxClass: 'icheckbox_minimal-grey',radioClass: 'iradio_minimal-grey'});
           elm.on('change click', function (ee, aa) {
-            console.log("dasda");
             ngModel.$setViewValue(elm.val());
             rootScope.$apply();
           });
@@ -432,7 +674,7 @@ angular.module('myApp.directives', [])
       }
     };
   })
-  .directive('ngConfirmClick', [
+  .directive('ngConfirmClick',
     function(){
         return {
             priority: 1,
@@ -441,12 +683,12 @@ angular.module('myApp.directives', [])
                 var msg = attr.ngConfirmClick || "Are you sure want to delete?";
                 var clickAction = attr.ngClick;
                 element.bind('click',function (event) {
-                    if ( window.confirm(msg) ) {
+                    if (window.confirm(msg) ) {
                         rootScope.$eval(clickAction)
                     }
                 });
             }
         };
-    }]);
+    });
 
 

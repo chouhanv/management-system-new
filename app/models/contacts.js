@@ -5,7 +5,7 @@ module.exports = (function () {
         , SchemaTypes = mongoose.Schema.Types
         , categories = require('./categories')
         , clientweblogin = require('./clientweblogin');
-    var connection = mongoose.createConnection("104.207.132.73:27017/managementsystem");
+    var connection = mongoose.createConnection("localhost:27017/reamm");
 
     var contactsSchema = new Schema ({
 
@@ -33,6 +33,8 @@ module.exports = (function () {
             type:Boolean,
             default:""
         },
+        assistantname:{},
+        accountname:{},
         status : {
             type : String,
             default :  10

@@ -31,72 +31,14 @@
                             <form name="new_task" ng-submit="saveTask()">
                                 <div class="row">
                                     <div class="form-group">
-                                        <input type="text" name="title" class="form-control" ng-model="task.title" placeholder="title">
+                                        <textarea class="form-control push-down-10" id="new_task" ng-model="task.description" rows="10" placeholder="Task"></textarea>
                                     </div>
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <textarea class="form-control push-down-10" id="new_task" ng-model="task.description" rows="4" placeholder="Description"></textarea>                            
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <select class="form-control" name="priority" ng-model="task.priority">
-                                            <option Value="">Priority</option>
-                                            <option Value="task-primary">Primary</option>
-                                            <option Value="task-info">Normal</option>
-                                            <option Value="task-warning">High</option>
-                                            <option Value="task-danger">Danger</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <select class="form-control" name="assignedto" ng-model="task.assignedTo">
-                                            <option Value="">Assigned To</option>
-                                            <option Value="{{au._id}}" ng-repeat="au in adminUsers">{{au.first_name+" "+au.last_name}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
                                 <div class="row">
                                     <button type="submit" class="btn btn-primary"><span class="fa fa-edit"></span> Add Task</button>
                                 </div>
                             </form>
-                        </div>                        
-                        <!-- <div class="form-group push-up-10">
-                            <h4>Searh in tasks:</h4>
-                            <div class="input-group">
-                                <div class="input-group-addon"><span class="fa fa-search"></span></div>
-                                <input type="text" class="form-control" placeholder="keyword..."/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <h4>Task groups:</h4>
-                            <div class="list-group border-bottom">
-                                <a href="#" class="list-group-item"><span class="fa fa-circle text-primary"></span> Project #1</a>
-                                <a href="#" class="list-group-item"><span class="fa fa-circle text-success"></span> Personal</a>
-                                <a href="#" class="list-group-item"><span class="fa fa-circle text-warning"></span> Project #2</a>
-                                <a href="#" class="list-group-item"><span class="fa fa-circle text-danger"></span> Meetings</a>
-                                <a href="#" class="list-group-item"><span class="fa fa-circle text-info"></span> Work</a>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <h4>Tags:</h4>
-                            <ul class="list-tags">
-                                <li><a href="#"><span class="fa fa-tag"></span> amet</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> rutrum</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> nunc</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> tempor</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> eros</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> suspendisse</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> dolor</a></li>
-                            </ul>                            
-                        </div> -->
-                        
+                        </div>                       
                     </div>       
                     <!-- END CONTENT FRAME TOP -->
                     
@@ -105,101 +47,42 @@
                                                 
                         <div class="row push-up-10">
                             <div class="col-md-4">
-                                
                                 <h3>To-do List</h3>
-                                
-                                <div class="tasks" id="tasks">
-
-                                    <div class="task-item {{t.priority}}" ng-repeat="t in allTasks">
-                                        <div >
-                                            <p style="text-align:center;">{{t.title}}</p>
-                                        </div>                   
+                                <div class="tasks page-scroll-contant-task" customescroll>
+                                    <div class="task-item {{t.priority}}" ng-repeat="t in allTasks | filter:{status:0}">
                                         <div class="task-text">{{t.description}}</div>
                                         <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span>{{convertTime(t.date)}}</div>                                    
+                                            <div class="pull-left"><span class="fa fa-clock-o"></span> {{getDateAndTime(t.date)}}</div>
+                                            <div class="pull-right">
+                                            <a href="javascript:;" data-toggle="modal" data-target="#edittask"><i ng-click="editTask(t)" class="fa fa-2x fa-edit"></i></a>
+                                             <i ng-click="updateTask(t, 1)" class="fa fa-2x fa-arrow-circle-o-right"></i></div>
                                         </div>                                    
                                     </div>
-
-                                    <!-- <div class="task-item task-primary">                                    
-                                        <div class="task-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris rutrum velit vel erat fermentum, a dignissim dolor malesuada.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 1h 30min</div>                                    
-                                        </div>                                    
-                                    </div>
-
-                                    <div class="task-item task-success">                                    
-                                        <div class="task-text">Suspendisse a tempor eros. Curabitur fringilla maximus lorem, eget congue lacus ultrices eu. Nunc et molestie elit. Curabitur consectetur mollis ipsum, id hendrerit nunc molestie id.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 1h 45min</div>
-                                            <div class="pull-right"><a href="#"><span class="fa fa-chain"></span></a> <a href="#"><span class="fa fa-comments"></span></a></div>
-                                        </div>                                    
-                                    </div>
-
-                                    <div class="task-item task-warning">                                    
-                                        <div class="task-text">Donec lacus lacus, iaculis nec pharetra id, congue ut tortor. Donec tincidunt luctus metus eget rhoncus.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 1day ago</div>
-                                        </div>                                    
-                                    </div>
-
-                                    <div class="task-item task-danger">                                    
-                                        <div class="task-text">Pellentesque faucibus molestie lectus non efficitur. Vestibulum mattis dignissim diam, eget dapibus urna rutrum vitae.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 2days ago</div>
-                                            <div class="pull-right"><a href="#"><span class="fa fa-chain"></span></a> <a href="#"><span class="fa fa-comments"></span></a></div>
-                                        </div>                                    
-                                    </div>
-
-                                    <div class="task-item task-info">                                    
-                                        <div class="task-text">Quisque quis ipsum quis magna bibendum laoreet.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 3days ago</div>
-                                            <div class="pull-right"><a href="#"><span class="fa fa-chain"></span></a> <a href="#"><span class="fa fa-comments"></span></a></div>
-                                        </div>                                    
-                                    </div> -->
-                                    
                                 </div>                            
-
                             </div>
                             <div class="col-md-4">
                                 <h3>In Progress</h3>
-                                <div class="tasks" id="tasks_progreess">
-
-                                    <div class="task-item task-warning">
-                                        <div class="task-text">In mauris nunc, blandit a turpis in, vehicula viverra metus. Quisque dictum purus lorem, in rhoncus justo dapibus eget. Aenean pretium non mauris et porttitor.</div>
+                                <div class="tasks page-scroll-contant-task" customescroll>
+                                    <div class="task-item {{t.priority}}" ng-repeat="t in allTasks | filter:{status:1}">
+                                        <div class="task-text">{{t.description}}</div>
                                         <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 2h 55min</div>
-                                            <div class="pull-right"><span class="fa fa-pause"></span> 4:51</div>
+                                            <div class="pull-left"><span class="fa fa-clock-o"></span> {{getDateAndTime(t.date)}}</div>
+                                            <div class="pull-right"><i ng-click="updateTask(t, 0)" class="fa fa-2x fa-arrow-circle-o-left"></i> <i ng-click="updateTask(t, 2)" class="fa fa-2x fa-arrow-circle-o-right"></i></div>
                                         </div>                                    
-                                    </div>                            
-                                    
-                                    <div class="task-drop push-down-10">
-                                        <span class="fa fa-cloud"></span>
-                                        Drag your task here to start it tracking time
                                     </div>
-                                    
-                                </div>
+                                </div> 
                             </div>
                             <div class="col-md-4">
                                 <h3>Completed</h3>
-                                <div class="tasks" id="tasks_completed">
-                                    <div class="task-item task-danger task-complete">                                    
-                                        <div class="task-text">Donec maximus sodales feugiat.</div>
+                                <div class="tasks page-scroll-contant-task" customescroll>
+                                    <div class="task-item {{t.priority}}" ng-repeat="t in allTasks | filter:{status:2}">
+                                        <div class="task-text">{{t.description}}</div>
                                         <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 15min</div>                                    
+                                            <div class="pull-left"><span class="fa fa-clock-o"></span> {{getDateAndTime(t.date)}}</div>
+                                            <div class="pull-right"><i ng-click="updateTask(t, 1)" class="fa fa-2x fa-arrow-circle-o-left"></i> <i ng-click="updateTask(t, 3)" class="fa fa-2x fa-trash-o"></i></div>
                                         </div>                                    
                                     </div>
-                                    <div class="task-item task-info task-complete">                                    
-                                        <div class="task-text">Aliquam eget est a dui tincidunt commodo in nec ante.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 35min</div>                                    
-                                        </div>                                    
-                                    </div>
-                                    <div class="task-drop">
-                                        <span class="fa fa-cloud"></span>
-                                        Drag your task here to finish it
-                                    </div>                                    
-                                </div>
+                                </div> 
                             </div>
                         </div>                        
                                                 
@@ -208,3 +91,29 @@
                     
                 </div>
                 <!-- END CONTENT FRAME -->
+
+                <div class="modal" id="edittask" tabindex="-1" role="dialog" aria-labelledby="smallModalHead" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" ng-click="resetTask()" class="close close-task-popup"
+                                 data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="smallModalHead">Edit Task</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form name="new_task" ng-submit="updateTask(editedTask, editedTask.status)">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <textarea class="form-control push-down-10" ng-model="editedTask.description" rows="10" placeholder="Task"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <button type="submit" class="btn btn-primary"><span class="fa fa-edit"></span> Save Task</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>        
+
+                <!-- EOF MODALS -->
