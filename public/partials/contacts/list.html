@@ -149,7 +149,7 @@
                                     <button ngConfirmClick class="btn btn-danger" ng-show="isEditContact && openedTabs[contactIndex] != 'new'" ng-click="deleteContact(editFormIndex)">Delete Contact</button>
                                     <button class="btn btn-default" ng-show="isEditContact" ng-click="showList();">Discard</button>
                                     <button class="btn btn-success" savecontactform ng-show="isEditContact">Save</button>                                    
-                                    <button class="btn btn-primary" ng-show="!isEditContact" ng-click="setEditMode(true)" onclick="$('#matter-container').css('display','none');$('#contact-container').css('display','block');$('.cntct-actv').removeClass('cntct-actv');$(this).addClass('cntct-actv');">Edit</button>
+                                    <button class="btn btn-primary" ng-show="!isEditContact" ng-click="setEditMode(true)" onclick="$('#matter-container').css('display','none');$('#contact-container').css('display','block');$('.cntct-actv').removeClass('cntct-actv');$('.contact-dtl).addClass('cntct-actv');">Edit</button>
                                     <!-- <button class="btn btn-primary" ng-if="isEditContact">Save</button> -->
                                 </div>
                             </div>

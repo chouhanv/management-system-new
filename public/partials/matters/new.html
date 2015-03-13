@@ -598,8 +598,8 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Price*" name="price" required ng-model="matterForm.finances.price">
-				                            <span class="help-block form-error" ng-if="matter_form.price.$error.required  && matter_form_submited">Required*.</span>
+				                            <input type="text" class="form-control" placeholder="Price*" name="price" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" required ng-model="matterForm.finances.price">
+				                            <span class="help-block form-error" ng-if="matter_form.price.$error.pattern"> Please enter valid price *.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
@@ -687,13 +687,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Cash Total Amount*" name="cash_total_amount" required ng-model="matterForm.finances.cash_total_amount">
+				                            <input type="text" class="form-control" placeholder="Cash Total Amount*" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" name="cash_total_amount" required ng-model="matterForm.finances.cash_total_amount">
+				                            <span class="help-block form-error" ng-if="matter_form.cash_total_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.cash_total_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Mortgage Total Amount*" name="mortgage_total_amount" required ng-model="matterForm.finances.mortgage_total_amount">
+				                            <input type="text" class="form-control" placeholder="Mortgage Total Amount*"  ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" name="mortgage_total_amount" required ng-model="matterForm.finances.mortgage_total_amount">
+				                            <span class="help-block form-error" ng-if="matter_form.mortgage_total_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.mortgage_total_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -704,13 +706,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Earnest Money*" name="earnest_money" required ng-model="matterForm.finances.earnest_money">
-				                            <span class="help-block form-error" ng-if="matter_form.earnest_money.$error.required  && matter_form_submited">Required*.</span>
+				                            <input type="text" class="form-control" placeholder="Earnest Money*" name="earnest_money" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" required ng-model="matterForm.finances.earnest_money">
+				                             <span class="help-block form-error" ng-if="matter_form.earnest_money.$error.pattern"> Please enter valid price *.</span>
+				                            <span class="help-block form-error" ng-if="matter_form.earnest_money.$error.pattern"> Require *.</span>
 				                          </div>
 				                        </div> 
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Advance Payment Amount*" name="advance_payment_amount" required ng-model="matterForm.finances.advance_payment_amount">
+				                            <input type="text" class="form-control" placeholder="Advance Payment Amount*" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" name="advance_payment_amount" required ng-model="matterForm.finances.advance_payment_amount">
+				                            <span class="help-block form-error" ng-if="matter_form.advance_payment_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.advance_payment_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -721,13 +725,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Mortgage Monthly Amount*" name="mortgage_monthly_amount" required ng-model="matterForm.finances.mortgage_monthly_amount">
+				                            <input type="text" class="form-control" placeholder="Mortgage Monthly Amount*" name="mortgage_monthly_amount"  ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" required ng-model="matterForm.finances.mortgage_monthly_amount">
+				                             <span class="help-block form-error" ng-if="matter_form.mortgage_monthly_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.mortgage_monthly_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Mortgage B Amount*" name="mortgage_b_amount" required ng-model="matterForm.finances.mortgage_b_amount">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Mortgage B Amount*" name="mortgage_b_amount" required ng-model="matterForm.finances.mortgage_b_amount">
+				                            <span class="help-block form-error" ng-if="matter_form.mortgage_b_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.mortgage_b_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -738,13 +744,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Mortgage Policy Amount*" name="mortgage_policy_amount" required ng-model="matterForm.finances.mortgage_policy_amount">
+				                            <input type="text" class="form-control" placeholder="Mortgage Policy Amount*" name="mortgage_policy_amount"  ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" required ng-model="matterForm.finances.mortgage_policy_amount">
+				                            <span class="help-block form-error" ng-if="matter_form.mortgage_policy_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.mortgage_policy_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Mortgage B Policy Amount*" name="mortgage_b_policy_amount" required ng-model="matterForm.finances.mortgage_b_policy_amount">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Mortgage B Policy Amount*" name="mortgage_b_policy_amount" required ng-model="matterForm.finances.mortgage_b_policy_amount">
+				                             <span class="help-block form-error" ng-if="matter_form.mortgage_b_policy_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.mortgage_b_policy_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -939,13 +947,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="purchase Policy Fee*" name="purchase_policy_fee" required ng-model="matterForm.fees_and_taxes.purchase_policy_fee">
+				                            <input type="text" class="form-control" placeholder="purchase Policy Fee*" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" name="purchase_policy_fee" required ng-model="matterForm.fees_and_taxes.purchase_policy_fee">
+				                            <span class="help-block form-error" ng-if="matter_form.purchase_policy_fee.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.purchase_policy_fee.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="purchase Policy Fee*" name="purchase_policy_b_fee" required ng-model="matterForm.fees_and_taxes.purchase_policy_b_fee">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="purchase Policy Fee*" name="purchase_policy_b_fee" required ng-model="matterForm.fees_and_taxes.purchase_policy_b_fee">
+				                            <span class="help-block form-error" ng-if="matter_form.purchase_policy_b_fee.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.purchase_policy_b_fee.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -956,13 +966,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Homestead Tax*" name="homestead_tax" required ng-model="matterForm.fees_and_taxes.homestead_tax">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Homestead Tax*" name="homestead_tax" required ng-model="matterForm.fees_and_taxes.homestead_tax">
+				                            <span class="help-block form-error" ng-if="matter_form.homestead_tax.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.homestead_tax.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Loan Origination Fee*" name="loan_origination_fee" required ng-model="matterForm.fees_and_taxes.loan_origination_fee">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Loan Origination Fee*" name="loan_origination_fee" required ng-model="matterForm.fees_and_taxes.loan_origination_fee">
+				                            <span class="help-block form-error" ng-if="matter_form.loan_origination_fee.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.loan_origination_fee.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -973,13 +985,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Maintenance Fees*" name="maintenance_fees" required ng-model="matterForm.fees_and_taxes.maintenance_fees">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Maintenance Fees*" name="maintenance_fees" required ng-model="matterForm.fees_and_taxes.maintenance_fees">
+				                            <span class="help-block form-error" ng-if="matter_form.maintenance_fees.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.maintenance_fees.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Legal Fees*" name="legal_fees" required ng-model="matterForm.fees_and_taxes.legal_fees">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Legal Fees*" name="legal_fees" required ng-model="matterForm.fees_and_taxes.legal_fees">
+				                            <span class="help-block form-error" ng-if="matter_form.legal_fees.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.legal_fees.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -1688,7 +1702,7 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <label>Price : </label> {{matterForm.finances.price}}
+				                            <label>Price : </label> {{matterForm.finances.price?"$"+matterForm.finances.price:""}}
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
@@ -1718,12 +1732,12 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Cash Total Amount : </label>{{matterForm.finances.cash_total_amount}}
+				                          	<label>Cash Total Amount : </label>{{matterForm.finances.cash_total_amount?"$"+matterForm.finances.cash_total_amount:""}}
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Mortgage Total Amount : </label> {{matterForm.finances.mortgage_total_amount}}
+				                          	<label>Mortgage Total Amount : </label> {{matterForm.finances.mortgage_total_amount?"$"+matterForm.finances.mortgage_total_amount:""}}
 				                          </div>
 				                        </div>
 				                      </div>
@@ -1733,12 +1747,12 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Earnest Money : </label>{{matterForm.finances.earnest_money}}
+				                          	<label>Earnest Money : </label>{{matterForm.finances.earnest_money?"$"+matterForm.finances.earnest_money:""}}
 				                          </div>
 				                        </div> 
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Advance Payment Amount : </label> {{matterForm.finances.advance_payment_amount}}
+				                          	<label>Advance Payment Amount : </label> {{matterForm.finances.advance_payment_amount?"$"+matterForm.finances.advance_payment_amount:""}}
 				                          </div>
 				                        </div>
 				                      </div>
@@ -1748,12 +1762,12 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Mortgage Monthly Amount : </label> {{matterForm.finances.mortgage_monthly_amount}}
+				                          	<label>Mortgage Monthly Amount : </label> {{matterForm.finances.mortgage_monthly_amount?"$"+matterForm.finances.mortgage_monthly_amount:""}}
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Mortgage B Amount : </label> {{matterForm.finances.mortgage_b_amount}}
+				                          	<label>Mortgage B Amount : </label> {{matterForm.finances.mortgage_b_amount?"$"+matterForm.finances.mortgage_b_amount:""}}
 				                          </div>
 				                        </div>
 				                      </div>
@@ -1763,12 +1777,12 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Mortgage Policy Amount : </label> {{matterForm.finances.mortgage_policy_amount}}
+				                          	<label>Mortgage Policy Amount : </label> {{matterForm.finances.mortgage_policy_amount?"$"+matterForm.finances.mortgage_policy_amount:""}}
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Mortgage B Policy Amount : </label> {{matterForm.finances.mortgage_b_policy_amount}}
+				                          	<label>Mortgage B Policy Amount : </label> {{matterForm.finances.mortgage_b_policy_amount?"$"+matterForm.finances.mortgage_b_policy_amount:""}}
 				                          </div>
 				                        </div>
 				                      </div>
@@ -1960,12 +1974,12 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>purchase Policy Fee : </label>{{matterForm.fees_and_taxes.purchase_policy_fee}}
+				                          	<label>purchase Policy Fee : </label>{{matterForm.fees_and_taxes.purchase_policy_fee?"$"+matterForm.fees_and_taxes.purchase_policy_fee:""}}
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Purchase Policy Fee : </label>{{matterForm.fees_and_taxes.purchase_policy_b_fee}}
+				                          	<label>Purchase Policy Fee : </label>{{matterForm.fees_and_taxes.purchase_policy_b_fee?"$"+matterForm.fees_and_taxes.purchase_policy_b_fee:""}}
 				                          </div>
 				                        </div>
 				                      </div>
@@ -1975,7 +1989,7 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Homestead Tax : </label>{{matterForm.fees_and_taxes.homestead_tax}}
+				                          	<label>Homestead Tax : </label>{{matterForm.fees_and_taxes.homestead_tax?"$"+matterForm.fees_and_taxes.homestead_tax:""}}
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
@@ -1990,12 +2004,12 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                          	<label>Maintenance Fees : </label>{{matterForm.fees_and_taxes.maintenance_fees}}
+				                          	<label>Maintenance Fees : </label>{{matterForm.fees_and_taxes.maintenance_fees?"$"+matterForm.fees_and_taxes.maintenance_fees:""}}
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <label>Legal Fees : </label>{{matterForm.fees_and_taxes.legal_fees}}
+				                            <label>Legal Fees : </label>{{matterForm.fees_and_taxes.legal_fees?"$"+matterForm.fees_and_taxes.legal_fees:""}}
 				                          </div>
 				                        </div>
 				                      </div>
@@ -2748,7 +2762,8 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Price*" name="price" required ng-model="matterForm.finances.price">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Price*" name="price" required ng-model="matterForm.finances.price">
+				                             <span class="help-block form-error" ng-if="matter_form.price.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.price.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -2836,13 +2851,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Cash Total Amount*" name="cash_total_amount" required ng-model="matterForm.finances.cash_total_amount">
+				                            <input type="text" class="form-control" placeholder="Cash Total Amount*" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" name="cash_total_amount" required ng-model="matterForm.finances.cash_total_amount">
+				                            <span class="help-block form-error" ng-if="matter_form.cash_total_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.cash_total_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Mortgage Total Amount*" name="mortgage_total_amount" required ng-model="matterForm.finances.mortgage_total_amount">
+				                            <input type="text" class="form-control"  ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Mortgage Total Amount*" name="mortgage_total_amount" required ng-model="matterForm.finances.mortgage_total_amount">
+				                            <span class="help-block form-error" ng-if="matter_form.mortgage_total_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.mortgage_total_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -2853,14 +2870,16 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Earnest Money*" name="earnest_money" required ng-model="matterForm.finances.earnest_money">
-				                            <span class="help-block form-error" ng-if="matter_form.earnest_money.$error.required  && matter_form_submited">Required*.</span>
+				                            <input type="text" class="form-control" placeholder="Earnest Money*" name="earnest_money" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" required ng-model="matterForm.finances.earnest_money">
+				                             <span class="help-block form-error" ng-if="matter_form.earnest_money.$error.pattern"> Please enter valid price *.</span>
+				                             <span class="help-block form-error" ng-if="matter_form.earnest_money.$error.pattern  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div> 
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Advance Payment Amount*" name="advance_payment_amount" required ng-model="matterForm.finances.advance_payment_amount">
-				                            <span class="help-block form-error" ng-if="matter_form.advance_payment_amount.$error.required  && matter_form_submited">Required*.</span>
+				                            <input type="text" class="form-control"  ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Advance Payment Amount*" name="advance_payment_amount" required ng-model="matterForm.finances.advance_payment_amount">
+				                             <span class="help-block form-error" ng-if="matter_form.advance_payment_amount.$error.pattern"> Please enter valid price *.</span>
+				                            <span class="help-block form-error" ng-if="matter_form.matter_form.advance_payment_amount.$error.pattern  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                      </div>
@@ -2870,14 +2889,17 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Mortgage Monthly Amount*" name="mortgage_monthly_amount" required ng-model="matterForm.finances.mortgage_monthly_amount">
+				                            <input type="text" class="form-control" placeholder="Mortgage Monthly Amount*" name="mortgage_monthly_amount"  ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" required ng-model="matterForm.finances.mortgage_monthly_amount">
+				                             <span class="help-block form-error" ng-if="matter_form.mortgage_monthly_amount.$error.pattern"> Please enter valid price *.</span>
+
 				                            <span class="help-block form-error" ng-if="matter_form.mortgage_monthly_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Mortgage B Amount*" name="mortgage_b_amount" required ng-model="matterForm.finances.mortgage_b_amount">
-				                            <span class="help-block form-error" ng-if="matter_form.mortgage_b_amount.$error.required  && matter_form_submited">Required*.</span>
+				                            <input type="text" class="form-control" placeholder="Mortgage B Amount*"  ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" name="mortgage_b_amount" required ng-model="matterForm.finances.mortgage_b_amount">
+				                             <span class="help-block form-error" ng-if="matter_form.mortgage_b_amount.$error.pattern"> Please enter valid price *.</span>
+				                            <span class="help-block form-error" ng-if="matter_form.matter_form.mortgage_b_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                      </div>
@@ -2887,13 +2909,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Mortgage Policy Amount*" name="mortgage_policy_amount" required ng-model="matterForm.finances.mortgage_policy_amount">
+				                            <input type="text" class="form-control"  placeholder="Mortgage Policy Amount*"  ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" name="mortgage_policy_amount" required ng-model="matterForm.finances.mortgage_policy_amount">
+				                            <span class="help-block form-error" ng-if="matter_form.mortgage_policy_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.mortgage_policy_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Mortgage B Policy Amount*" name="mortgage_b_policy_amount" required ng-model="matterForm.finances.mortgage_b_policy_amount">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Mortgage B Policy Amount*" name="mortgage_b_policy_amount" required ng-model="matterForm.finances.mortgage_b_policy_amount">
+				                            <span class="help-block form-error" ng-if="matter_form.mortgage_b_policy_amount.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.mortgage_b_policy_amount.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -3088,13 +3112,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="purchase Policy Fee*" name="purchase_policy_fee" required ng-model="matterForm.fees_and_taxes.purchase_policy_fee">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="purchase Policy Fee*" name="purchase_policy_fee" required ng-model="matterForm.fees_and_taxes.purchase_policy_fee">
+				                             <span class="help-block form-error" ng-if="matter_form.purchase_policy_fee.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.purchase_policy_fee.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="purchase Policy Fee*" name="purchase_policy_b_fee" required ng-model="matterForm.fees_and_taxes.purchase_policy_b_fee">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="purchase Policy Fee*" name="purchase_policy_b_fee" required ng-model="matterForm.fees_and_taxes.purchase_policy_b_fee">
+				                             <span class="help-block form-error" ng-if="matter_form.purchase_policy_b_fee.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.purchase_policy_b_fee.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -3105,13 +3131,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Homestead Tax*" name="homestead_tax" required ng-model="matterForm.fees_and_taxes.homestead_tax">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Homestead Tax*" name="homestead_tax" required ng-model="matterForm.fees_and_taxes.homestead_tax">
+				                             <span class="help-block form-error" ng-if="matter_form.homestead_tax.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.homestead_tax.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Loan Origination Fee*" name="loan_origination_fee" required ng-model="matterForm.fees_and_taxes.loan_origination_fee">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Loan Origination Fee*" name="loan_origination_fee" required ng-model="matterForm.fees_and_taxes.loan_origination_fee">
+				                             <span class="help-block form-error" ng-if="matter_form.loan_origination_fee.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.loan_origination_fee.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
@@ -3122,13 +3150,15 @@
 				                      <div class="row">
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Maintenance Fees*" name="maintenance_fees" required ng-model="matterForm.fees_and_taxes.maintenance_fees">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Maintenance Fees*" name="maintenance_fees" required ng-model="matterForm.fees_and_taxes.maintenance_fees">
+				                             <span class="help-block form-error" ng-if="matter_form.maintenance_fees.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.maintenance_fees.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
 				                        <div class="col-sm-6">
 				                          <div class="form-group">
-				                            <input type="text" class="form-control" placeholder="Legal Fees*" name="legal_fees" required ng-model="matterForm.fees_and_taxes.legal_fees">
+				                            <input type="text" class="form-control" ng-pattern="/^(\d*\.\d{1,2}|\d+)$/" placeholder="Legal Fees*" name="legal_fees" required ng-model="matterForm.fees_and_taxes.legal_fees">
+				                             <span class="help-block form-error" ng-if="matter_form.legal_fees.$error.pattern"> Please enter valid price *.</span>
 				                            <span class="help-block form-error" ng-if="matter_form.legal_fees.$error.required  && matter_form_submited">Required*.</span>
 				                          </div>
 				                        </div>
